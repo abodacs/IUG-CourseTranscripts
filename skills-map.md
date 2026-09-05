@@ -2,7 +2,7 @@
 
 Companion to [platform-map-brief.md](platform-map-brief.md). Research date: 2026-09-05. Verdicts: ✅ adopt · 📦 already installed locally · 🔧 adapt/re-vendor · 📐 pattern only, don't depend · ❌ skip.
 
-**Delivery contract:** the existing pipeline is Content Factory v0; the next version is defined in [content-factory-v1-goal.md](content-factory-v1-goal.md). Apple-grade quality control covers every stage. Candidate verdicts below are research recommendations, not proof of license clearance, Arabic quality, integration, or zero operating cost. Verify the selected revision before adoption; install only what the current stage needs.
+**Delivery contract:** the existing pipeline is Content Factory v0; the next version is defined in [content-factory-v1-goal.md](content-factory-v1-goal.md). Apple-grade quality control covers every stage. Candidate verdicts below are research recommendations, not proof of license clearance, Arabic quality, integration, or zero operating cost. Verify the selected revision before adoption; install only what the current stage needs. The [blindspot resolutions](content-factory-v1-resolution.md) define required source sufficiency, independent correctness review, learner evidence, and runtime contracts; a skill cannot substitute for those proofs.
 
 **Headline finding:** across everything checked, only **two** items touch Arabic/RTL at all (`rtl-web-development-skill` for UI, `Arab-Writer` for prose) — and one high-quality one is redundant with skills already installed. RTL remains the platform's own differentiating work.
 

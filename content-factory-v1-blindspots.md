@@ -1,6 +1,6 @@
 # Content Factory v1 — blindspots and discovery probes
 
-Review date: 2026-09-05. Reviewed [the goal](content-factory-v1-goal.md), both supporting maps, v0 source, local metadata, and selected transcripts. Findings distinguish omissions in the proposed v1 contract from observed v0 behavior. v1 is not implemented. Recommendations below do not change the goal or implementation.
+Review date: 2026-09-05. Historical code findings refer to baseline commit `39a04f2`; subsequent safeguards and adopted decisions are tracked in [the resolution](content-factory-v1-resolution.md). Reviewed [the goal](content-factory-v1-goal.md), both supporting maps, v0 source, local metadata, and selected transcripts. Findings distinguish omissions in the proposed v1 contract from observed v0 behavior. v1 is not implemented. Recommendations below do not change the goal or implementation.
 
 **The main blindspot:** the factory can produce complete, traceable, rubric-approved artifacts without yet establishing that source evidence is sufficient, teaching is independently correct, or learners can perform the promised skill. Operational acceptance needs explicit connections to those three claims.
 

@@ -1,0 +1,102 @@
+# Content Factory v1 — decisions and proof required
+
+Status: technical decisions adopted for implementation; empirical quality, publishing permission, reviewer availability, and paid-run authorization remain unproven. This resolves the contract omissions in [the review](content-factory-v1-blindspots.md). It does not declare v1 implemented or accepted.
+
+## Decisions for all 13 findings
+
+| Finding | Decision | Evidence needed to close it |
+|---|---|---|
+| E1 — fidelity versus correctness | Give every substantive claim separate evidence-support and subject-correctness verdicts. A named subject reviewer owns corrections. | A faithfully repeated false claim fails; a documented correction passes both the correction policy and independent subject review. |
+| E2 — holdout leakage | Split by source-video identity and near-duplicate family, across all playlist memberships. Retire exposed holdouts after tuning; reserve unseen courses/instructors for expansion claims. | Split manifest proves disjoint source families; final evaluation records the frozen prompts/rubric/models. |
+| E3 — confident shared mistakes | Subject reviewers solve/check reference answers before seeing judge scores. Review every complete pilot lesson; additionally audit confident passes and repaired items during later expansion. | Independent reviewer decisions and discrepancy resolutions, including persuasive wrong answers that the model accepted. |
+| E4 — misleading quality rates | Record counts, named denominators, severity, and whole-lesson outcomes. Keep challenge-set performance separate from representative production audits. | Evaluation report with uncertainty and explicit limitations; no statistical population claim from a tiny correlated sample. |
+| E5 — no learner evidence | Define target learners, prerequisites, baseline task, fresh unaided transfer task, and a delayed variant where retention is claimed. | Formative learner observations and remediation; no claim of causal superiority from an uncontrolled pilot. |
+| C1 — missing source evidence | Decide evidence sufficiency per promised outcome before authoring. Original media and approved supplemental sources are valid recorded evidence. | Every outcome supported or explicitly blocked, with media timecodes, access status, and recovery cost. |
+| C2 — unsafe legacy reuse | Separate video identity, source revision, and course membership. Old completion flags are migration hints. Import existing outputs as unreviewed candidates. | Reconciled inventory, variant hashes, saved-result resume test, complete subtitle coverage. Local safeguards implemented; migration acceptance still pending. |
+| C3 — accounting versus completeness | Freeze the pilot scope before evaluation. Record segment dispositions and a separate outcome coverage matrix. Release a complete prerequisite-closed pilot course. | No unexplained exclusions, unsupported required outcomes, absent practice, or broken prerequisite chain. |
+| C4 — crash spending | Use a durable shared pilot ledger with transactional reservations and explicit unknown request outcomes. Retry/repair limits survive runs. | Crash-boundary and concurrent-worker tests with provider behavior verified; no uncertain reservation silently released. Implementation pending. |
+| C5 — format and authority | Use a constrained, versioned Markdown dialect with typed teaching nodes. Lesson Markdown and editable diagram sources are authoritative; wiki/graph/explanations are derived. | Shared preview/platform conformance fixtures; every teaching-bearing node has evidence/verdict coverage. Parser/renderer implementation pending. |
+| C6 — invalidation scope | Separate the semantic graph from the build-dependency graph. Use namespaced concepts and reviewed aliases/merges. Pilot evaluation context covers the whole lesson. | Shared-term, paragraph-move, prerequisite, and concept-merge probes expose the expected dependency closure and reevaluation cost. |
+| C7 — content execution | Treat transcript and generated material as data. Allow only declared components/URLs/paths; isolate execution of examples. | Injection, forbidden markup, path traversal, and resource-limit probes fail safely. Enforcement implementation pending. |
+| C8 — pilot economics/lifecycle | Report fixed outcome coverage and first-accepted lesson IDs, separately from revisions and maintenance. Include difficult source examples and withdrawal of invalid releases. | Pilot/challenge results, reviewer throughput, first-publication and maintenance costs, withdrawal and independent-backup restore demonstrations. |
+
+## Source and curriculum contract
+
+Source identity is `(provider, video_id)`. A source revision adds the immutable content hash and transcription provenance. Course membership is a separate ordered association; duplicate membership never creates a new video identity. Identical raw bytes may share storage and extraction, while lesson judgments remain specific to their teaching context. Conflicting raw variants remain separate until their provenance is resolved.
+
+Each promised outcome records: `outcome_id`, tangible task, prerequisites, intended learner, evidence refs, required explanation/example/practice/transfer-task IDs, and sufficiency status. Status is one of `supported`, `needs_original_media`, `needs_supplement`, or `unsupported`. Only `supported` outcomes enter an accepted course. Discovery may revise scope before the scope freeze; subsequent changes produce a new scope revision and repeat its review.
+
+Each original source segment records one primary disposition: `included`, `duplicate_of`, `excluded_with_reason`, or `unresolved`. Included segments can support multiple teaching units through references; their identity is never duplicated. Administrative asides may be excluded with a reason. Teaching material cannot be excluded merely because it is difficult or failed evaluation. Every exclusion affecting a promised outcome needs subject review and a coverage decision.
+
+For legacy chapter migration, assign a subtitle once to the chapter with greatest positive time overlap, breaking ties toward the earlier chapter. Preserve its original text, ID, and timestamps even when they extend beyond the chapter boundary. Invalid/overlapping chapter intervals and subtitles outside all chapters block processing. This is an accounting rule; it does not certify pedagogical chapter placement. The reviewer may revise chapter boundaries later without rewriting raw source spans.
+
+Corrections are append-only records containing the original assertion/span, proposed replacement, reason, authoritative evidence, subject reviewer, disposition, and affected artifact IDs. Choices are corrected teaching, explicitly historical teaching, a supplement, or quarantine. Never rewrite immutable lecture evidence to make a generated claim appear supported. A required unsupported prerequisite blocks the course; publishing a smaller course requires an explicit newly reviewed scope.
+
+## Evaluation and learner protocol
+
+The rubric distinguishes four checks: evidence support, subject correctness, editorial/pedagogical contribution, and cross-lesson coherence. Necessary scaffolding can pass contribution without containing a novel insight. Code, equations, tables, quiz choices/keys/rationales, diagrams/captions/alternatives, wiki entries, and simplified explanations are teaching-bearing units as well as prose paragraphs. All released units need the applicable verdicts; omitted nodes fail coverage checks.
+
+Use development examples for rubric/model/prompt iteration. Freeze a split manifest by source-video/duplicate family, including sources referenced through another playlist. The final holdout is opened only after candidate selection and thresholds are frozen. If its results guide another change, treat it as development data and evaluate on a fresh holdout. Expanded-domain claims require unseen courses/instructors, not neighboring paragraphs from the pilot.
+
+Required pilot reference failure classes: wrong original assertion, outdated version assumption, transcription ambiguity, absent visual evidence, incorrect quiz key, persuasive wrong solution, missing prerequisite, cross-lesson contradiction, harmful simplification, invalid repaired output, and instruction-like text in source material. Human subject reviewers decide reference labels independently before seeing judge decisions.
+
+Release thresholds for the pilot: zero unresolved critical defects; all seeded critical challenge cases correctly blocked; complete deterministic/verdict coverage; independent subject and Arabic editorial review of every full lesson, including exercises and visuals. Calibrate numerical model-score cutoffs on development data before opening the final holdout. Model scores cannot overrule a hard failure. A small pilot is evidence of its own reviewed content, not a certified corpus-wide error rate.
+
+Report `bad_accepted / known_bad` on challenge cases, `good_rejected / known_good`, and `bad_accepted / accepted_items_audited` on a separately sampled accepted-content audit. Also count lessons with any critical defect. Publish counts and severity per relevant language/subject group. Use source-group-aware uncertainty for population claims; if the data cannot support a useful interval, report insufficient evidence. Do not substitute a challenge-set class balance for the prevalence of defects in released content.
+
+Working learner assumption, awaiting user input: Arabic-speaking undergraduates who possess the course prerequisites. Proposed formative trial: 5–8 such learners; prerequisite/baseline check, reading plus practice, then a fresh unaided task scored with a prewritten rubric. Use a delayed variant when claiming retention. Record failures and revise teaching; define the learner-performance criterion before administering the final task. Trial size is a discovery choice, not a statistical guarantee. Reviewer and learner availability remain open; I cannot supply their approvals or observations.
+
+## Format, identity, and dependency boundaries
+
+Use ordinary Markdown plus a declared extension for math, tables, stable teaching-node IDs, and fenced `quiz` payloads validated against a schema. Arbitrary JavaScript, MDX expressions, raw HTML, and event handlers are excluded from authored teaching. The future parser may generate trusted HTML components from allowed structures. Quiz payloads contain stable IDs, skill refs, prompt, choices or task, answer, rationale, and feedback; their rendering must not expose the answer before an attempt. Select a renderer by conformance to this contract.
+
+Keep learner prose in Markdown; use versioned sidecars for provenance, verdicts, and build metadata. Define split/merge history for teaching-node IDs rather than using paragraph ordinal positions or their content hashes as identity. A changed paragraph retains its identity when it is still the same teaching unit, but its hash and all affected verdicts change.
+
+Concept IDs are namespaced by subject and sense; Arabic/English aliases are labels, not identity keys. Merge/split decisions require reviewed equivalence evidence. Prerequisite edges must be acyclic within a declared curriculum; other semantic edge types may legitimately contain cycles. Do not use the semantic graph itself as a build scheduler.
+
+| Change | Minimum invalidation |
+|---|---|
+| Source span or approved correction | Directly supported claims/units, dependent outcomes/assessments, and their lesson-context verdicts/derivatives. |
+| Paragraph content, order, split, or merge | Whole containing lesson's context/placement/coherence judgments and derived wiki/graph/explanations. |
+| Quiz key, rationale, or placement | Quiz verdicts, containing lesson practice/placement checks, rendered interaction evidence. |
+| Term definition, alias, concept merge/split | Every referencing lesson/quiz/diagram/wiki node and affected prerequisite checks. |
+| Rubric, judge prompt/model/settings | Applicable evaluation verdicts; keep authored content as an unreviewed candidate. |
+| Renderer, theme, font, component | Affected rendering/accessibility checks; semantic verdicts only when learner-visible meaning changes. |
+
+At pilot scale, whole-lesson context is the deliberate conservative cache boundary. Measure its real fan-out before optimizing to smaller context windows. Pin provider versions when supported; mutable aliases require recorded resolution/fingerprint where available and scheduled drift audits. Exact historical model reproducibility must not be promised without provider support.
+
+## Durable spending and execution contract
+
+All v1 paid stages use one dispatcher and SQLite ledger; legacy entrypoints are outside that guarantee. Store money as integer currency subunits, with currency, rate revision, provider, model, input/output limits, and reservation assumptions recorded. Reject paid scheduling without numeric pilot/run caps and a verified maximum request estimate.
+
+Before dispatch, use a transaction to reserve from both the shared pilot allowance and run allowance, increment the unit's durable attempt counter, and persist the unique attempt ID. Concurrent workers must contend on the same ledger transaction. A restart continues the same pilot allowance and unit repair history.
+
+Attempt states: `reserved`, `dispatched`, `succeeded`, `failed_confirmed`, `outcome_unknown`. Mark `dispatched` durably before making the external call. After ambiguous network loss or a crash, retain the reservation and mark the attempt unknown. Never assume no response means no charge. Release a reservation only with evidence supporting the charged amount or confirmed non-dispatch; otherwise reconcile with provider records or stop dependent work. Provider idempotency/retrieval must be verified before relying on it.
+
+Persist received output and usage before marking its job complete. Promotion references only durable approved artifacts. Request success, valid output, pedagogical acceptance, and publication are separate states. Retries, one repair cycle, and one premium escalation share durable lineage limits; restarting a job does not reset them. Uncertain charges and missing results can block work without damaging accepted outputs. No exactly-once provider billing promise is made.
+
+Required failure probes: crash before dispatch, after dispatch, after receipt, before usage/artifact commit; response loss; two workers reserving the last allowance; process restart after repair exhaustion; unavailable provider; and failed artifact persistence. These use a fake provider initially, with no paid calls. Current chapter safeguards are not this ledger and do not make the legacy CLI safe for paid v1 runs. Successful provider calls are no longer retried merely because the subsequent usage write failed; cross-process billing reconciliation still needs the ledger.
+
+Executable examples run in a disposable worker with explicit timeout/memory/process limits, no credentials, and no network or host write access unless a reviewed exercise specifically requires them. Generated URLs/paths/components are allowlisted. Source passages cannot issue tool commands or influence deterministic verdict membership. The accepted-content renderer must not execute arbitrary content.
+
+## Pilot economics and release lifecycle
+
+Freeze outcome IDs, lesson scope, required assessments, editable diagrams, per-course/per-lesson wiki coverage, and graph edge types before paid authoring. Static assets and a working Arabic-first preview remain required. Additional animation/video tooling is outside the pilot critical path unless required by that frozen teaching design. The main pilot must be accompanied by a bounded challenge set covering poor sources, mixed language, math/code, and missing visuals.
+
+Count first-accepted distinct lesson IDs and accepted outcome coverage; do not increment yield for retries or accepted revisions. Report initial production and maintenance separately, with source hours, total attributable model spend, repair/quarantine rate, reviewer minutes, review queue age, and time to publication. Never improve the headline denominator by silently splitting lessons or excluding difficult required outcomes.
+
+Promotion publishes the entire accepted pilot course and its prerequisite-closed artifact set atomically. Unrelated course releases can be independent during later expansion. A newly discovered correctness defect or withdrawn publishing permission invalidates affected releases/derivatives. Withdraw them when no accepted safe version exists; rollback cannot select an invalid release. Demonstrate an independent-backup restore in addition to a local version rollback.
+
+## Implemented locally and remaining work
+
+Implemented: chapter ownership with source-span preservation; strict malformed/out-of-order subtitle handling; saved cleaned-text checkpoints bound to source hash and cleaning revision; state/output atomic replacement; rejection of stale/unverified artifacts; removal of completion-marker-only CLI skips; removal of API-key printing and import-time logging/provider setup. These are legacy migration safeguards, not content acceptance or a complete v1 runtime.
+
+Important limits: existing legacy results without the new evidence are preserved and require migration review. JSON state remains for one writer; v1's multi-worker budget/retry ledger, per-chunk paid-work preservation, calibrated judges, typed Markdown validator, and release pipeline remain to be implemented. Do not launch a corpus regeneration run from the legacy CLI.
+
+Implementation order: (1) reconcile sources and freeze the pilot with a source-sufficiency/reviewer packet; (2) build the manifest/typed artifact and durable ledger core with fake-provider failure tests; (3) implement the shared format, authoring/evaluation gates and preview; (4) execute the capped pilot, complete subject/editorial/learner reviews, and demonstrate release/withdrawal/recovery.
+
+The proposed course, challenge sources, and review fields are assembled in [the pilot packet](content-factory-v1-pilot.md).
+
+Open inputs: target learner confirmation; named subject/editorial reviewer and learner access; publishing permissions and authoritative supplemental sources; pilot selection after inventory; numeric run/pilot caps after a token estimate. These are required evidence and authorization, not values to invent. Unanswered inputs block their dependent paid/release steps while offline preparation continues.
+
+Validation command: `.venv/bin/python -m pytest`. The regression suite uses temporary files and mocked model responses to exercise full interrupted-video recovery, unchanged reruns, stale/corrupt state, unverified existing outputs, malformed/duplicate/out-of-order/out-of-coverage subtitles, and atomic-save failures. No real provider calls are needed.

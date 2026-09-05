@@ -9,6 +9,11 @@ from pathlib import Path
 from typing import List, Dict, Any, Optional, Tuple
 from asgiref.sync import async_to_sync
 
+try:
+    from .transcript_integrity import atomic_json_write, assign_subtitles, content_hash
+except ImportError:
+    from transcript_integrity import atomic_json_write, assign_subtitles, content_hash
+
 
 # Handle optional dependencies
 try:
@@ -31,7 +36,7 @@ except ImportError:
         if not GEMINI_API_KEY:
             print("Error: GEMINI_API_KEY not found. Please set it as an environment variable.")
             sys.exit(1)
-print(f"GEMINI_API_KEY found: {GEMINI_API_KEY}  {'set' if GEMINI_API_KEY else 'not set'}")
+
 # Configuration
 class Config:
     """Enhanced configuration settings for resilient transcript processing."""
@@ -41,6 +46,7 @@ class Config:
     CHUNK_OVERLAP = 200  # Overlap between chunks for context
     SUPPORTED_EXTENSIONS = ['.json', '.srt']
     OUTPUT_INDENT = 2
+    CLEANING_VERSION = 'legacy-cleaning-integrity-1'  # Bump when prompt/model policy changes
     
     # API Rate Limits
     DAILY_CALL_LIMIT = 14400  # 14k calls per day
@@ -78,18 +84,7 @@ class Config:
         )
 
 # Initialize configuration
-Config.setup_logging()
 logger = logging.getLogger(__name__)
-
-# Configure Gemini API
-if GEMINI_AVAILABLE:
-    if not GEMINI_API_KEY:
-        logger.error("GEMINI_API_KEY not found in configuration")
-        raise ValueError("GEMINI_API_KEY is required")
-    genai.configure(api_key=GEMINI_API_KEY)
-else:
-    logger.error("Gemini AI not available - cannot proceed without it in V2")
-    raise ImportError("google-generativeai is required for V2")
 
 class ProcessingState:
     """Manages persistent state for resilient processing."""
@@ -107,7 +102,7 @@ class ProcessingState:
                 logger.info(f"Loaded processing state with {len(state.get('completed_items', []))} completed items")
                 return state
             except (json.JSONDecodeError, IOError) as e:
-                logger.warning(f"Could not load state file, starting fresh: {e}")
+                raise ValueError(f"Cannot read existing state; preserve it for recovery: {e}") from e
         
         return {
             'daily_call_count': 0,
@@ -121,14 +116,39 @@ class ProcessingState:
     
     def save_state(self):
         """Save current state to disk."""
+        self.state['last_checkpoint'] = str(datetime.datetime.now())
+        atomic_json_write(self.state_file, self.state)
+
+    def completed_text(self, item_id, source_hash):
+        record = self.state.get('completed_results', {}).get(item_id)
+        if record is None:
+            if self.is_completed(item_id):
+                raise ValueError(f"Legacy completion lacks saved text; review required: {item_id}")
+            return None
+        if (record.get('source_hash') != source_hash
+                or record.get('cleaning_version') != Config.CLEANING_VERSION):
+            raise ValueError(f"Saved cleaning is stale; review required: {item_id}")
+        text = record.get('text')
+        if not isinstance(text, str) or not text.strip() or record.get('text_hash') != content_hash(text):
+            raise ValueError(f"Saved cleaning is corrupt: {item_id}")
+        return text
+
+    def save_completed_text(self, item_id, source_hash, text):
+        if not text.strip():
+            raise ValueError("Cannot checkpoint empty cleaning")
+        previous = json.loads(json.dumps(self.state))
         try:
-            self.state['last_checkpoint'] = str(datetime.datetime.now())
-            with open(self.state_file, 'w') as f:
-                json.dump(self.state, f, indent=2)
-            logger.debug("State saved successfully")
-        except IOError as e:
-            logger.error(f"Failed to save state: {e}")
-    
+            self.state.setdefault('completed_results', {})[item_id] = {
+                'source_hash': source_hash,
+                'cleaning_version': Config.CLEANING_VERSION,
+                'text': text,
+                'text_hash': content_hash(text),
+            }
+            self.mark_completed(item_id)
+        except Exception:
+            self.state = previous
+            raise
+
     def reset_daily_quota_if_needed(self):
         """Reset daily call count if new day."""
         today = str(datetime.date.today())
@@ -338,12 +358,14 @@ def transform_transcript_with_gemini(raw_transcript_text: str, video_id: str, ch
     
     item_id = f"{video_id}_ch{chapter_idx}"
     
-    # Check if already completed
-    if state.is_completed(item_id):
-        logger.debug(f"Transcript already cleaned for {item_id}")
-        # This shouldn't happen in normal flow, but handle gracefully
-        return raw_transcript_text
-    
+    source_hash = content_hash(raw_transcript_text)
+    saved_text = state.completed_text(item_id, source_hash)
+    if saved_text is not None:
+        return saved_text
+    if not GEMINI_AVAILABLE or not GEMINI_API_KEY:
+        raise RuntimeError("Gemini configuration is required for new cleaning")
+    genai.configure(api_key=GEMINI_API_KEY)
+
     # Chunk the text if necessary
     max_tokens_per_chunk = Config.TOKENS_PER_MINUTE // 2  # Conservative per-call limit
     chunks = chunk_text(raw_transcript_text, max_tokens_per_chunk)
@@ -396,8 +418,6 @@ Raw Text:
                 cleaned_text = response_text.strip()
                 cleaned_chunks.append(cleaned_text)
                 
-                # Record successful API call
-                state.record_api_call(estimated_tokens)
                 logger.debug(f"Successfully cleaned chunk {chunk_idx+1}/{len(chunks)} for {item_id}: {len(chunk)} -> {len(cleaned_text)} chars")
                 
                 # Reset retry delay on success
@@ -442,11 +462,14 @@ Raw Text:
                 # Record failure for monitoring
                 state.mark_failed(chunk_item_id, str(e), time.time() + retry_delay)
     
+        # Persistence failures must not retry an already successful provider call.
+        state.record_api_call(estimated_tokens)
+
     # Combine all cleaned chunks
     final_cleaned_text = " ".join(cleaned_chunks).strip()
     
-    # Mark as completed
-    state.mark_completed(item_id)
+    # Persist the cleaned result and completion marker together.
+    state.save_completed_text(item_id, source_hash, final_cleaned_text)
     
     logger.info(f"Successfully cleaned complete transcript for {item_id}: {len(raw_transcript_text)} -> {len(final_cleaned_text)} chars")
     return final_cleaned_text
@@ -496,7 +519,7 @@ def parse_srt(srt_content: str) -> List[Dict[str, any]]:
                 
                 if ' --> ' not in lines[1]:
                     logger.warning(f"Invalid timing format in subtitle {subtitle_num}: {lines[1]}")
-                    continue
+                    raise ValueError("Invalid subtitle timing")
                     
                 start_str, end_str = lines[1].split(' --> ')
                 start_time = time_to_seconds(start_str.strip())
@@ -504,9 +527,11 @@ def parse_srt(srt_content: str) -> List[Dict[str, any]]:
                 
                 if start_time >= end_time:
                     logger.warning(f"Invalid timing in subtitle {subtitle_num}: start >= end")
-                    continue
+                    raise ValueError("Invalid subtitle timing")
                 
                 text = ' '.join(lines[2:]).strip()
+                if not text:
+                    raise ValueError("Empty subtitle text")
                 if text:
                     subtitles.append({
                         "start": start_time, 
@@ -515,8 +540,9 @@ def parse_srt(srt_content: str) -> List[Dict[str, any]]:
                         "index": subtitle_num
                     })
             except (ValueError, IndexError) as e:
-                logger.warning(f"Skipping invalid subtitle block {i+1}: {e}")
-                continue
+                raise ValueError(f"Invalid subtitle block {i+1}: {e}") from e
+        else:
+            raise ValueError(f"Incomplete subtitle block: {i+1}")
     
     logger.info(f"Parsed {len(subtitles)} valid subtitles from {len(blocks)} blocks")
     return subtitles
@@ -565,11 +591,6 @@ def process_video(video_id: str, base_path: Path, state: ProcessingState, rate_l
     srt_file = base_path / f"{video_id}.srt"
     output_file = base_path / f"{video_id}_v2_content.json"
     
-    # Skip if output file already exists
-    if output_file.exists():
-        logger.info(f"Skipping {video_id} - output file already exists")
-        return True
-    
     # Validate required input files exist
     missing_files = []
     if not chapters_file.exists():
@@ -600,6 +621,28 @@ def process_video(video_id: str, base_path: Path, state: ProcessingState, rate_l
             logger.warning(f"No valid subtitles found for {video_id}")
             return False
 
+        intervals = [(chapter_time_to_seconds(ch['start_timestamp']),
+                      chapter_time_to_seconds(ch['end_timestamp']))
+                     for ch in chapters_data['chapters']]
+        assigned = assign_subtitles(raw_transcript, intervals)
+        source_hashes = {
+            'srt': content_hash(srt_content),
+            'chapters': content_hash(chapters_data),
+            'cleaning_version': Config.CLEANING_VERSION,
+        }
+        if output_file.exists():
+            previous = json.loads(output_file.read_text(encoding='utf-8'))
+            if (previous.get('source_hashes') == source_hashes
+                    and previous.get('chapters_hash') == content_hash(previous.get('chapters'))
+                    and previous.get('video_id') == video_id
+                    and previous.get('total_chapters') == len(intervals)
+                    and len(previous.get('chapters', [])) == len(intervals)
+                    and all(ch.get('cleaned_transcript_text', '').strip()
+                            and ch.get('source_subtitles') == assigned[i]
+                            for i, ch in enumerate(previous['chapters']))):
+                return True
+            raise ValueError(f"Existing output is unverified or stale; preserve for migration: {output_file}")
+
         # Process each chapter with guaranteed cleaning
         chapters_with_transcript = []
         total_chapters = len(chapters_data['chapters'])
@@ -611,29 +654,22 @@ def process_video(video_id: str, base_path: Path, state: ProcessingState, rate_l
                 start_time_chapter = chapter_time_to_seconds(chapter_info['start_timestamp'])
                 end_time_chapter = chapter_time_to_seconds(chapter_info['end_timestamp'])
                 
-                if start_time_chapter >= end_time_chapter:
-                    logger.warning(f"Invalid chapter timing for {video_id} chapter {i+1}: start >= end")
-                    continue
-
-                # Extract transcript for this chapter
-                chapter_transcript = []
-                for sub in raw_transcript:
-                    if sub['start'] >= start_time_chapter and sub['end'] <= end_time_chapter:
-                        chapter_transcript.append(sub)
+                chapter_transcript = assigned[i]
 
                 raw_text = " ".join([sub["text"] for sub in chapter_transcript])
                 
                 # Clean transcript - guaranteed to succeed
-                cleaned_text = ""
-                if raw_text.strip():
-                    cleaned_text = transform_transcript_with_gemini(raw_text, video_id, i, state, rate_limiter)
+                if not raw_text.strip():
+                    raise ValueError(f"Chapter has no teaching text: {i}")
+                cleaned_text = transform_transcript_with_gemini(raw_text, video_id, i, state, rate_limiter)
                 
                 chapters_with_transcript.append({
                     'title': chapter_info['title'],
                     'start': start_time_chapter,
                     'end': end_time_chapter,
                     'cleaned_transcript_text': cleaned_text,
-                    'subtitle_count': len(chapter_transcript)
+                    'subtitle_count': len(chapter_transcript),
+                    'source_subtitles': chapter_transcript,
                 })
                 
             except Exception as e:
@@ -650,14 +686,15 @@ def process_video(video_id: str, base_path: Path, state: ProcessingState, rate_l
             "video_id": video_id,
             "total_chapters": len(chapters_with_transcript),
             "processed_at": str(datetime.datetime.now()),
-            "version": "v2",
+            "version": "v2-integrity-1",
+            "source_hashes": source_hashes,
+            "chapters_hash": content_hash(chapters_with_transcript),
             "chapters": chapters_with_transcript,
         }
 
         # Save result
         logger.debug(f"Saving output to: {output_file}")
-        with open(output_file, 'w', encoding='utf-8') as f:
-            json.dump(result, f, ensure_ascii=False, indent=Config.OUTPUT_INDENT)
+        atomic_json_write(output_file, result)
         
         logger.info(f"Successfully processed {video_id}: {len(chapters_with_transcript)} chapters, {len(raw_transcript)} subtitles")
         return True
@@ -694,6 +731,7 @@ def get_video_ids_from_directory(directory: Path) -> List[str]:
 
 def main() -> int:
     """Enhanced main function with resilient processing."""
+    Config.setup_logging()
     logger.info("Starting transcript chapter extraction process V2")
     
     # Initialize state management
@@ -741,20 +779,6 @@ def main() -> int:
                 # Process each video with guaranteed cleaning
                 for video_id in video_ids:
                     try:
-                        # Skip if already completed
-                        if state.is_completed(f"{video_id}_processed"):
-                            # logger.info(f"Skipping {video_id} - already completed")
-                            skipped_videos += 1
-                            continue
-                        
-                        # Check if output file exists (additional safety check)
-                        output_file = playlist_dir / f"{video_id}_v2_content.json"
-                        if output_file.exists():
-                            logger.info(f"Skipping {video_id} - output file exists")
-                            state.mark_completed(f"{video_id}_processed")
-                            skipped_videos += 1
-                            continue
-                        
                         logger.info(f"Processing video {video_id} ({successful_videos + failed_videos + 1}/{total_videos})")
                         
                         # Process with resilient logic
