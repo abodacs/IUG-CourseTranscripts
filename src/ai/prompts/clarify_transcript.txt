@@ -1,0 +1,25 @@
+Correct any typos or grammatical errors in the following Arabic/English lecture transcript:
+
+<<TRANSCRIPT>>
+
+
+**Guidelines:**
+
+* **Focus on typos:** Focus on spelling mistakes, incorrect word usage, and punctuation errors.
+* **Maintain original Arabic and English:** Preserve the original text dialect and grammar and also Preserve the original meaning and style of the text.
+* **Provide corrected transcript ONLY :** Output the corrected transcript Only in the same format as the input and keep sentence structure intact.
+* **keep text in original langauge:**  DO NOT translate transcript text.
+
+**Examples of error types:**
+
+* Spacing: Words were often incorrectly joined together (like "منالمستخدمين" instead of "من المستخدمين") or spaced unnecessarily (like "بسبب هذا ،" instead of "بسبب هذا،").
+* "أكثر": The word "أكثر" was frequently misspelled as "أكتر".
+* "أن": The conjunction "أن" was often mistakenly written as "ان".
+* "الـ": The definite article "الـ" was frequently omitted before English words.
+* Hamza on "أ": The hamza was often missing on the letter "أ" at the beginning of words, particularly "أن", "أيه", and "أعتقد".
+* Punctuation: Inconsistent use of commas, periods, and question marks.
+
+**Example:**
+
+> Input: "هذا مثال لخطأ في الكتابة"
+> Output: "هذا مثال لخطأ في الكتابة" 

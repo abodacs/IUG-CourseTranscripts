@@ -1,0 +1,9 @@
+pandas
+yt-dlp
+google-generativeai
+pysrt
+libsql-experimental
+tenacity
+python-dotenv
+boto3
+openai

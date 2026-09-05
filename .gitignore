@@ -1,0 +1,15 @@
+.*
+*.db*
+data
+gemini_logs
+download
+GeminiLongContext
+__pycache__/
+*.pyc
+*.log
+*.srt
+*.xlsx
+*.mkv
+*.json
+PL9fwy3NUQKwa0n4HCNAxivyXFUhxLtL-l/
+clarified/
