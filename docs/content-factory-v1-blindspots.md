@@ -1,5 +1,8 @@
 # Content Factory v1 — blindspots and discovery probes
 
+**Quick read:** The historical 13-risk review and experiments that motivated the current controls. Read for rationale; use the goal and resolution for current decisions.
+
+
 Review date: 2026-09-05. Historical code findings refer to baseline commit `39a04f2`; subsequent safeguards and adopted decisions are tracked in [the resolution](content-factory-v1-resolution.md). Reviewed [the goal](content-factory-v1-goal.md), both supporting maps, v0 source, local metadata, and selected transcripts. Findings distinguish omissions in the proposed v1 contract from observed v0 behavior. v1 is not implemented. Recommendations below do not change the goal or implementation.
 
 **The main blindspot:** the factory can produce complete, traceable, rubric-approved artifacts without yet establishing that source evidence is sufficient, teaching is independently correct, or learners can perform the promised skill. Operational acceptance needs explicit connections to those three claims.
@@ -70,7 +73,7 @@ The IES practice guide supports spacing, alternating worked examples with indepe
 
 **Already covered:** source inventory, segment accounting, ambiguity, and diagrams.
 
-**Observed signal:** a local lecture says “بيطلعلي مخطط هي شايفين كيف؟” at 13:37, referring to a diagram; another says “slide مش مبينة” at 53:16. Those subtitle spans do not supply the visual being discussed. [Diagram reference](PL9fwy3NUQKwa0n4HCNAxivyXFUhxLtL-l/Kzxd5D8ZgnQ_raw.srt#L677), [slide reference](PL9fwy3NUQKwa0n4HCNAxivyXFUhxLtL-l/l6u-C3bZa5w_raw.srt#L2505).
+**Observed signal:** a local lecture says “بيطلعلي مخطط هي شايفين كيف؟” at 13:37, referring to a diagram; another says “slide مش مبينة” at 53:16. Those subtitle spans do not supply the visual being discussed. [Diagram reference](../PL9fwy3NUQKwa0n4HCNAxivyXFUhxLtL-l/Kzxd5D8ZgnQ_raw.srt#L677), [slide reference](../PL9fwy3NUQKwa0n4HCNAxivyXFUhxLtL-l/l6u-C3bZa5w_raw.srt#L2505).
 
 **Omission:** no source-sufficiency gate establishes which outcomes can be reconstructed from transcripts alone. Missing circuits, equations, demonstrations, or lab procedures can leave every available subtitle accounted for while the lesson remains impossible to ground. Generating a replacement diagram cannot establish what the original showed.
 
@@ -80,11 +83,11 @@ The IES practice guide supports spacing, alternating worked examples with indepe
 
 **Already covered:** the partial-success bug in `transform.py`, explicit v1 entrypoint, resumability, and reuse-first inventory.
 
-**Observed:** [main.py](main.py#L45) leaves JSON-to-SRT conversion as a placeholder. The separate chapter extractor has behavior the goal's findings table does not discuss:
+**Observed:** [main.py](../main.py#L45) leaves JSON-to-SRT conversion as a placeholder. The separate chapter extractor has behavior the goal's findings table does not discuss:
 
-- It accepts only subtitles fully contained within a chapter. Evaluating its actual condition with a subtitle at 59–61 seconds and chapters at 0–60 and 60–120 seconds returns `False` for both. [Selector](src/etl/transcript_chapter_extractor.py#L621).
-- A completed chapter returns raw input instead of loading its cleaned result. Calling that function with a completed-state stub reproduced the return of `RAW INPUT`. An interruption between chapter completion and video-output persistence can therefore substitute raw text on resume. [Resume branch](src/etl/transcript_chapter_extractor.py#L342).
-- Output-file existence alone returns success, and the request loop has no attempt limit. [Existence check](src/etl/transcript_chapter_extractor.py#L568), [retry loop](src/etl/transcript_chapter_extractor.py#L358).
+- It accepts only subtitles fully contained within a chapter. Evaluating its actual condition with a subtitle at 59–61 seconds and chapters at 0–60 and 60–120 seconds returns `False` for both. [Selector](../src/etl/transcript_chapter_extractor.py#L621).
+- A completed chapter returns raw input instead of loading its cleaned result. Calling that function with a completed-state stub reproduced the return of `RAW INPUT`. An interruption between chapter completion and video-output persistence can therefore substitute raw text on resume. [Resume branch](../src/etl/transcript_chapter_extractor.py#L342).
+- Output-file existence alone returns success, and the request loop has no attempt limit. [Existence check](../src/etl/transcript_chapter_extractor.py#L568), [retry loop](../src/etl/transcript_chapter_extractor.py#L358).
 
 **Close it:** inventory every entrypoint, artifact family, and state location. Map video identity separately from playlist membership. Import old artifacts as candidates with reconstructible lineage; markers and file existence cannot confer approval. Demonstrate interruption recovery and cross-boundary segment migration before estimating trustworthy reuse. Unknown provenance can force revalidation or reconstruction even when prose looks good.
 

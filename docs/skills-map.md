@@ -1,5 +1,8 @@
 # Skills map — where each candidate skill plugs in
 
+**Quick read:** Candidate skills/tools, their proposed roles, and license/cost checks. These are options to verify, not a list to install wholesale.
+
+
 Companion to [platform-map-brief.md](platform-map-brief.md). Research date: 2026-09-05. Verdicts: ✅ adopt · 📦 already installed locally · 🔧 adapt/re-vendor · 📐 pattern only, don't depend · ❌ skip.
 
 **Delivery contract:** the existing pipeline is Content Factory v0; the next version is defined in [content-factory-v1-goal.md](content-factory-v1-goal.md). Apple-grade quality control covers every stage. Candidate verdicts below are research recommendations, not proof of license clearance, Arabic quality, integration, or zero operating cost. Verify the selected revision before adoption; install only what the current stage needs. The [blindspot resolutions](content-factory-v1-resolution.md) define required source sufficiency, independent correctness review, learner evidence, and runtime contracts; a skill cannot substitute for those proofs.
@@ -57,8 +60,8 @@ Very well-crafted skill ("simplify the telling, never the claims", standalone-re
 16 lines: it surfaces the canonical term of art with a Google Images link, appended to a response. **No tracking, no vocabulary store** — the "growing vocabulary" tagline overstates it. No license file.
 - **Use for:** the vocabulary/concepts section needs an independently authored **custom glossary skill** wired to the knowledge graph (terms + Arabic equivalents + lesson back-references). Do not copy unlicensed skill text.
 
-### i-have-adhd (ayghri) 🔧
-27k★, MIT. Ten concrete output rules: action first, numbered steps, ≤5-item lists, visible progress, time estimates, no preamble/filler.
+### i-have-adhd (ayghri) 📦 applied to documentation
+Installed skill version 0.2.0 was read for this documentation pass. Reported MIT. Its output rules include: action first, numbered steps, ≤5-item lists, visible progress, time estimates, no preamble/filler.
 - **Use for:** (a) output style for our own build agents; (b) more importantly, the rules translate directly into **lesson formatting for attention** — chunking, progress indicators, next-step cues in the reader UI. Rules are trivially translatable to Arabic; the repo has no Arabic translation.
 
 ## 5. Writing style — Arabic & English
@@ -137,11 +140,13 @@ Public availability and attribution do not establish permission to copy or adapt
 | hyperframes family | Local rendering path; verify chosen runtime | Model-assisted authoring if used, local render compute and media storage; optional remote services are separate |
 | elayadesign landing-page skill | MIT reported | Model usage during design/authoring |
 
+**Current execution constraint:** v1 model work uses zIDE only, within the operator-stated 300M-token subscription quota, with zero incremental cash. Tool candidates requiring direct paid APIs are not approved for v1. Verify any proposed integration and usage reporting before adoption.
+
 **Cost policy for Content Factory v1:**
 
 1. **Preserve complete quality coverage.** Judge every released paragraph and quiz, reused or regenerated, or reuse its valid cached verdict. Use calibrated inexpensive judges for baseline coverage and premium models for generation, escalations, and sampled deep audits. Sampling can estimate inventory quality; it cannot clear unjudged content for release.
 2. **Reuse and invalidate correctly.** Key verdicts on content, source evidence, relevant lesson context, rubric, prompt, model/settings, and schema/tool versions. Rerun only changed units and affected dependants. No automatic whole-corpus regeneration.
-3. **Enforce measurable budgets.** Set per-run and pilot caps before paid execution; reserve in-flight request costs; cap tokens, concurrency, retries, and repair cycles. Report all model spend per accepted lesson, including graph/wiki extraction and failed attempts, plus human review time and infrastructure costs. Model selection follows measured Arabic quality and unit cost.
+3. **Enforce measurable budgets.** Set per-run and pilot token allocations before model execution; reserve in-flight maximum token usage; cap tokens, concurrency, retries, and repair cycles. Report all model spend per accepted lesson, including graph/wiki extraction and failed attempts, plus human review time and infrastructure costs. Model selection follows measured Arabic quality and unit cost.
 4. **Keep delivery static-first.** Validate projected build size, storage, and service limits before claiming free hosting. Precompute reviewed explanations and SVG/HTML visuals; use local video rendering where needed. Local compute and media storage still count.
 5. **Evaluate dependencies individually.** Verify current licenses, optional paid services, and hosted product pricing for the exact candidate selected, including Mintlify. Eliminate candidates that fail the brief's requirements; do not assume only one candidate can introduce charges.
-6. **Prove economics on a pilot.** Measure actual source/token volume, accepted yield, reuse, repair rate, and quality before forecasting 321 playlists. See [content-factory-v1-goal.md](content-factory-v1-goal.md) for the acceptance contract and unresolved spend caps.
+6. **Prove economics on a pilot.** Measure actual source/token volume, accepted yield, reuse, repair rate, and quality before forecasting the wider corpus. See [content-factory-v1-goal.md](content-factory-v1-goal.md) for the acceptance contract and unresolved spend caps.

@@ -1,5 +1,8 @@
 # Content Factory v1 — local inventory and pilot evidence
 
+**Quick read:** What files actually exist, where records disagree, and which reuse assumptions still need proof. The final section covers the selected optics pilot.
+
+
 Inspected 2026-09-05. This is a local filesystem/database reconciliation, not evidence of current upstream availability, reuse rights, transcript fidelity, or accepted teaching quality. No pipeline imports, model calls, downloads, remote synchronization, or corpus/state/database edits were performed.
 
 ## Reproducible method
@@ -10,7 +13,7 @@ Run from the repository root:
 python3 scripts/inventory_content_factory.py --output /tmp/content-factory-inventory.json
 ```
 
-The [scanner](scripts/inventory_content_factory.py) also accepts `--root /absolute/repository/path`; without `--output`, it prints JSON. It copies `youtube-iug.db` into a temporary directory and queries the copy using SQLite `mode=ro&immutable=1`. It refuses a nonempty WAL and checks database size/mtime and WAL size before/after copying. The inspected WAL was empty or absent across scans. A live database with pending WAL transactions requires a separately obtained consistent snapshot; this scanner does not checkpoint or synchronize it. Snapshots remain under `/tmp` for inspection.
+The [scanner](../scripts/inventory_content_factory.py) also accepts `--root /absolute/repository/path`; without `--output`, it prints JSON. It copies `youtube-iug.db` into a temporary directory and queries the copy using SQLite `mode=ro&immutable=1`. It refuses a nonempty WAL and checks database size/mtime and WAL size before/after copying. The inspected WAL was empty or absent across scans. A live database with pending WAL transactions requires a separately obtained consistent snapshot; this scanner does not checkpoint or synchronize it. Snapshots remain under `/tmp` for inspection.
 
 Only explicit playlist metadata and synchronization columns are selected; credentials and `private_meta` are not inspected. `entries` is parsed as JSON or, when applicable, with `ast.literal_eval`; malformed values remain untrusted. Artifact discovery traverses both `data/` and `GeminiLongContext/`, excluding hidden/cache/log directories; it recognizes complete 11-character video IDs by known filename suffixes. It also inventories the separate root-level sample playlist. Folder names are preserved, including a discovered typo; nothing is silently renamed.
 
@@ -69,14 +72,29 @@ However, **139 of the 145 failed entries belong to videos that also have process
 
 The separate root and `src/` state files both have empty completion lists. They should not be treated as evidence that no prior work exists. State is currently tied to launch location and video-level IDs; migration needs explicit discovery and validation of the actual artifacts.
 
-## Three concrete pilot/challenge candidates
+## Earlier pilot/challenge candidates — historical
 
 | Role | Local course and source ID | Raw / chapter / v2 file coverage | Evidence and remaining question |
 |---|---|---|---|
-| **Recommended bounded Arabic pilot** | **تكنولوجيا التعليم**, د. محمود محمد درويش الرنتيسي — `PL9fwy3NUQKwb5uWX2ICXF3-4qsXBCakIB` | **13 / 13 / 13**, against 13 unique recorded videos | Its 13-entry metadata list parses and matches memberships. Raw sample `-oZOmuChGew` is Arabic teaching prose with visible transcription errors. The course description includes preparing and using teaching aids, giving a concrete candidate skill task. Confirm intended learner/reviewer fit and whether demonstrations need missing visual evidence. |
+| **Earlier Arabic pilot candidate** | **تكنولوجيا التعليم**, د. محمود محمد درويش الرنتيسي — `PL9fwy3NUQKwb5uWX2ICXF3-4qsXBCakIB` | **13 / 13 / 13**, against 13 unique recorded videos | Its 13-entry metadata list parses and matches memberships. Raw sample `-oZOmuChGew` is Arabic teaching prose with visible transcription errors. The course description includes preparing and using teaching aids, giving a concrete candidate skill task. Confirm intended learner/reviewer fit and whether demonstrations need missing visual evidence. |
 | **Arabic/English and equation challenge** | **فيزياء عامة أ**, د. بسام السقا — `PL9fwy3NUQKwb6OQhcTn5SkdK0XkcfDNyC` | **12 / 12 / 12**, against 12 unique recorded videos | Its 12-entry metadata list parses and matches memberships. Raw sample `1noCDAkxHwg` mixes Arabic with vectors, scalars, displacement, and coordinate-system terminology. Use a bounded excerpt to probe mathematical transcription, mixed direction, and diagram dependence; it needs a physics reviewer. |
 | **English challenge / partial-work recovery** | **اللغة الإنجليزية**, أ. هاني علي رباح الحلو — `PL9fwy3NUQKwZQm1WzCEzA1TRC9joCRwzb` | **30 / 30 / 24**, against 30 unique recorded videos | Metadata identifies Arabic-speaking learners and `study_lang=en`; sample `0mkSe0xrqKk` is English lecture prose. Six recorded videos lack v2 outputs. Its `entries` metadata is truncated, so full source inventory must be resolved before treating it as a complete course. |
 
-Recommendation is based on bounded local source coverage, a plausible observable skill, and inspected language samples, **not** a judgment that the lessons are already good. All candidate raw counts mean both JSON and SRT are present. Only one raw excerpt per candidate was examined; audio/video, rendering, equations, rights, and all existing v2 contents were not validated. Use the two challenge courses for small validation sets, not automatic whole-course processing. A local file count is not a spend estimate.
+This earlier recommendation has been superseded by the optics selection in the goal. The original comparison was based on bounded local source coverage, a plausible observable skill, and inspected language samples, **not** a judgment that the lessons are already good. All candidate raw counts mean both JSON and SRT are present. Only one raw excerpt per candidate was examined; audio/video, rendering, equations, rights, and all existing v2 contents were not validated. Use the two challenge courses for small validation sets, not automatic whole-course processing. A local file count is not a spend estimate.
 
-The remaining choices are target learners, a qualified Arabic/subject reviewer, permission to publish the selected sources, and a numeric pilot budget. The proposed pilot remains conditional on those choices and source-sufficiency review.
+The selected pilot is now optics; current reviewer, source-sufficiency, and token-allocation work is recorded in the pilot packet.
+
+## Selected optics pilot — follow-up inspection
+
+The current goal selects **OPTO 2311 — البصريات الهندسية**, playlist `PL9fwy3NUQKway0xLRTe7OlRxcQic7R2s-`. Read-only inspection on 2026-09-05 found:
+
+| Item | Observed |
+|---|---|
+| Metadata status | `FINISHED_2`; historical processing status only. |
+| Expected video IDs | 106 distinct IDs in `sync_github`. |
+| Raw JSON / raw SRT / post-processed SRT | 105 files of each in the course's `data/` directory. |
+| Chapter / legacy v2 outputs | 105 chapter files and 83 v2 outputs in the course's `GeminiLongContext/` directory. |
+| Source and output gaps | `SAq013FtOLQ` has `skip=1` and no raw file. The 83 v2 IDs are a subset of the 105 available raw IDs, leaving 22 without v2 output. |
+| Course order evidence | `entries` does not parse as JSON or a Python literal; length is 32,767 characters. Lecture order is unverified. |
+
+No extra raw IDs or v2 IDs outside the expected source set were found in these course directories. This pass checked IDs and file presence, not content hashes, segment integrity, actual visual evidence, or accepted lesson quality. The existing general scanner does not classify `_postprocess.srt` yet; the direct suffix/ID inspection supplied that count. [Next task](NEXT_STEPS.md#ticket-cf-01-build-the-optics-source-manifest): build a reproducible per-video manifest covering these variants and unresolved ordering.

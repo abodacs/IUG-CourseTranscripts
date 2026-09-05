@@ -1,5 +1,8 @@
 # Content Factory v1 — goal and acceptance contract
 
+**Quick read:** What v1 must deliver, which decisions are fixed, and what blocks acceptance. Start here when scope is unclear.
+
+
 Status: goal definition with blindspot resolutions adopted; v1 is not implemented or validated yet. Narrow legacy migration safeguards have been added and are tested separately.
 
 Inputs: [platform-map-brief.md](platform-map-brief.md), [skills-map.md](skills-map.md), and the existing Python pipeline. The current implementation is **Content Factory v0**. The immediate target is **Content Factory v1**, supplying the broader courses platform described in the brief.
@@ -20,14 +23,14 @@ Build Content Factory v1 from v0: a resumable, measurable pipeline that turns ex
 | The skills map recommends copying material it identifies as unlicensed. | Verify reuse permission at the chosen revision, obtain permission, or write an independent alternative. Attribution does not supply a missing license. [Source](https://choosealicense.com/no-permission/). |
 | Content-hash-only verdict caching ignores changed evidence and evaluation rules. | Version all verdict dependencies and invalidate affected downstream outputs. |
 | The selected-passage ELI5 feature implies live model usage. | Prefer precomputed, reviewed explanations for v1. Live generation requires a separately bounded service and quality design. |
-| v0 saves successful chunks and reports success even when another chunk fails. | A partial result is resumable work, never a complete or releasable artifact. See [transform.py](src/etl/transform.py#L51) and the existing [partial-success test](tests/unit/test_etl_transform.py#L337). |
-| v0's model wrapper logs text but has no explicit spend ledger or verdict cache; exceptions inside its try block become `None`. | Introduce structured outcomes, usage accounting, bounded retries, and explicit failure states. The current retry decorator is not evidence that swallowed API errors are retried. See [gemini.py](src/ai/gemini.py#L23). |
+| v0 saves successful chunks and reports success even when another chunk fails. | A partial result is resumable work, never a complete or releasable artifact. See [transform.py](../src/etl/transform.py#L51) and the existing [partial-success test](../tests/unit/test_etl_transform.py#L337). |
+| v0's model wrapper logs text but has no explicit spend ledger or verdict cache; exceptions inside its try block become `None`. | Introduce structured outcomes, usage accounting, bounded retries, and explicit failure states. The current retry decorator is not evidence that swallowed API errors are retried. See [gemini.py](../src/ai/gemini.py#L23). |
 
 This is a focused consistency, cost, and v0-readiness review. Candidate popularity, all upstream licenses, pedagogy references, and corpus readiness still require verification during the relevant implementation tickets. The local source/output inventory is now documented in [content-factory-v1-inventory.md](content-factory-v1-inventory.md); its metadata counts are not accepted course counts.
 
 ## Binding decisions from the blindspot review
 
-[content-factory-v1-resolution.md](content-factory-v1-resolution.md) defines the source/correction policy, independent evaluation protocol, curriculum coverage, Markdown interchange contract, dependency boundaries, durable spending states, and withdrawal behavior. Its technical decisions supplement this acceptance contract; named approvals, numeric paid caps, learner evidence, and implementation proofs remain required. [The blindspot review](content-factory-v1-blindspots.md) is the historical rationale, not current proof of implementation.
+[content-factory-v1-resolution.md](content-factory-v1-resolution.md) defines the source/correction policy, independent evaluation protocol, curriculum coverage, Markdown interchange contract, dependency boundaries, durable spending states, and withdrawal behavior. Its technical decisions supplement this acceptance contract; named approvals, numeric run/pilot token caps, learner evidence, and implementation proofs remain required. [The blindspot review](content-factory-v1-blindspots.md) is the historical rationale, not current proof of implementation.
 
 ## Quality control across the whole pipeline
 
@@ -42,7 +45,7 @@ Every stage emits an artifact, provenance, status, and validation evidence. Miss
 | Assessment | Validate every answer and rationale; judge placement, challenge, engagement, ambiguity, and skill alignment; check executable answers where applicable. | Incorrect key, multiple unintended answers, unavailable prerequisite, question that merely echoes nearby wording. |
 | Diagrams, wiki, and graph | Editable Excalidraw sources plus exports; visual/text agreement; accessible alternatives; valid links and typed edges with provenance; course/lesson wiki coverage. Evaluate OKF representation. | Misleading diagram, unreadable Arabic label, missing asset, invented relationship, or broken reference. |
 | Rendering and publication | Arabic/English and mobile/desktop checks; Thmanyah glyph coverage; keyboard use, focus, contrast, reduced motion; working quizzes; publish only a complete versioned artifact set. | Clipped RTL content, broken interaction, inaccessible teaching content, stale/mixed artifacts, or missing verdicts. |
-| Operations and updates | Checkpoints; bounded timeouts/retries; dependency-aware invalidation; budget enforcement; failure reports; atomic promotion; rollback to an accepted version. | A failed job reports success, rerun repeats accepted paid work, budget is exceeded by newly scheduled work, or an update silently publishes stale content. |
+| Operations and updates | Checkpoints; bounded timeouts/retries; dependency-aware invalidation; budget enforcement; failure reports; atomic promotion; rollback to an accepted version. | A failed job reports success, rerun repeats accepted model work, budget is exceeded by newly scheduled work, or an update silently publishes stale content. |
 
 Grounding must trace back to original source evidence, including the transcript and required time-linked audio/video/slides, not just earlier LLM rewrites. Check evidence sufficiency per promised outcome before authoring. Source fidelity and subject correctness require separate verdicts; record source errors and approved corrections without rewriting immutable evidence. Any approved supplemental source must be recorded and distinguishable from lecture content. Segment dispositions and an outcome-to-explanation/example/practice matrix must both be complete; paragraph approval cannot certify missing curriculum.
 
@@ -92,20 +95,20 @@ Forecast the wider corpus from measured token volumes, subject/language strata, 
 
 ## Delivery sequence
 
-1. Reconcile all v0 source/output/state roots and duplicate memberships; choose pilot and challenge set; check source sufficiency; name reviewers/learners; freeze scope, schemas, rubric, grouped reference splits, and numeric spend caps.
+1. Reconcile all v0 source/output/state roots and duplicate memberships; choose pilot and challenge set; check source sufficiency; name reviewers/learners; freeze scope, schemas, rubric, grouped reference splits, and numeric run/pilot token caps.
 2. Build reliable execution: manifests, checkpoints, structured failures, cache, usage ledger, budget stop.
 3. Add lesson/quiz/visual/wiki/graph stages and calibrated quality gates; produce the pilot.
 4. Validate content, rendered experience, failure recovery, and costs; release v1; estimate wider rollout.
 
-The broader platform UI, stack-comparison blog, and full 321-playlist launch remain in the platform map. This goal supplies their accepted content and includes enough rendering to validate it.
+The broader platform UI, stack-comparison blog, and whole-corpus launch remain in the platform map. This goal supplies their accepted content and includes enough rendering to validate it.
 
 ## Decisions
 
 Resolved for v1:
 
-- **Pilot course:** `OPTO 2311 — البصريات الهندسية` (playlist `PL9fwy3NUQKway0xLRTe7OlRxcQic7R2s-`, كلية العلوم الصحية), the strongest in-repo coverage at 105 post-processed transcripts with `FINISHED_2` status in `youtube-iug.db`. Confirm clean segment accounting during the inventory ticket and include a small English/mixed-direction validation set. Runner-up if it proves unrepresentative: `جبر حديث 1` (59 transcripts, `PL9fwy3NUQKwZKOpj354PRgwYPWWgxchnI`).
+- **Pilot course:** `OPTO 2311 — البصريات الهندسية` (playlist `PL9fwy3NUQKway0xLRTe7OlRxcQic7R2s-`, كلية العلوم الصحية), 105 post-processed transcripts with `FINISHED_2` status in `youtube-iug.db`. Local inspection also found 106 recorded video IDs, one skipped source without raw files, 105 chapter files, 83 v2 outputs, and a truncated playlist `entries` field. Confirm segment accounting, source order, and the skipped-source disposition during the inventory ticket and include a small English/mixed-direction validation set. Runner-up if it proves unrepresentative: `جبر حديث 1` (59 transcripts, `PL9fwy3NUQKwZKOpj354PRgwYPWWgxchnI`).
 - **Budget:** zero incremental cash for v1. All model work runs through the operator's zIDE subscription quota (300,000,000 tokens); the operator works in zIDE only. Numeric caps in this contract are therefore token budgets, enforced by the usage ledger and budget stop.
-- **Reuse first:** confirmed as the default. The repo already holds 339 playlist folders of raw and post-processed SRTs, prior model outputs under `GeminiLongContext/`, and playlist metadata in `youtube-iug.db`; inventory and validate before any generation.
+- **Reuse first:** confirmed as the default. The repo holds 339 normally named playlist folders plus a 34-video folder missing its leading `P`, with raw and post-processed SRTs, prior model outputs under `GeminiLongContext/`, and playlist metadata in `youtube-iug.db`; inventory and validate before any generation.
 - **v1 location:** this repository, reusing v0 assets and tests, with versioned outputs and an explicit v1 entrypoint.
 - **Hosting and deployment:** Cloudflare Pages. "Solid" means atomic promotion of one complete versioned artifact set, preview validation before promotion, and demonstrated rollback to the last accepted release, within published Pages limits.
 
