@@ -9,9 +9,19 @@ Inputs: [platform-map-brief.md](platform-map-brief.md), [skills-map.md](skills-m
 
 ## Goal
 
-Build Content Factory v1 from v0: a resumable, measurable pipeline that turns existing course transcripts into publishable, skill-based Arabic-first Markdown lessons, with Apple-grade quality control from ingestion through publication and a bounded cost per accepted lesson. Preserve and reuse trustworthy work; repair or regenerate only failed or missing material. Cost optimization must preserve the same release quality bar.
+Build Content Factory v1 from v0: a resumable, measurable pipeline that turns existing course transcripts into publishable, skill-based Arabic-first Markdown lessons, with Apple-grade quality control from ingestion through publication and a bounded cost per accepted lesson. Reprocess the selected course from its transcripts to build new v1 teaching artifacts. Preserve legacy files for inventory and audit; old generated chapters, lessons, and completion flags do not replace this processing. Cache verified results from the new v1 workflow for subsequent reruns. Cost optimization must preserve the same release quality bar.
 
 “Apple-grade” means complete, correct, useful, carefully edited, accessible, and dependable. It is a project acceptance standard, demonstrated through tests, calibrated evaluations, and human review; an LLM score alone cannot certify it.
+
+## Allowed teaching sources — user-confirmed
+
+1. **Transcripts are the teaching source.** Rebuild course structure, lessons, explanations, practice, quizzes, wiki, and graph from the course transcripts. Raw transcript revisions remain canonical; a cleaned transcript must preserve traceable source coverage and cannot introduce teaching facts.
+2. **Use the matching YouTube lecture only when a needed diagram is missing or unclear in the transcript.** Recover the relevant diagram, slide, or board drawing from that video; record the video ID, timestamp/range, captured evidence, and the lesson need. Redraw it for clarity without inventing labels, relationships, or values. Whole-video analysis is not the default.
+3. **Do not add outside teaching sources.** Websites, textbooks, papers, separate slide decks, unrelated videos, old generated lessons, and model memory cannot supply missing course facts. Metadata may identify/order lectures or provide keyframe capture hints, including hints from legacy chapter JSON; a hint is not proof of what the frame shows; engineering and pedagogy references may guide the tooling/rubric, but they do not become course subject content.
+4. **Transform and derive within the evidence.** Clearer wording, reorganized lessons, new practice questions, and illustrative diagrams are allowed when their concepts, methods, and answers are supported by transcript spans or the permitted video visuals. Record reasoning for derived examples; do not expand the curriculum with unsupported concepts.
+5. **Keep unresolved gaps visible.** If allowed sources cannot establish an essential fact, diagram, prerequisite, or correction, flag the affected material and block its release. A reviewer can identify an error but cannot authorize outside material under this policy. Preserve original assertions; require allowed evidence for a correction.
+
+This policy supersedes earlier supplemental-source and legacy-lesson-reuse recommendations. It applies to the pilot and later corpus expansion; reprocessing starts with the selected pilot and expands in measured batches.
 
 ## Findings from reviewing both maps and v0
 
@@ -47,7 +57,7 @@ Every stage emits an artifact, provenance, status, and validation evidence. Miss
 | Rendering and publication | Arabic/English and mobile/desktop checks; Thmanyah glyph coverage; keyboard use, focus, contrast, reduced motion; working quizzes; publish only a complete versioned artifact set. | Clipped RTL content, broken interaction, inaccessible teaching content, stale/mixed artifacts, or missing verdicts. |
 | Operations and updates | Checkpoints; bounded timeouts/retries; dependency-aware invalidation; budget enforcement; failure reports; atomic promotion; rollback to an accepted version. | A failed job reports success, rerun repeats accepted model work, budget is exceeded by newly scheduled work, or an update silently publishes stale content. |
 
-Grounding must trace back to original source evidence, including the transcript and required time-linked audio/video/slides, not just earlier LLM rewrites. Check evidence sufficiency per promised outcome before authoring. Source fidelity and subject correctness require separate verdicts; record source errors and approved corrections without rewriting immutable evidence. Any approved supplemental source must be recorded and distinguishable from lecture content. Segment dispositions and an outcome-to-explanation/example/practice matrix must both be complete; paragraph approval cannot certify missing curriculum.
+Grounding must trace back to transcript spans and, only for needed diagrams, time-linked visual evidence from the matching YouTube lecture. Check evidence sufficiency per promised outcome before authoring. Source fidelity and subject correctness require separate verdicts; record source errors and corrections supported by the allowed sources without rewriting immutable evidence. External supplements and legacy generated lessons are excluded as teaching evidence. Segment dispositions and an outcome-to-explanation/example/practice matrix must both be complete; paragraph approval cannot certify missing curriculum.
 
 ## Evaluation and release contract
 
@@ -64,7 +74,7 @@ Grounding must trace back to original source evidence, including the transcript 
 
 Use the existing Python/uv pipeline and local files/SQLite where suitable. Install only skills needed for the current stage; establish Arabic quality and dependency/license fit before adoption. Multi-model councils and repeated whole-corpus analysis are not default steps.
 
-- **Reuse first:** inventory before model calls; validate existing content; generate only absent or failed units. Repairing a unit triggers validation of that unit and its affected dependants.
+- **Reprocess once, then resume:** inventory transcripts before model calls and build fresh v1 teaching artifacts for the selected scope. Legacy output presence never skips this first pass. On later runs, reuse valid v1 checkpoints and verdicts; process only missing, failed, or invalidated units. Repairing a unit triggers validation of that unit and its affected dependants.
 - **Efficient judging:** deterministic checks first, then a calibrated inexpensive judge with complete coverage. Batch within context limits using stable IDs and explicit per-item verdicts; missing IDs fail validation. Reserve premium usage for generation, escalations, and bounded deep audits.
 - **Correct caching:** key on content, source evidence, relevant lesson context, rubric, prompt, model/settings, and schema/tool versions. Identical accepted reruns make zero generation or judging calls unless an explicitly scheduled audit is due.
 - **Bounded work:** proposed default is at most two retries for transient failures, one targeted repair cycle, and one premium escalation per failed unit. Every attempt shares the same durable pilot budget and unit lineage limits across restarts and workers. Exhaustion quarantines the unit; it never relaxes the rubric.
@@ -79,14 +89,14 @@ Forecast the wider corpus from measured token volumes, subject/language strata, 
 
 ## v1 definition of done
 
-- [ ] An agreed pilot course runs from existing sources to complete Markdown lessons, inline assessments, editable diagrams, and course/lesson wiki and graph artifacts, with a working rendered preview.
+- [ ] An agreed pilot course is reprocessed from transcripts, with matching YouTube visuals only where needed for diagrams, to complete Markdown lessons, inline assessments, editable diagrams, and course/lesson wiki and graph artifacts, with a working rendered preview.
 - [ ] Every pilot source segment is accounted for; every released paragraph and quiz has a valid passing verdict; all required artifact and provenance fields exist.
 - [ ] Course structure, teaching quality, Arabic prose, and rendered usability pass the calibrated rubric and pilot human review. There are no unresolved critical defects.
 - [ ] Failure tests demonstrate that missing chunks, bad JSON, incorrect quiz keys, unsupported claims, broken assets, unavailable models, interrupted jobs, and exhausted budgets block promotion without destroying accepted work.
 - [ ] A repeated unchanged run makes zero generation/judging calls; a source, rubric, or model change invalidates the appropriate results. Restart resumes safely from checkpoints.
 - [ ] A release contains one consistent set of approved artifacts; an intentionally failed update leaves the last accepted release usable; rollback is demonstrated.
 - [ ] A solid Cloudflare Pages deployment is demonstrated: one complete versioned artifact set promoted atomically with preview validation before promotion, and rollback to the last accepted release shown after an intentional failure.
-- [ ] The pilot stays within the zero-cash cap and the 300M-token zIDE quota and reports full unit economics (tokens per accepted lesson, reuse/cache hit rates) and measured quality. Expansion to the remaining corpus follows evidence, not a blanket regeneration job.
+- [ ] The pilot stays within the zero-cash cap and the 300M-token zIDE quota and reports full unit economics (tokens per accepted lesson, reuse/cache hit rates) and measured quality. Reprocessing expands to the remaining corpus in measured batches after the pilot.
 - [ ] Source sufficiency, corrections, exclusions, and the frozen curriculum outcome matrix are reviewed; no required outcome or prerequisite disappears to improve acceptance yield.
 - [ ] Source-grouped holdouts, independent subject review, complete teaching-node coverage, and a formative learner trial demonstrate the stated pilot quality with explicit limits.
 - [ ] Crash-boundary and concurrent-worker tests prove durable budget reservations, unknown-outcome handling, and lifetime retry limits using a fake provider before any live model execution.
@@ -108,7 +118,7 @@ Resolved for v1:
 
 - **Pilot course:** `OPTO 2311 — البصريات الهندسية` (playlist `PL9fwy3NUQKway0xLRTe7OlRxcQic7R2s-`, كلية العلوم الصحية), 105 post-processed transcripts with `FINISHED_2` status in `youtube-iug.db`. Local inspection also found 106 recorded video IDs, one skipped source without raw files, 105 chapter files, 83 v2 outputs, and a truncated playlist `entries` field. Confirm segment accounting, source order, and the skipped-source disposition during the inventory ticket and include a small English/mixed-direction validation set. Runner-up if it proves unrepresentative: `جبر حديث 1` (59 transcripts, `PL9fwy3NUQKwZKOpj354PRgwYPWWgxchnI`).
 - **Budget:** zero incremental cash for v1. All model work runs through the operator's zIDE subscription quota (300,000,000 tokens); the operator works in zIDE only. Numeric caps in this contract are therefore token budgets, enforced by the usage ledger and budget stop.
-- **Reuse first:** confirmed as the default. The repo holds 339 normally named playlist folders plus a 34-video folder missing its leading `P`, with raw and post-processed SRTs, prior model outputs under `GeminiLongContext/`, and playlist metadata in `youtube-iug.db`; inventory and validate before any generation.
+- **Reprocess from transcripts:** confirmed by the user. The repo holds 339 normally named playlist folders plus a 34-video folder missing its leading `P`, with raw and post-processed SRTs, prior model outputs under `GeminiLongContext/`, and playlist metadata in `youtube-iug.db`. Inventory all of them, but use transcripts as the teaching input; recover needed diagrams only from matching YouTube lectures. Prior generated outputs remain audit artifacts. Reuse applies to valid checkpoints from the new v1 workflow.
 - **v1 location:** this repository, reusing v0 assets and tests, with versioned outputs and an explicit v1 entrypoint.
 - **Hosting and deployment:** Cloudflare Pages. "Solid" means atomic promotion of one complete versioned artifact set, preview validation before promotion, and demonstrated rollback to the last accepted release, within published Pages limits.
 

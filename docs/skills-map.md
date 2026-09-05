@@ -2,6 +2,10 @@
 
 **Quick read:** Candidate skills/tools, their proposed roles, and license/cost checks. These are options to verify, not a list to install wholesale.
 
+**Available locally:** [keyframe capture CLI and Answer.AI evaluation](KEYFRAME_CAPTURE.md). It reads the existing chapter JSON hints and saves actual video frames; no model calls or SolveIt dependency.
+
+**Teaching-source constraint:** tools may transform course transcripts and recover needed diagrams from the matching YouTube lectures. Tool recommendations do not authorize external course material, broad video ingestion, or old generated lessons as authoring inputs. Read the [source policy](content-factory-v1-goal.md#allowed-teaching-sources--user-confirmed).
+
 
 Companion to [platform-map-brief.md](platform-map-brief.md). Research date: 2026-09-05. Verdicts: ✅ adopt · 📦 already installed locally · 🔧 adapt/re-vendor · 📐 pattern only, don't depend · ❌ skip.
 
@@ -19,7 +23,7 @@ Companion to [platform-map-brief.md](platform-map-brief.md). Research date: 2026
 - **Watch out:** English-only (no RTL); CC BY-SA is share-alike — fine to consult, check before embedding its text verbatim in shipped content.
 
 ### dair-academy-plugins (dair-ai) — 3 of 8 plugins relevant, MIT, 611★
-- `youtube-notetaker` 🔧 — YouTube → markdown study file with timestamped transcript + extracted slide images (uses existing VTT captions, yt-dlp + ffmpeg). Complements our ETL: slide extraction is something the current pipeline doesn't do. Arabic auto-captions quality is a known risk.
+- `youtube-notetaker` 🔧 — YouTube → markdown study file with timestamped transcript + extracted slide images (uses existing VTT captions, yt-dlp + ffmpeg). Potential use is limited to recovering a needed diagram from the matching lecture at a recorded timestamp; do not adopt its generated study notes as teaching evidence. Slide extraction is something the current pipeline does not do. Arabic auto-captions quality is a known risk.
 - `wiki-builder` 🔧 — reusable research wikis with per-wiki structure/flavors. Compare against our openwiki design (OKF v0.2) before building.
 - `lesson-generator` / `learn` 📐 — patterns only: lesson-generator outputs HTML, not MD; `learn` is an interactive tutoring pattern worth mining for the reader experience.
 - `llm-council` 📐 — multi-model deliberation pattern (parallel answers → cross-ranking → chair synthesis; needs Fireworks key). Good shape for the LLM-judged gates, but it has **no rubric** — we supply ours.
@@ -145,7 +149,7 @@ Public availability and attribution do not establish permission to copy or adapt
 **Cost policy for Content Factory v1:**
 
 1. **Preserve complete quality coverage.** Judge every released paragraph and quiz, reused or regenerated, or reuse its valid cached verdict. Use calibrated inexpensive judges for baseline coverage and premium models for generation, escalations, and sampled deep audits. Sampling can estimate inventory quality; it cannot clear unjudged content for release.
-2. **Reuse and invalidate correctly.** Key verdicts on content, source evidence, relevant lesson context, rubric, prompt, model/settings, and schema/tool versions. Rerun only changed units and affected dependants. No automatic whole-corpus regeneration.
+2. **Reprocess first; cache subsequent v1 work.** Legacy generated lessons cannot skip the initial transcript-based pass. Key v1 verdicts on content, source evidence, relevant lesson context, rubric, prompt, model/settings, and schema/tool versions. After that first pass, rerun only changed units and affected dependants. Expand transcript reprocessing in measured course batches.
 3. **Enforce measurable budgets.** Set per-run and pilot token allocations before model execution; reserve in-flight maximum token usage; cap tokens, concurrency, retries, and repair cycles. Report all model spend per accepted lesson, including graph/wiki extraction and failed attempts, plus human review time and infrastructure costs. Model selection follows measured Arabic quality and unit cost.
 4. **Keep delivery static-first.** Validate projected build size, storage, and service limits before claiming free hosting. Precompute reviewed explanations and SVG/HTML visuals; use local video rendering where needed. Local compute and media storage still count.
 5. **Evaluate dependencies individually.** Verify current licenses, optional paid services, and hosted product pricing for the exact candidate selected, including Mintlify. Eliminate candidates that fail the brief's requirements; do not assume only one candidate can introduce charges.

@@ -1,6 +1,8 @@
 # Content Factory v1 — local inventory and pilot evidence
 
-**Quick read:** What files actually exist, where records disagree, and which reuse assumptions still need proof. The final section covers the selected optics pilot.
+**Quick read:** What files actually exist, where records disagree, and which source-integrity assumptions still need proof. The final section covers the selected optics pilot.
+
+**Current source policy:** these counts are historical evidence. Legacy chapter/v2 outputs are audit-only; reprocess the selected transcripts into new v1 content. A missing legacy output does not define the new processing scope. Only matching YouTube visuals needed for diagrams may supplement transcript evidence. See [the goal](content-factory-v1-goal.md#allowed-teaching-sources--user-confirmed).
 
 
 Inspected 2026-09-05. This is a local filesystem/database reconciliation, not evidence of current upstream availability, reuse rights, transcript fidelity, or accepted teaching quality. No pipeline imports, model calls, downloads, remote synchronization, or corpus/state/database edits were performed.

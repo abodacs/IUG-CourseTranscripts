@@ -12,27 +12,34 @@
 | Model work | zIDE subscription only; zero incremental cash. |
 | Budget | Stated 300M-token total quota; verify remaining balance and assign smaller run/pilot token caps. |
 | Delivery | This repository; static teaching artifacts; Cloudflare Pages. |
+| Teaching sources | Reprocess transcripts; matching YouTube lectures only for needed diagrams. No external supplements or legacy generated lesson inputs. |
 
 The [goal](content-factory-v1-goal.md) owns these decisions. The [resolution](content-factory-v1-resolution.md) defines required controls. The [pilot packet](content-factory-v1-pilot.md) supplies course-specific evidence and review fields.
 
+## Available now: keyframe capture
+
+The [working capture tool](KEYFRAME_CAPTURE.md) reads `chosen_keyframe` and `candidates_keyframes` from each chapter JSON and saves timestamped video frames with an image gallery. It can run independently for a known diagram need. Legacy hints guide capture only; their descriptions are not source facts. CF-01 remains the offline manifest task and does not fetch video.
+
+For writing, adopt the article's two stages: prepare transcript/visual evidence, then outline and author one section at a time with source coverage checks. The tool guide records which article techniques fit the source-only rule and which require adaptation.
+
 ## Ticket CF-01: build the optics source manifest
 
-**Purpose:** make every reuse, repair, and missing-source decision traceable before model work begins. This task needs local files and metadata; it does not need a reviewer, a chosen frontend framework, or live model access.
+**Purpose:** establish exactly which transcripts enter fresh v1 processing and which source gaps need attention before model work begins. Legacy outputs are inventoried for audit only. This task needs local files and metadata; it does not need a reviewer, a chosen frontend framework, or live model access.
 
 **Planning estimate:** 2–4 focused implementation hours for the exporter, fixtures, and report. Recovering trustworthy lecture-order evidence is a separate unknown; the exporter must represent that uncertainty rather than invent an order.
 
 ### Already checked
 
-The local course has **106 recorded video IDs**, **105 raw JSON/SRT/post-processed sets**, **105 chapter files**, and **83 v2 outputs**. One skipped video, `SAq013FtOLQ`, has no raw file. Another 22 videos have source material but no v2 output. Its playlist `entries` field is truncated at 32,767 characters.
+The local course has **106 recorded video IDs**, **105 raw JSON/SRT/post-processed sets**, **105 chapter files**, and **83 v2 outputs**. One skipped video, `SAq013FtOLQ`, has no raw file. Another 22 videos have source material but no v2 output. This is a historical output gap; first-pass v1 processing covers all 105 available transcript sets, subject to source checks. Its playlist `entries` field is truncated at 32,767 characters.
 
 These facts are a starting snapshot. Recompute them during the task and report any drift. They do not show that the raw text, processed text, or old outputs are complete or correct. See [inventory evidence](content-factory-v1-inventory.md#selected-optics-pilot--follow-up-inspection).
 
 ### Do these five actions
 
 1. **Freeze expected membership.** Read a consistent local metadata snapshot. Record all 106 distinct video IDs, playlist membership, skip flags, and source-order evidence. Separate video identity from course membership; preserve the known folder-alias behavior in discovery.
-2. **Map every available variant.** Find raw JSON, raw SRT, normalized/plain SRT, `_postprocess.srt`, chapter JSON, and v2 output by exact video ID. Record repository-relative path, size, SHA-256, artifact type, and any known producer/revision. Keep conflicting variants separate.
+2. **Map every available variant.** Find raw JSON, raw SRT, normalized/plain SRT, `_postprocess.srt`, chapter JSON, and v2 output by exact video ID. Record repository-relative path, size, SHA-256, artifact type, source eligibility, and any known producer/revision. Keep conflicting variants separate. Raw transcripts are canonical; processed transcripts require fidelity checks. Old generated chapters/lessons are audit-only, not authoring inputs.
 3. **Check source integrity offline.** Parse raw segments/subtitles; flag malformed, duplicate, missing, out-of-order, or invalid-timestamp units. Compare original versus processed coverage where an alignment is defensible. Keep uncertain alignment explicitly unresolved. Never treat equal counts as proof of equal meaning.
-4. **Record dispositions.** Keep `SAq013FtOLQ` visible with its recorded skip flag and unresolved reason. Classify old outputs as unreviewed reuse candidates. Mark absent outputs as missing work; do not regenerate them. Mark unknown lecture order explicitly and list the evidence needed to resolve it.
+4. **Record dispositions.** Keep `SAq013FtOLQ` visible with its recorded skip flag and unresolved reason. Classify old outputs as audit-only. Record their absence as historical coverage information; all selected transcripts still need fresh v1 processing. This offline ticket must not generate lessons. Record any detected need for a YouTube diagram as a pending recovery task, without fetching video. Mark unknown lecture order explicitly and list the evidence needed to resolve it.
 5. **Write a reproducible manifest and readable report.** Save new outputs separately from the corpus/state/database. Repeated unchanged scans must produce the same semantic manifest hash; keep inspection timestamps outside that hash. Summarize the blockers that prevent freezing course scope.
 
 ### Deliverables to create
@@ -41,15 +48,15 @@ These facts are a starting snapshot. Recompute them during the task and report a
 |---|---|
 | `scripts/build_pilot_manifest.py` | A proposed new offline exporter with an explicit playlist/root/output interface. This file does not exist yet. |
 | `artifacts/opto-2311/source-manifest.json` | One record per expected video plus linked source/artifact revisions, segment findings, and unresolved evidence. Proposed generated output. |
-| `docs/opto-2311-source-review.md` | A short human report: counts, reusable candidates, missing/ambiguous sources, order evidence, and the first review targets. Proposed report. |
-| Focused regression fixtures/tests | Membership aliases, shared IDs, missing/skipped files, conflicting revisions, malformed content, truncated metadata, and unchanged reruns. |
+| `docs/opto-2311-source-review.md` | A short human report: counts, eligible transcript candidates, audit-only legacy artifacts, source gaps, order evidence, and pending diagram recovery. Proposed report. |
+| Focused regression fixtures/tests | Membership aliases, shared IDs, missing/skipped files, conflicting revisions, malformed content, truncated metadata, excluded legacy/external inputs, and unchanged reruns. |
 
 The current general scanner does not classify `_postprocess.srt`; extend its reusable discovery logic or share that logic with the exporter. The new tool must not import the model/network-capable pipeline. `.gitignore` currently ignores JSON globally: keep generated manifests local, and use narrow exceptions if small synthetic JSON test fixtures need to be versioned. Do not commit the corpus or credentials.
 
 ### Done means
 
 1. Every expected video has a record; file gaps and skip flags remain visible.
-2. Each available artifact has an exact identity/hash, and no old completion flag confers approval.
+2. Each available artifact has an exact identity/hash and source role; old generated outputs and completion flags cannot enter teaching evidence or skip first-pass v1 work.
 3. Truncated ordering metadata and uncertain segment alignment are reported without invented replacements.
 4. The source corpus, historical outputs/state, and original database are unchanged; no network or model calls occur.
 5. Focused tests and the existing suite pass; the report identifies the next evidence needed to freeze the pilot.
@@ -62,7 +69,7 @@ Run from the repository root. These are existing tools, not the proposed exporte
 python3 scripts/inventory_content_factory.py --output /tmp/content-factory-inventory.json
 ```
 
-The scanner uses local data, refuses a nonempty database WAL, and stores its report/snapshot separately. A new clone needs access to the local corpus/database first. Running it alone does not complete CF-01's variant hashes or segment checks.
+The scanner uses local data, refuses a nonempty database WAL, and stores its report/snapshot separately. A new clone needs access to the local corpus/database first. Running it alone does not complete CF-01's variant hashes, source-eligibility rules, or segment checks.
 
 ```bash
 .venv/bin/python -m pytest
@@ -76,7 +83,7 @@ Use the normal project setup in [the root README](../README.md) if dependencies 
 
 **Owner:** agent prepares evidence; optics subject reviewer decides correctness and adequacy. **First review estimate:** 30–45 minutes for three selected lectures once lecture order is verified; full-course review takes additional measured time.
 
-Use verified first/middle/final lectures to identify tangible skills. Map each skill to original spans, required diagrams/media, a worked example, practice, and an independent task. Record any unsupported equations, conventions, or missing visuals. Resolve the skipped video's impact on the promised curriculum. Create the full outcome matrix and a source-grouped development/holdout manifest before authoring.
+Use verified first/middle/final lectures to identify tangible skills. Map each skill to original spans, required diagrams/media, a worked example, practice, and an independent task. Record any unsupported equations, conventions, or missing visuals. For a needed diagram, use the [capture CLI](KEYFRAME_CAPTURE.md) for the relevant portion of the matching YouTube lecture and retain its video ID, timestamp/range, and captured evidence. Create a reviewed redraw with traceable labels/relationships when useful. If the visual is unavailable or unreadable, leave the affected outcome blocked; do not substitute an outside source. Resolve the skipped video's impact on the promised curriculum. Create the full outcome matrix and a source-grouped development/holdout manifest before authoring.
 
 **Completion proof:** every promised outcome has adequate evidence and prerequisites, or an explicit blocker. A three-lecture inspection estimates risk; it cannot accept the whole course. Reviewer recruitment can run alongside CF-01.
 
@@ -94,7 +101,7 @@ Implement integer-token reservations in SQLite with run and pilot allocations. P
 
 **Owner:** agent implements artifacts/preview; independent reviewers calibrate and assess teaching. **Suggested checkpoint:** one skill-based lesson before processing the remaining course.
 
-Define the constrained Markdown/quiz schema, stable teaching-node IDs, provenance sidecars, rubric, and deterministic validators. Use supported evidence to produce one lesson with practice, an editable diagram and accessible alternative, and its wiki/graph derivatives. Include whole-lesson context in evaluation and cache invalidation.
+Define the constrained Markdown/quiz schema, stable teaching-node IDs, provenance sidecars, rubric, and deterministic validators. Author the lesson afresh from allowed transcript/visual evidence, with practice, an editable diagram and accessible alternative, and its wiki/graph derivatives. Derive new examples and questions from the taught concepts/methods and record their reasoning; do not use old generated lessons or model memory as evidence for new course facts. Include whole-lesson context in evaluation and cache invalidation.
 
 Keep development cases separate from the untouched final holdout. Independently validate equations and quiz answers; test Arabic/mixed-direction rendering and keyboard interaction. Seed known failures and inspect confidently accepted/repair outputs. Record actual token usage and review time.
 
@@ -125,7 +132,12 @@ SAq013FtOLQ lacks raw data; playlist entries are truncated.
 
 Create scripts/build_pilot_manifest.py, a generated local manifest, and
 an evidence report at docs/opto-2311-source-review.md. Record exact variant
-hashes, segment findings, skip/source gaps, and unknown ordering. Preserve
+hashes, source eligibility, segment findings, skip/source gaps, pending
+YouTube diagram needs, and unknown ordering. Treat legacy chapters/lessons
+as audit-only; every selected transcript needs fresh v1 processing later.
+Teaching sources are transcripts plus matching YouTube visuals only when
+needed for diagrams. No external supplements. This ticket does not fetch
+videos. Preserve
 all existing source/output/state/database files. Do not call models, sync
 remote metadata, generate missing lessons, or infer approval from old flags.
 

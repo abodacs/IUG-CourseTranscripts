@@ -2,6 +2,8 @@
 
 **Quick read:** The historical 13-risk review and experiments that motivated the current controls. Read for rationale; use the goal and resolution for current decisions.
 
+**Superseded recommendations:** references below to external teaching supplements and importing old generated lessons describe the earlier proposal. The user has since fixed the inputs: reprocess transcripts, using the matching YouTube lecture only for needed diagrams. Apply the [current source policy](content-factory-v1-goal.md#allowed-teaching-sources--user-confirmed); retain this review as historical rationale.
+
 
 Review date: 2026-09-05. Historical code findings refer to baseline commit `39a04f2`; subsequent safeguards and adopted decisions are tracked in [the resolution](content-factory-v1-resolution.md). Reviewed [the goal](content-factory-v1-goal.md), both supporting maps, v0 source, local metadata, and selected transcripts. Findings distinguish omissions in the proposed v1 contract from observed v0 behavior. v1 is not implemented. Recommendations below do not change the goal or implementation.
 
