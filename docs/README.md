@@ -25,6 +25,7 @@
 | [content-factory-v1-blindspots.md](content-factory-v1-blindspots.md) | The historical review: 13 risks, supporting evidence, and discovery experiments. | You need to understand why a control was added. |
 | [platform-map-brief.md](platform-map-brief.md) | The broader courses platform: reading experience, RTL, quizzes, graph/wiki, and stack-comparison scope. | You are planning platform features beyond the factory. |
 | [skills-map.md](skills-map.md) | Candidate skills/tools, their possible roles, license questions, and operating costs. | You are choosing a tool for a specific stage. |
+| [fanout-feature-analysis.md](fanout-feature-analysis.md) | Feature-by-feature disassembly of Fanout (fanout.sh) from the `inspiring/fanout-company/` screenshots, with adopt/adapt/skip verdicts against the platform map. | You are designing a platform feature and want the benchmark or the reason to skip. |
 
 The repository's [root README](../README.md) is the short project entrypoint with setup, test, and inventory commands.
 
