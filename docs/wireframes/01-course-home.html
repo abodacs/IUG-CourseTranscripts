@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[01] Course home — wireframe</title>
+<link rel="stylesheet" href="assets/wireframe.css">
+</head>
+<body>
+
+<div class="meta">
+  <b>SCREEN 01 / 09 — COURSE HOME · الصفحة الرئيسية للمساق</b> — OPTO 2311 pilot wireframes
+  <span class="dirmark">dir="rtl" · Arabic first · reads right→left</span>
+</div>
+
+<div class="frame">
+
+  <div class="ann ltr-note">dir=rtl — اتجاه القراءة: ⟵</div>
+
+  <nav class="topnav" aria-label="تنقل رئيسي">
+    <span class="brand">OPTO 2311 — البصريات الهندسية</span>
+    <a href="01-course-home.html">الرئيسية</a>
+    <a href="04-working-notes.html">دفتر العمل</a>
+    <a href="05-roadmap.html">خارطة الطريق</a>
+    <a href="06-knowledge-graph.html">خريطة المفاهيم</a>
+    <a href="07-free-module.html">الوحدة المجانية</a>
+    <a href="08-release-notes.html">ملاحظات الإصدار</a>
+  </nav>
+
+  <div class="banner" role="status">
+    <span class="ann">[STATUS]</span>
+    <strong>هذا المساق قيد الإنشاء — الدروس المقبولة تُنشر تدريجيًا</strong>
+    <span><a href="04-working-notes.html">ابدأ بدفتر العمل ←</a> · <a href="08-release-notes.html">ما الجديد؟ ←</a></span>
+  </div>
+
+  <header>
+    <h1>OPTO 2311 — البصريات الهندسية</h1>
+    <p>كلية العلوم الصحية · إصدار تجريبي عام · بدون حساب أو تسجيل دخول</p>
+    <p class="ann">[لون مميز واحد لكل مساق — يُستبدل بالأسود في المخطوطة] · [بحث شامل ⌘K — فهرس ثابت client-side]</p>
+  </header>
+
+  <hr class="rule">
+
+  <section aria-label="ملخص التقدم">
+    <h2>تقدّمك</h2>
+    <div class="layout">
+      <div style="flex:1 1 320px">
+        <p><strong><span class="ltr">0 / 12</span> درسًا</strong> — <span class="dim">لم تبدأ بعد</span></p>
+        <div class="progress" aria-hidden="true"><div class="fill" style="width:0%"></div></div>
+        <p class="ann">[حالة فارغة: صفر تقدّم — شريط مفرّغ بلا تعبئة]</p>
+      </div>
+      <ul style="flex:1 1 380px">
+        <li>منشور ومقبول حتى الآن: <strong><span class="ltr">2 / 12</span></strong> درسًا — يتبعها الباقي بعد القبول.</li>
+        <li>كل الحسابات تتم على جهازك — لا حساب ولا تتبّع، والتقدّم يبقى بعد إعادة التحميل.</li>
+      </ul>
+    </div>
+    <p>
+      <a class="btn btn--primary" href="02-lesson-reader-desktop.html">ابدأ الدرس</a>
+      <span class="dim"> — يبدأ من أول درس منشور: درس 01</span>
+    </p>
+  </section>
+
+  <hr class="rule">
+
+  <section aria-label="قائمة الدروس">
+    <h2>خطة المساق</h2>
+    <p class="ann">[قواعد بطاقة موحّدة لكل الدروس: حالة + عنوان + المهارة + المتطلب/المدة والمكوّنات + إجراء واحد — بنية «سطر تمهيدي ← عنوان ← وصف ← إجراء واحد ←»]</p>
+
+    <h3>الوحدة ١ — الضوء والانعكاس</h3>
+    <div class="cards">
+
+      <article class="card">
+        <p class="card-head"><span class="chip chip--done">منشور</span> <strong>درس 01 — طبيعة الضوء والشعاع الضوئي</strong></p>
+        <p>المهارة: التمييز بين الشعاع والحزمة، وتوضيح افتراض الانتقال المستقيمي للضوء.</p>
+        <p class="dim">١٢ دقيقة · اختبر نفسك: <span class="ltr">×1</span> · مخطط: <span class="ltr">×1</span></p>
+        <p><a class="btn" href="02-lesson-reader-desktop.html">ابدأ الدرس</a></p>
+      </article>
+
+      <article class="card">
+        <p class="card-head"><span class="chip chip--done">منشور</span> <strong>درس 02 — قانونا الانعكاس والمرايا المستوية</strong></p>
+        <p>المهارة: تتبُّع شعاع ساقط على سطح عاكس، وقياس زاوية السقوط والانعكاس من العمود المُقام.</p>
+        <p class="dim">١٤ دقيقة · المتطلب: درس 01 ✓ · اختبر نفسك: <span class="ltr">×2</span> · مخطط: <span class="ltr">×1</span></p>
+        <p><a class="btn" href="02-lesson-reader-desktop.html">ابدأ الدرس</a></p>
+      </article>
+
+      <article class="card">
+        <p class="card-head"><span class="chip chip--soon">قريبًا</span> <strong>درس 03 — المرايا الكروية المقعّرة</strong></p>
+        <p>المهارة: تُعلن مع النشر.</p>
+        <p class="dim">١٦ دقيقة · المكوّنات تُعلن مع النشر.</p>
+        <p><span class="btn btn--disabled" aria-disabled="true">قريبًا</span></p>
+      </article>
+
+      <article class="card">
+        <p class="card-head"><span class="chip chip--soon">قريبًا</span> <strong>درس 04 — المرايا المحدبة وتطبيقاتها</strong></p>
+        <p>المهارة: تُعلن مع النشر.</p>
+        <p class="dim">١٠ دقائق · المكوّنات تُعلن مع النشر.</p>
+        <p><span class="btn btn--disabled" aria-disabled="true">قريبًا</span></p>
+      </article>
+
+    </div>
+
+    <h3>الوحدة ٢ — الانكسار والعدسات</h3>
+    <div class="cards">
+
+      <article class="card">
+        <p class="card-head"><span class="chip chip--soon">قريبًا</span> <strong>درس 05 — قانون سنل ومعامل الانكسار</strong></p>
+        <p>المهارة: تُعلن مع النشر.</p>
+        <p class="dim">١٥ دقيقة · المكوّنات تُعلن مع النشر.</p>
+        <p><span class="btn btn--disabled" aria-disabled="true">قريبًا</span></p>
+      </article>
+
+      <article class="card">
+        <p class="card-head"><span class="chip chip--soon">قريبًا</span> <strong>درس 06 — الزاوية الحرجة والانعكاس الكلي</strong></p>
+        <p>المهارة: تُعلن مع النشر.</p>
+        <p class="dim">١٢ دقيقة · المكوّنات تُعلن مع النشر.</p>
+        <p><span class="btn btn--disabled" aria-disabled="true">قريبًا</span></p>
+      </article>
+
+      <article class="card">
+        <p class="card-head"><span class="chip chip--soon">قريبًا</span> <strong>درس 07 — العدسات الرقيقة وبناء الصور</strong></p>
+        <p>المهارة: تُعلن مع النشر.</p>
+        <p class="dim">١٨ دقيقة · المكوّنات تُعلن مع النشر.</p>
+        <p><span class="btn btn--disabled" aria-disabled="true">قريبًا</span></p>
+      </article>
+
+    </div>
+
+    <h3>الوحدة ٣ — الأدوات البصرية</h3>
+    <div class="cards">
+
+      <article class="card">
+        <p class="card-head"><span class="chip chip--soon">قريبًا</span> <strong>درس 08 — العين والنظارة</strong></p>
+        <p>المهارة: تُعلن مع النشر.</p>
+        <p class="dim">١٤ دقيقة · المكوّنات تُعلن مع النشر.</p>
+        <p><span class="btn btn--disabled" aria-disabled="true">قريبًا</span></p>
+      </article>
+
+      <article class="card empty" style="border-style:dashed">
+        <p class="dim">— — —</p>
+        <p class="ann">[بديل «قريبًا»: درس مخفي بالكامل حتى قبوله — لا عنوان ولا بطاقة]</p>
+      </article>
+
+    </div>
+  </section>
+
+  <hr class="rule">
+  <p class="ann">[التيار: الرئيسية ← لافتة الحالة ← دفتر العمل ← القارئ ← الاختبار ← ✓ ← الدرس التالي]</p>
+
+  <nav class="footer" aria-label="تذييل">
+    <strong>تذييل الموقع (خريطة كاملة):</strong>
+    <a href="01-course-home.html">الرئيسية</a>
+    <a href="04-working-notes.html">دفتر العمل</a>
+    <a href="05-roadmap.html">خارطة الطريق</a>
+    <a href="06-knowledge-graph.html">خريطة المفاهيم</a>
+    <a href="07-free-module.html">الوحدة المجانية</a>
+    <a href="08-release-notes.html">ملاحظات الإصدار</a>
+    <span class="dim">المدونة — تصنيف: ملاحظات الإصدار</span>
+  </nav>
+
+</div>
+
+<p class="next">التالي: <a href="02-lesson-reader-desktop.html">02 — قارئ الدرس (سطح المكتب)</a></p>
+
+</body>
+</html>

@@ -75,7 +75,7 @@ The IES practice guide supports spacing, alternating worked examples with indepe
 
 **Already covered:** source inventory, segment accounting, ambiguity, and diagrams.
 
-**Observed signal:** a local lecture says “بيطلعلي مخطط هي شايفين كيف؟” at 13:37, referring to a diagram; another says “slide مش مبينة” at 53:16. Those subtitle spans do not supply the visual being discussed. [Diagram reference](../PL9fwy3NUQKwa0n4HCNAxivyXFUhxLtL-l/Kzxd5D8ZgnQ_raw.srt#L677), [slide reference](../PL9fwy3NUQKwa0n4HCNAxivyXFUhxLtL-l/l6u-C3bZa5w_raw.srt#L2505).
+**Observed signal:** a local lecture says “بيطلعلي مخطط هي شايفين كيف؟” at 13:37, referring to a diagram; another says “slide مش مبينة” at 53:16. Those subtitle spans do not supply the visual being discussed. Diagram reference: `PL9fwy3NUQKwa0n4HCNAxivyXFUhxLtL-l/Kzxd5D8ZgnQ_raw.srt` line 677 (local corpus, not in Git), slide reference: `PL9fwy3NUQKwa0n4HCNAxivyXFUhxLtL-l/l6u-C3bZa5w_raw.srt` line 2505 (local corpus, not in Git).
 
 **Omission:** no source-sufficiency gate establishes which outcomes can be reconstructed from transcripts alone. Missing circuits, equations, demonstrations, or lab procedures can leave every available subtitle accounted for while the lesson remains impossible to ground. Generating a replacement diagram cannot establish what the original showed.
 

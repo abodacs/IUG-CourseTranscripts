@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[02] Lesson reader (desktop) — wireframe</title>
+<link rel="stylesheet" href="assets/wireframe.css">
+</head>
+<body>
+
+<div class="meta">
+  <b>SCREEN 02 / 09 — LESSON READER (DESKTOP) · قارئ الدرس</b> — OPTO 2311 pilot wireframes
+  <span class="dirmark">dir="rtl" · Arabic first · reads right→left</span>
+</div>
+
+<div class="frame">
+
+  <div class="ann ltr-note">dir=rtl — اتجاه القراءة: ⟵ — الشجرة على اليمين، المحتوى يسارها · الخط النهائي: Thmanyah (Serif Text / Sans / Digital) · كل فقرة لها معرّف ثابت ¶ لتتبّع الأدلة</div>
+
+  <nav class="topnav" aria-label="تنقل رئيسي">
+    <span class="brand">OPTO 2311 — البصريات الهندسية</span>
+    <a href="01-course-home.html">الرئيسية</a>
+    <a href="04-working-notes.html">دفتر العمل</a>
+    <a href="05-roadmap.html">خارطة الطريق</a>
+    <a href="06-knowledge-graph.html">خريطة المفاهيم</a>
+    <a href="07-free-module.html">الوحدة المجانية</a>
+    <a href="08-release-notes.html">ملاحظات الإصدار</a>
+  </nav>
+
+  <div class="banner" role="status">
+    <span class="ann">[STATUS]</span>
+    <strong>هذا المساق قيد الإنشاء — الدروس المقبولة تُنشر تدريجيًا</strong>
+    <a href="08-release-notes.html">ما الجديد؟ ←</a>
+  </div>
+
+  <div class="layout">
+
+    <!-- ===== right-side lesson tree (first child = right edge in RTL) ===== -->
+    <aside class="sidebar" aria-label="شجرة الدروس">
+      <h2 style="font-size:15px">شجرة الدروس</h2>
+      <ul class="tree">
+        <li class="unit">الوحدة ١ — الضوء والانعكاس</li>
+        <li><span class="mark">✓</span><span>01 طبيعة الضوء والشعاع الضوئي</span><span class="dur">١٢ د</span></li>
+        <li><span class="mark">◐</span><strong>02 قانونا الانعكاس والمرايا المستوية</strong><span class="dur">١٤ د</span></li>
+        <li><span class="mark dim">—</span><span class="soon">03 المرايا الكروية المقعّرة</span><span class="dur soon">١٦ د</span></li>
+        <li><span class="mark dim">—</span><span class="soon">04 المرايا المحدبة وتطبيقاتها</span><span class="dur soon">١٠ د</span></li>
+        <li class="unit">الوحدة ٢ — الانكسار والعدسات</li>
+        <li><span class="mark dim">—</span><span class="soon">05 قانون سنل ومعامل الانكسار</span><span class="dur soon">١٥ د</span></li>
+        <li><span class="mark dim">—</span><span class="soon">06 الزاوية الحرجة والانعكاس الكلي</span><span class="dur soon">١٢ د</span></li>
+        <li><span class="mark dim">—</span><span class="soon">07 العدسات الرقيقة وبناء الصور</span><span class="dur soon">١٨ د</span></li>
+        <li class="unit">الوحدة ٣ — الأدوات البصرية</li>
+        <li><span class="mark dim">—</span><span class="soon">08 العين والنظارة</span><span class="dur soon">١٤ د</span></li>
+      </ul>
+      <p class="ann">[درس 09 مخفي حتى القبول — لا يظهر في الشجرة إطلاقًا]</p>
+      <div class="legend">
+        ✓ منشور ومُنجز &nbsp;·&nbsp; ◐ قيد التعلّم &nbsp;·&nbsp; رمادي «قريبًا» = غير منشور<br>
+        تقدّمك: <span class="ltr">0 / 12</span> — محفوظ محليًا بلا حساب، يعود بعد إعادة التحميل.
+      </div>
+    </aside>
+
+    <!-- ===== content column ===== -->
+    <main class="content">
+      <p class="dim"><a href="01-course-home.html">الرئيسية</a> ← الوحدة ١ ← <strong>درس 02</strong></p>
+      <h1>درس 02 — قانونا الانعكاس والمرايا المستوية</h1>
+      <p class="dim">١٤ دقيقة · منشور ومقبول · آخر تحديث: <span class="ltr">2026-09-05</span></p>
+      <div class="alt" style="margin-top:6px">
+        <strong>المصدر (تحت المصدر):</strong> محاضرة المساق المسجّلة — فيديو <span class="ltr">[video_id]</span> · المقطع <span class="ltr">[12:40–21:05]</span> · روابط الفقرات إلى مواضعها في النص الأصلي
+        <span class="ann">[تُسجَّل من بيانات المصدر عند التوليد ولا تُخترع أبدًا]</span>
+      </div>
+
+      <section class="section" aria-label="المهارة">
+        <div class="section-head"><span class="badge">المهارة</span><span class="ann">[skill]</span></div>
+        <p>تتبُّع شعاع ساقط على سطح عاكس، وقياس زاوية السقوط وزاوية الانعكاس من العمود المُقام.</p>
+        <p>المتطلب السابق: درس 01 ✓ — طبيعة الضوء والشعاع الضوئي <span class="ann">[سلسلة متطلبات مغلقة — درس بلا متطلب مستوفى لا يُنشر]</span></p>
+        <p>بعد هذا الدرس تستطيع: رسم مسار شعاع كامل على مرآة مستوية، والتحقق من <span class="math">θᵢ = θᵣ</span> بالقياس.</p>
+      </section>
+
+      <section class="section" aria-label="لحظة الفهم">
+        <div class="section-head"><span class="badge">لحظة الفهم</span><span class="ann">[aha moment]</span></div>
+        <p>الزوايا تُقاس من <strong>العمود المُقام</strong> لا من سطح المرآة. بمجرد ضبط المرجع يتحول قانون الانعكاس — <span class="ltr">Law of Reflection</span> — إلى تناظر بسيط: <span class="math">θᵢ = θᵣ</span>.</p>
+        <details class="wf">
+          <summary>اشرح أبسط</summary>
+          <p style="margin-top:6px">تخيّل خطًا عموديًا على المرآة عند نقطة سقوط الشعاع: زاوية الدخول عنه تساوي زاوية الخروج عنه تمامًا. <span class="ann">[شرح مبسّط — مُعدّ مسبقًا ومُراجَع، لا توليد حي]</span></p>
+        </details>
+      </section>
+
+      <section class="section" aria-label="مثال محلول">
+        <div class="section-head"><span class="badge">مثال محلول</span><span class="ann">[worked example]</span></div>
+        <p>شعاع يسقط على مرآة مستوية بزاوية <span class="ltr">50°</span> عن سطح المرآة. المطلوب: زاوية الانعكاس.</p>
+        <ul>
+          <li>خطوة ١ — المرجع هو العمود: <span class="math">θᵢ = 90° − 50° = 40°</span></li>
+          <li>خطوة ٢ — قانون الانعكاس: <span class="math">θᵣ = θᵢ = 40°</span></li>
+          <li>خطوة ٣ — تحقق: زاوية الانعكاس عن السطح <span class="math">= 90° − 40° = 50°</span>، وهي تساوي زاوية السقوط عن السطح.</li>
+        </ul>
+      </section>
+
+      <section class="section" aria-label="المخطط">
+        <div class="section-head"><span class="badge">المخطط</span><span class="ann">[diagram slot — مصدر Excalidraw قابل للتحرير + تصدير SVG؛ المصدر القابل للتحرير هو المعتمد]</span></div>
+        <div class="diagram">
+          <svg width="330" height="200" viewBox="0 0 330 200" role="img" aria-label="مخطط انعكاس شعاع على مرآة مستوية">
+            <defs>
+              <marker id="ah" markerWidth="9" markerHeight="8" refX="7" refY="3" orient="auto">
+                <path d="M0,0 L7,3 L0,6 z" fill="black"/>
+              </marker>
+            </defs>
+            <!-- mirror + hatching -->
+            <line x1="240" y1="15" x2="240" y2="185" stroke="black" stroke-width="2.5"/>
+            <line x1="240" y1="25" x2="254" y2="11" stroke="black"/>
+            <line x1="240" y1="55" x2="254" y2="41" stroke="black"/>
+            <line x1="240" y1="85" x2="254" y2="71" stroke="black"/>
+            <line x1="240" y1="115" x2="254" y2="101" stroke="black"/>
+            <line x1="240" y1="145" x2="254" y2="131" stroke="black"/>
+            <line x1="240" y1="175" x2="254" y2="161" stroke="black"/>
+            <!-- normal -->
+            <line x1="70" y1="100" x2="305" y2="100" stroke="black" stroke-dasharray="6 4"/>
+            <text x="72" y="92" font-size="12">العمود المُقام</text>
+            <!-- incident ray -->
+            <line x1="85" y1="35" x2="240" y2="100" stroke="black" stroke-width="2" marker-end="url(#ah)"/>
+            <!-- reflected ray -->
+            <line x1="240" y1="100" x2="85" y2="165" stroke="black" stroke-width="2" marker-end="url(#ah)"/>
+            <!-- angle arcs -->
+            <path d="M 205,100 A 35 35 0 0 1 208,86" fill="none" stroke="black"/>
+            <path d="M 205,100 A 35 35 0 0 0 208,114" fill="none" stroke="black"/>
+            <text x="178" y="80" font-size="13" class="ltr">θᵢ</text>
+            <text x="178" y="132" font-size="13" class="ltr">θᵣ</text>
+            <text x="248" y="196" font-size="12">مرآة مستوية</text>
+          </svg>
+        </div>
+        <div class="alt">
+          <strong>نص بديل (عربي) — placeholder:</strong>
+          «شعاع يسقط على مرآة مستوية بزاوية <span class="ltr">40°</span> عن العمود المُقام، وينعكس بزاوية مساوية على الجهة المقابلة؛ العمود المُقام خط متقطع عمودي على المرآة عند نقطة السقوط.»
+          <span class="ann">[لكل مخطط نص بديل عربي إلزامي]</span>
+        </div>
+        <p class="ann" style="margin-top:6px">[الدليل البصري عند الاسترجاع من المحاضرة: فيديو <span class="ltr">video_id</span> + الطابع الزمني/المدى + اللقطة الملتقطة — يُسجَّل ولا يُخترع]</p>
+        <p><span class="btn btn--ghost">تحرير المخطط</span> <span class="ann">[يفتح مصدر Excalidraw — التصدير يُحدَّث ولا يُعدَّل يدويًا]</span></p>
+      </section>
+
+      <section aria-label="اختبار داخلي">
+        <div class="quiz">
+          <p class="qid">quiz #q-opto2311-u1-l02-q1</p>
+          <div class="section-head" style="margin-top:4px"><span class="badge">اختبر نفسك</span><span class="ann">[inline quiz — الإجابة لا تُعرض قبل المحاولة]</span></div>
+          <p><strong>يشعّ شعاع نحو مرآة مستوية بزاوية <span class="ltr">35°</span> عن العمود المُقام. ما زاوية انعكاسه؟</strong></p>
+          <ul class="choices">
+            <li class="choice kbd-focus"><span class="radio"></span><span>أ) <span class="ltr">35°</span> عن سطح المرآة</span><span class="ann">[حلقة تركيز لوحة المفاتيح — focus-visible]</span></li>
+            <li class="choice"><span class="radio"></span><span>ب) <span class="ltr">35°</span> عن العمود المُقام</span></li>
+            <li class="choice"><span class="radio"></span><span>ج) <span class="ltr">55°</span> عن العمود المُقام</span></li>
+            <li class="choice"><span class="radio"></span><span>د) <span class="ltr">70°</span> عن سطح المرآة</span></li>
+          </ul>
+          <p style="margin-top:10px">
+            <span class="btn btn--disabled" aria-disabled="true">تحقق من الإجابة</span>
+            <span class="ann">[معطّل قبل اختيار خيار — الحالات الكاملة في الشاشة 03]</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="section" aria-label="تدريب">
+        <div class="section-head"><span class="badge">تدريب</span><span class="ann">[practice]</span></div>
+        <p>شعاع يسقط بزاوية <span class="ltr">25°</span> عن العمود المُقام. ارسم المسار كاملًا ثم أكمل: <span class="math">θᵣ = ؟</span></p>
+        <div class="empty" style="padding:10px"><span class="dim">حقل إدخال/رسم — يُحفظ محليًا على جهازك</span></div>
+      </section>
+
+      <section class="section" aria-label="مهمة نقل">
+        <div class="section-head"><span class="badge">مهمة نقل</span><span class="ann">[transfer task]</span></div>
+        <p>في غرفتك: وجّه شعاع مصباح جيب نحو مرآة ليصل إلى نقطة محددة على الجدار. ارسم المسار، قدّر الزوايا، ثم تحقق بالقياس واكتب ما فاجأك.</p>
+      </section>
+
+      <p>
+        <a class="btn btn--primary" href="02-lesson-reader-desktop.html">الدرس التالي</a>
+        <a class="btn btn--ghost" href="06-knowledge-graph.html">شاهد خريطة المفاهيم</a>
+      </p>
+      <p class="ann">[بعد النجاح في الاختبار: ◐ ← ✓ في شجرة الدروس — تحديث فوري، محفوظ محليًا]</p>
+    </main>
+
+  </div>
+</div>
+
+<p class="next">التالي: <a href="03-quiz-states.html">03 — مكوّن الاختبار الداخلي وحالاته</a></p>
+
+</body>
+</html>

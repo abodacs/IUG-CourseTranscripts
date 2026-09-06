@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[00] Wireframe index — OPTO 2311 pilot</title>
+<link rel="stylesheet" href="assets/wireframe.css">
+</head>
+<body>
+
+<div class="meta" style="max-width:1140px">
+  <b>WIREFRAME SET — OPTO 2311 · البصريات الهندسية · public pilot</b> — 9 screens + this index
+  <span class="dirmark">all product frames: dir="rtl", Arabic first</span>
+</div>
+
+<div class="frame" style="direction:ltr; text-align:left">
+
+  <h1>Wireframes — Arabic-first courses platform, public pilot</h1>
+  <p>Pure low-to-mid-fidelity wireframes for the OPTO 2311 pilot (Geometric Optics, كلية العلوم الصحية),
+     rebuilt from lecture transcripts and shipped as a static site. Open any file directly in a browser —
+     no build step, same as the pilot site.</p>
+
+  <h2>Style contract (applies to every frame)</h2>
+  <ul>
+    <li>Black outlines and black text only; very light gray fills used <em>only</em> to distinguish
+        (done-nodes, placeholders, dimmed drawer background).</li>
+    <li>No color, no shadows, no gradients, no decorative radius, no motion.</li>
+    <li><code>dir="rtl"</code> on every product frame; visible marker line «اتجاه القراءة: ⟵» at the top.</li>
+    <li>Mixed direction shown honestly: Arabic sentences with inline LTR islands for English terms and math
+        (<code>θᵢ = θᵣ</code>, <code>n₁ sin θ₁ = n₂ sin θ₂</code>, <code>Law of Reflection</code>) — never mirrored away.</li>
+    <li>Wireframe annotations sit in <span class="ann" style="direction:rtl; unicode-bidi:isolate">[أقواس]</span> monospace, outside the product voice.</li>
+    <li>Dashed border = empty / locked / placeholder / withdrawn; double outline = keyboard-focus ring.</li>
+    <li>Production font is the <b>Thmanyah</b> family (Serif Text / Sans / Digital) — noted on frames, not simulated:
+        wireframes stay in system fonts.</li>
+    <li><b>One accent color per course</b> (adopted pattern) is black in this monochrome set, noted where it applies.</li>
+  </ul>
+
+  <h2>Docs traceability — requirement → frame</h2>
+  <table class="wf">
+    <tr><th>Requirement (source doc)</th><th>Where it appears</th></tr>
+    <tr><td>RTL first-class; excellent mixed-direction Arabic+English+math (brief, constraint 2)</td><td>Every frame: <code>dir="rtl"</code>, inline LTR islands; frame 09 proves no clipping at phone width.</td></tr>
+    <tr><td>Lesson anatomy: named skill, aha passages (brief, constraints 3, 8)</td><td>Frames 02, 07: المهارة box with prerequisite + «بعد هذا الدرس تستطيع», لحظة الفهم.</td></tr>
+    <tr><td>Diagrams authored via Excalidraw MCP, editable sources kept, exports derived (brief constraint 3; resolution C5)</td><td>Frame 02 diagram slot: «مصدر Excalidraw قابل للتحرير + تصدير SVG».</td></tr>
+    <tr><td>Reader chrome: sidebar tree with checkmarks + durations; client-side progress surviving static hosting (brief constraint 4)</td><td>Frames 02 (desktop), 09 (drawer), 01 legend.</td></tr>
+    <tr><td>Thmanyah house typeface (brief, «what already exists»)</td><td>Frame 02 top annotation; index style contract.</td></tr>
+    <tr><td>Inline assessment in lesson MD, genuinely hard questions, answer hidden pre-attempt (brief constraint 5; resolution C5: stable id, skill ref, prompt, choices, answer, rationale, feedback)</td><td>Frame 03: payload field list incl. <code>skill_ref</code>, fenced-quiz-in-MD + mdbook-quiz annotation, 4 states.</td></tr>
+    <tr><td>Knowledge graph: search over concepts, aliases, lessons; course filter; progress-tinted nodes; drag-a-node/neighbors view; own destination page; openwiki/OKF layer (brief constraint 6; fanout §3.3)</td><td>Frame 06: toolbar (search ⌘K + course filter + progress filter + Full/Neighbors modes), tinted-node legend, drag hint, deep-link route note, OKF annotation.</td></tr>
+    <tr><td>Progress as a graph property (fanout pattern 2)</td><td>Frame 06 tinted nodes; frame 05 gray=done nodes.</td></tr>
+    <tr><td>Static-first, Cloudflare Pages, deterministic SVG visuals (brief constraints 7, 9; goal cost controls)</td><td>Frames 08, 06 annotations; diagrams drawn as black-line SVG.</td></tr>
+    <tr><td>Grounding traceable to transcript spans; diagrams record video ID + timestamp/range + captured evidence (goal source policy; fanout pattern 5 «explain under the source»)</td><td>Frame 02: source strip under lesson title + per-diagram evidence line; frame 09 condensed line. IDs shown as placeholders — recorded at generation, never invented.</td></tr>
+    <tr><td>Prerequisite-closed course (goal, resolution C3)</td><td>Frame 02 skill box «المتطلب السابق: درس 01 ✓»; frame 01 card meta.</td></tr>
+    <tr><td>Withdrawal of invalid releases; withdrawn version is not a rollback target (goal DoD; resolution lifecycle)</td><td>Frame 04: سحب entry (dashed) with visibility + rollback rules.</td></tr>
+    <tr><td>Atomic promotion of one complete versioned set; rollback demonstrated (goal, resolution)</td><td>Frame 08 version chip + promotion/rollback annotation.</td></tr>
+    <tr><td>Simplified explanations are precomputed, reviewed teaching nodes (goal findings: ELI5 → precomputed; resolution: simplified explanations need verdicts)</td><td>Frames 02, 06: «اشرح أبسط» disclosure/button, labeled precomputed.</td></tr>
+    <tr><td>STATUS banner on every page; working notes public behind it (fanout §3.12, adopted)</td><td>Every frame; banner links «ابدأ بدفتر العمل» + «ما الجديد؟» (frame 01).</td></tr>
+    <tr><td>Roadmap: deliverable-ended stages, reading order encoded, hand-off card to the course (fanout §3.2/§3.15, adopted)</td><td>Frame 05: numbered stage arrows, deliverable nodes, closing hand-off card.</td></tr>
+    <tr><td>Free coherent module as the taste test; one asset, several funnels (fanout patterns 4, 9)</td><td>Frame 07: standalone path + funnel annotation.</td></tr>
+    <tr><td>Privacy stated in the product's own voice; on-device computation (fanout pattern 7, §3.14)</td><td>Frames 01, 07: «كل الحسابات تتم على جهازك — لا حساب ولا تتبّع».</td></tr>
+    <tr><td>Release notes = illustrated blog category, one feature per entry, deep links (fanout §3.12; brief constraint 7 blog)</td><td>Frame 08: category chip, per-entry illustration placeholders, deep links.</td></tr>
+    <tr><td>One accent color per course; identical card grammar everywhere (fanout §3.15, adopted)</td><td>Frame 01 annotations + card grammar note; monochrome stands in for the accent.</td></tr>
+    <tr><td>Cmd+K global search, course-aware scopes, static search index (fanout §3.14, verdict 🔧)</td><td>Frames 01, 06 search hints.</td></tr>
+    <tr><td>Accessibility: keyboard focus visible, Arabic alt text, reduced motion, WCAG-minded (brief constraint 4; goal rendering gates)</td><td>Focus rings (02, 03, 09), alt-text placeholders (02, 09), «بلا حركة إلزامية» (06, 09), pure B/W = max contrast.</td></tr>
+  </table>
+
+  <h2>Screens</h2>
+  <table class="wf">
+    <tr><th>#</th><th>File</th><th>Screen</th><th>What it demonstrates</th></tr>
+    <tr><td>01</td><td><a href="01-course-home.html">01-course-home.html</a></td><td>Course home · الصفحة الرئيسية</td>
+        <td>Course title, STATUS banner, zero-progress empty state, units grouping, one identical card grammar.</td></tr>
+    <tr><td>02</td><td><a href="02-lesson-reader-desktop.html">02-lesson-reader-desktop.html</a></td><td>Lesson reader (desktop) · قارئ الدرس</td>
+        <td>Right-side tree (✓ / ◐ / قريبًا + durations); skill, aha, worked example, diagram slot + Arabic alt-text, inline quiz, practice, transfer task.</td></tr>
+    <tr><td>03</td><td><a href="03-quiz-states.html">03-quiz-states.html</a></td><td>Inline quiz + states · الاختبار الداخلي</td>
+        <td>Question + 4 choices → selected → correct feedback → incorrect feedback with rationale. Answer never shown before an attempt.</td></tr>
+    <tr><td>04</td><td><a href="04-working-notes.html">04-working-notes.html</a></td><td>Working notes · دفتر العمل</td>
+        <td>Dated accepted lessons/notes behind the status banner; every entry deep-links.</td></tr>
+    <tr><td>05</td><td><a href="05-roadmap.html">05-roadmap.html</a></td><td>Roadmap · خارطة الطريق</td>
+        <td>Staged graph; each stage ends in a named deliverable; light-gray shading = done.</td></tr>
+    <tr><td>06</td><td><a href="06-knowledge-graph.html">06-knowledge-graph.html</a></td><td>Knowledge graph / wiki · خريطة المفاهيم</td>
+        <td>Arabic and English queries land on the same node; typed edges; neighbors view; alias pair on the node; few-nodes empty state.</td></tr>
+    <tr><td>07</td><td><a href="07-free-module.html">07-free-module.html</a></td><td>Free module · الوحدة المجانية</td>
+        <td>One coherent standalone lesson path — the public taste test, complete, not crippled.</td></tr>
+    <tr><td>08</td><td><a href="08-release-notes.html">08-release-notes.html</a></td><td>Release notes · ملاحظات الإصدار</td>
+        <td>Dated changelog, one feature/lesson per entry, each with a deep link.</td></tr>
+    <tr><td>09</td><td><a href="09-lesson-reader-mobile.html">09-lesson-reader-mobile.html</a></td><td>Lesson reader (mobile) · الجوال</td>
+        <td>Phone width; sidebar collapses behind ☰; RTL text and inline math wrap without clipping.</td></tr>
+  </table>
+
+  <h2>Flow map</h2>
+<pre style="font-family:ui-monospace,'Courier New',monospace; font-size:13px; line-height:1.9; border:1px dashed #000; padding:12px; overflow-x:auto">
+[01 home] --STATUS banner--> [04 working notes] --> lesson (deep link)
+
+[01 home] --> [02 reader desktop] --> [03 quiz: attempt -> feedback]
+        pass -> checkmark updates sidebar tree -> "next lesson"
+
+[02 reader] --"watch concept map"--> [06 graph] --> neighbor node --> back to lesson
+
+[01 home] --> [05 roadmap] --> deliverable node --> its lesson / working notes
+
+[07 free module] --taste test--> [01 full course]
+
+"what's new?" (every page, from the STATUS banner) --> [08 release notes]
+
+[09 mobile] = [02] at phone width; sidebar collapses behind [☰]
+</pre>
+
+  <h2>Shared facts baked into the frames</h2>
+  <ul>
+    <li>Header: <bdo dir="rtl">OPTO 2311 — البصريات الهندسية | كلية العلوم الصحية</bdo></li>
+    <li>Banner on every page: <bdo dir="rtl">هذا المساق قيد الإنشاء — الدروس المقبولة تُنشر تدريجيًا</bdo></li>
+    <li>Lesson anatomy (Arabic first): المهارة · لحظة الفهم · مثال محلول · تدريب · اختبر نفسك · مهمة نقل</li>
+    <li>Quiz payload: stable id, skill ref, prompt, 4 choices, answer, rationale, feedback (frame 03).</li>
+    <li>Every lesson carries a source strip: video id + timestamp range (placeholders — recorded from source at generation, never invented).</li>
+    <li>Diagrams: editable Excalidraw source + SVG export; Arabic alt text mandatory.</li>
+    <li>Progress is client-side, survives reload, no account/login — privacy stated in the product's own voice.</li>
+    <li>Accessibility: visible keyboard-focus ring (02, 03, 09), alt-text on every diagram slot, reduced-motion respected, nothing requires motion.</li>
+    <li>House typeface: Thmanyah (noted on frames; wireframes use system fonts). One accent color per course (black here).</li>
+    <li>Arabic UI terminology in the frames is a proposal — Arabic UI wording is an open decision in the brief.</li>
+  </ul>
+
+  <p class="mono" style="font-size:12px">Part of docs/ for the OPTO 2311 pilot — see ../pilot-opto-2311-plan.md</p>
+
+</div>
+
+</body>
+</html>

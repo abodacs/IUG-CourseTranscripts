@@ -15,6 +15,8 @@
 | [content-factory-v1-goal.md](content-factory-v1-goal.md) | The v1 objective, fixed decisions, quality/cost rules, and definition of done. | You need to decide what v1 must deliver. |
 | [KEYFRAME_CAPTURE.md](KEYFRAME_CAPTURE.md) | Working JSON-to-video-frame tool, commands, verification, and evaluation of the Answer.AI workflow. | You need to recover a diagram from a lecture. |
 | [content-factory-v1-pilot.md](content-factory-v1-pilot.md) | The selected optics course, verified local counts, challenge cases, and review fields. | You are preparing sources or arranging a reviewer. |
+| [pilot-opto-2311-plan.md](pilot-opto-2311-plan.md) | The full ticket-by-ticket pilot execution plan: phases CF-01…CF-12, gates, artifacts, budget checkpoints, schedule, risks, and session briefs. | You are executing, scheduling, or resourcing the pilot. |
+| [pilot-opto-2311-production-review.md](pilot-opto-2311-production-review.md) | Production-cycle review: release-gate conflicts, missing operational controls, proposed ticket additions, and discovery drills. | You are closing blind spots before dispatch, publication, or production acceptance. |
 
 ## Reference files
 
@@ -25,6 +27,8 @@
 | [content-factory-v1-blindspots.md](content-factory-v1-blindspots.md) | The historical review: 13 risks, supporting evidence, and discovery experiments. | You need to understand why a control was added. |
 | [platform-map-brief.md](platform-map-brief.md) | The broader courses platform: reading experience, RTL, quizzes, graph/wiki, and stack-comparison scope. | You are planning platform features beyond the factory. |
 | [skills-map.md](skills-map.md) | Candidate skills/tools, their possible roles, license questions, and operating costs. | You are choosing a tool for a specific stage. |
+| [fanout-feature-analysis.md](fanout-feature-analysis.md) | Feature-by-feature disassembly of Fanout (fanout.sh) from the `inspiring/fanout-company/` screenshots, with adopt/adapt/skip verdicts against the platform map. Its adopted patterns are folded into the brief, skills map, and pilot milestones. | You are designing a platform feature and want the benchmark or the reason to skip. |
+| [context-management-mcp-token-cost.md](context-management-mcp-token-cost.md) | Measured "empty prompt" token cost of every installed MCP server and the skills index, industry benchmarks, and the ranked context-management fixes for this machine. | You are tuning agent token budgets, quota burn, or fanout per-agent overhead. |
 
 The repository's [root README](../README.md) is the short project entrypoint with setup, test, and inventory commands.
 

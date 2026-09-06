@@ -113,6 +113,8 @@ Keep development cases separate from the untouched final holdout. Independently 
 
 Apply measured authoring/evaluation rules to the frozen pilot scope. Finish subject/editorial/visual review and a formative learner trial with an unaided task. Fix observed critical defects. Publish only the complete accepted artifact set after preview checks on Arabic/English, mobile/desktop, quizzes, and accessibility.
 
+Publish it the build-in-public way, adopted from [fanout-feature-analysis.md](fanout-feature-analysis.md) §3.12/§4: each promoted release stays the complete accepted artifact set so far, presented with a public working-notes status banner instead of waiting for the whole course; put the pilot's roadmap graph on the public map once its graph artifacts exist; and cut one coherent free module — a standalone path, not a crippled sample — as the public taste test. These change presentation and staging, not the bar: preview checks, atomic promotion, and rollback still apply to every release.
+
 Verify current Pages capabilities/limits during the deployment task. Demonstrate an intentionally failed update, rollback to an accepted safe version, withdrawal when all available versions are invalid, and restoration from an independent backup.
 
 **Completion proof:** every required goal checkbox has recorded evidence; cost reporting uses first-accepted lesson IDs and outcome coverage. Expansion follows measured results.

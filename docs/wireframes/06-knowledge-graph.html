@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[06] Knowledge graph / wiki — wireframe</title>
+<link rel="stylesheet" href="assets/wireframe.css">
+</head>
+<body>
+
+<div class="meta">
+  <b>SCREEN 06 / 09 — KNOWLEDGE GRAPH / WIKI · خريطة المفاهيم</b> — OPTO 2311 pilot wireframes
+  <span class="dirmark">dir="rtl" · Arabic first · reads right→left</span>
+</div>
+
+<div class="frame">
+
+  <div class="ann ltr-note">dir=rtl — اتجاه القراءة: ⟵</div>
+
+  <nav class="topnav" aria-label="تنقل رئيسي">
+    <span class="brand">OPTO 2311 — البصريات الهندسية</span>
+    <a href="01-course-home.html">الرئيسية</a>
+    <a href="04-working-notes.html">دفتر العمل</a>
+    <a href="05-roadmap.html">خارطة الطريق</a>
+    <a href="06-knowledge-graph.html">خريطة المفاهيم</a>
+    <a href="07-free-module.html">الوحدة المجانية</a>
+    <a href="08-release-notes.html">ملاحظات الإصدار</a>
+  </nav>
+
+  <div class="banner" role="status">
+    <span class="ann">[STATUS]</span>
+    <strong>هذا المساق قيد الإنشاء — الدروس المقبولة تُنشر تدريجيًا</strong>
+    <a href="08-release-notes.html">ما الجديد؟ ←</a>
+  </div>
+
+  <h1>خريطة المفاهيم — ويكي المساق</h1>
+  <p>صفحة مستقلة بذاتها (مسار خاص <span class="ltr">/knowledge-graph</span>). البحث يشمل المفاهيم ومرادفاتها والدروس، والمصطلح العربي ومرادفه الإنجليزي يصلان إلى العقدة نفسها.</p>
+
+  <!-- ===== toolbar: search + course filter + progress filter + view modes ===== -->
+  <section class="card" aria-label="أدوات الخريطة">
+    <div class="toolbar">
+      <span class="badge">بحث</span>
+      <span class="sel" style="flex:1 1 220px"><span class="dim">ابحث بالعربية أو الإنجليزية… ⌘K</span></span>
+      <span class="sel">المساق: OPTO 2311 — البصريات الهندسية ▾</span>
+      <span class="sel">التقدّم: الكل ▾</span>
+      <span class="mode mode--on">كامل</span>
+      <span class="mode">الجوار</span>
+    </div>
+    <div class="empty" style="text-align:start; padding:8px 12px; margin:6px 0">
+      <span class="dim">مثال بحث ١: قانون الانعكاس</span> ⟵ <span class="chip">عقدة: قانون الانعكاس / <span class="ltr">Law of Reflection</span></span>
+    </div>
+    <div class="empty" style="text-align:start; padding:8px 12px; margin:6px 0">
+      <span class="dim">مثال بحث ٢: "Law of Reflection"</span> ⟵ <span class="chip">نفس العقدة: قانون الانعكاس / <span class="ltr">Law of Reflection</span></span>
+    </div>
+    <p class="ann">[استعلامان — عربي وإنجليزي — يهبطان على العقدة نفسها عبر جدول المرادفات]</p>
+    <p class="ann">[اسحب عقدة — يتبعها جوارها — لإعادة التخطيط فقط، بلا حركة إلزامية] · [تعبئة رمادية = مفهوم أنجزته: التقدم خاصية للرسم]</p>
+  </section>
+
+  <!-- ===== selected node + neighbors ===== -->
+  <div class="layout" style="margin-top:16px">
+
+    <aside style="flex:1 1 340px">
+      <h2 style="font-size:16px">العقدة المحددة</h2>
+      <div class="kg-node kg-node--selected">
+        <h3 style="font-size:16px">قانون الانعكاس <span class="dim">/ <span class="ltr">Law of Reflection</span></span></h3>
+        <p>المرادفات:
+          <span class="alias">قانون الانعكاس</span>
+          <span class="alias ltr">Law of Reflection</span>
+          <span class="alias">تناظر الزوايا</span>
+        </p>
+        <p class="ann">[زوج عربي ↔ إنجليزي ظاهر على العقدة نفسها]</p>
+        <div class="empty" style="text-align:start; padding:8px 12px"><span class="dim">تعريف من ويكي المساق — سطران إلى ثلاثة: الزوايا تُقاس من العمود المُقام…</span></div>
+        <p>العلاقة الرياضية: <span class="math">θᵢ = θᵣ</span></p>
+        <p><span class="btn btn--ghost">اشرح أبسط</span> <span class="ann">[شرح مبسّط مُعدّ مسبقًا ومُراجَع — بلا توليد حي]</span></p>
+        <p>ورد في: <a href="02-lesson-reader-desktop.html">درس 02 — قانونا الانعكاس</a> <span class="ann">[↩ رجوع إلى الدرس]</span></p>
+      </div>
+    </aside>
+
+    <main style="flex:1 1 420px">
+      <h2 style="font-size:16px">الجوار — حواف مُنمّطة</h2>
+      <div class="diagram" style="background:#fff">
+        <pre class="mono" style="line-height:2; direction:rtl; text-align:center; font-size:13px">
+[العمود المُقام / <span class="ltr">Normal</span>]
+        │ يعتمد عليه
+[الانعكاس الكلي / <span class="ltr">TIR</span>] ── يرتبط بـ ── <strong>[★ قانون الانعكاس]</strong> ── يسبق ── [المرايا الكروية «قريبًا»]
+        │ ورد في
+   [درس 02 — منشور]</pre>
+      </div>
+      <ul style="list-style:none; padding:0">
+        <li class="row" style="margin:6px 0">
+          <span class="kg-edge"><strong>يعتمد عليه ←</strong></span>
+          <span class="what">العمود المُقام / <span class="ltr">Normal Line</span></span>
+          <span class="go"><a href="06-knowledge-graph.html">فتح العقدة ←</a></span>
+        </li>
+        <li class="row" style="margin:6px 0">
+          <span class="kg-edge"><strong>يسبق ←</strong></span>
+          <span class="what">المرايا الكروية / <span class="ltr">Spherical Mirrors</span> <span class="dim">(غير منشور بعد)</span></span>
+          <span class="go"><span class="dim">مقفول</span></span>
+        </li>
+        <li class="row" style="margin:6px 0">
+          <span class="kg-edge"><strong>يرتبط بـ ↔</strong></span>
+          <span class="what">الانعكاس الكلي الداخلي / <span class="ltr">Total Internal Reflection</span></span>
+          <span class="go"><a href="06-knowledge-graph.html">فتح العقدة ←</a></span>
+        </li>
+        <li class="row" style="margin:6px 0">
+          <span class="kg-edge"><strong>درس مرتبط ←</strong></span>
+          <span class="what">درس 02 — قانونا الانعكاس والمرايا المستوية</span>
+          <span class="go"><a href="02-lesson-reader-desktop.html">↩ العودة إلى الدرس</a></span>
+        </li>
+      </ul>
+      <p class="ann">[تدفق: القارئ ← عقدة ← عقدة مجاورة ← رجوع إلى الدرس]</p>
+    </main>
+
+  </div>
+
+  <!-- ===== empty / early state ===== -->
+  <section class="card empty" style="margin-top:16px; text-align:start">
+    <strong>حالة مبكرة (فارغة):</strong> الخريطة الآن <span class="ltr">4</span> عقد فقط.
+    <pre class="mono" style="direction:rtl; text-align:center">[الضوء] ── [الشعاع الضوئي] ── [قانون الانعكاس] ── [العمود المُقام]</pre>
+    <p>تُضاف العقد والحواف تلقائيًا مع كل درس مقبول — لا تُبنى الخريطة يدويًا.</p>
+  </section>
+
+  <p class="ann">[طبقة ويكي لكل مساق وكل درس — التمثيل: <span class="ltr">Open Knowledge Format v0.2</span> قيد التقييم] · [الويكي والرسم مشتقان من دروس Markdown ومصادر Excalidraw؛ المصدر هو المعتمد]</p>
+
+</div>
+
+<p class="next">التالي: <a href="07-free-module.html">07 — الوحدة المجانية</a></p>
+
+</body>
+</html>

@@ -1,0 +1,273 @@
+/* docs/wireframes/assets/wireframe.css
+   Pure wireframe styles for the OPTO 2311 public-pilot frames.
+   Rules: black ink on white; very light gray fills only for distinction.
+   No color, no shadows, no gradients, no decorative radius, no motion. */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans Arabic", "Segoe UI", Tahoma, Arial, sans-serif;
+  color: #000;
+  background: #fff;
+  line-height: 1.7;
+  font-size: 15px;
+  padding: 24px 14px 80px;
+}
+
+.mono { font-family: ui-monospace, "Courier New", monospace; }
+
+/* ---------- design chrome: label bar above each frame ---------- */
+.meta {
+  max-width: 1140px;
+  margin: 0 auto 10px;
+  border: 2px solid #000;
+  padding: 8px 12px;
+  direction: ltr;
+  text-align: left;
+  font-family: ui-monospace, "Courier New", monospace;
+  font-size: 13px;
+  overflow: hidden;
+}
+.meta .dirmark { float: right; }
+.next {
+  max-width: 1140px;
+  margin: 14px auto 0;
+  direction: rtl;
+  font-family: ui-monospace, "Courier New", monospace;
+  font-size: 13px;
+}
+
+/* ---------- the product frame ---------- */
+.frame {
+  max-width: 1140px;
+  margin: 0 auto;
+  border: 2px solid #000;
+  padding: 16px;
+  direction: rtl; /* RTL-first: primary reading direction */
+}
+[dir="rtl"] .ltr-note { direction: ltr; unicode-bidi: isolate; }
+
+/* status banner — appears on every page */
+.banner {
+  display: flex; flex-wrap: wrap; gap: 6px 16px;
+  align-items: center; justify-content: space-between;
+  border: 2px solid #000;
+  padding: 6px 12px;
+  margin-bottom: 14px;
+}
+
+/* top navigation */
+.topnav {
+  display: flex; flex-wrap: wrap; gap: 4px 18px; align-items: baseline;
+  border-bottom: 2px solid #000;
+  padding-bottom: 8px; margin-bottom: 16px;
+}
+.topnav .brand { font-weight: 700; margin-inline-end: auto; }
+.topnav a { color: #000; }
+
+h1 { font-size: 22px; margin-bottom: 4px; }
+h2 { font-size: 18px; margin: 18px 0 8px; }
+h3 { font-size: 15px; margin: 0 0 6px; }
+p { margin: 0 0 8px; }
+ul { margin: 0 0 8px; padding-inline-start: 22px; }
+li { margin-bottom: 2px; }
+
+/* buttons */
+.btn {
+  display: inline-block;
+  border: 2px solid #000;
+  background: #fff;
+  color: #000;
+  font: inherit;
+  padding: 3px 16px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn--primary { border-width: 3px; font-weight: 700; }
+.btn--ghost { border: 1px dashed #000; }
+.btn--disabled { border: 1px dashed #888; color: #888; }
+
+/* visible keyboard-focus box (accessibility structure) */
+.kbd-focus {
+  outline: 3px double #000;
+  outline-offset: 3px;
+}
+
+/* generic card — ONE card grammar everywhere */
+.card { border: 1.5px solid #000; padding: 10px 12px; }
+
+/* lesson state chips */
+.chip {
+  display: inline-block; border: 1.5px solid #000;
+  padding: 0 8px; font-size: 12.5px; white-space: nowrap;
+}
+.chip--done::before { content: "✓ "; }
+.chip--partial::before { content: "◐ "; }
+.chip--soon { border-style: dashed; color: #888; }
+
+/* labels (المهارة, لحظة الفهم, ...) */
+.badge {
+  display: inline-block; border: 1.5px solid #000;
+  padding: 0 8px; font-weight: 700; font-size: 13px;
+}
+
+/* lesson anatomy sections */
+.section {
+  border: 1.5px solid #000; border-inline-start-width: 6px;
+  padding: 10px 12px; margin: 0 0 14px;
+}
+.section-head { display: flex; gap: 10px; align-items: baseline; margin-bottom: 6px; flex-wrap: wrap; }
+
+/* diagram slot */
+.diagram { border: 1.5px dashed #000; background: #f2f2f2; padding: 12px; }
+.diagram svg { display: block; margin: 0 auto; }
+.alt {
+  border: 1px dashed #000; background: #fff;
+  padding: 6px 10px; margin-top: 10px; font-size: 13.5px;
+}
+
+/* inline quiz */
+.quiz { border: 2px solid #000; padding: 12px; margin: 14px 0; }
+.quiz .qid {
+  font-family: ui-monospace, "Courier New", monospace;
+  font-size: 12px; direction: ltr; unicode-bidi: isolate;
+}
+.choices { list-style: none; margin: 8px 0 0; padding: 0; }
+.choice {
+  display: flex; gap: 10px; align-items: baseline;
+  border: 1px solid #000; padding: 5px 10px; margin: 6px 0;
+}
+.radio {
+  flex: none; width: 13px; height: 13px;
+  border: 1.5px solid #000; border-radius: 50%;
+  position: relative; top: 3px;
+}
+.choice--selected { border-width: 3px; font-weight: 700; }
+.choice--selected .radio::after {
+  content: ""; position: absolute; inset: 2px;
+  border-radius: 50%; background: #000;
+}
+.choice--correct { border-width: 3px; }
+.choice--wrong { border-style: dashed; }
+.mark-correct { font-weight: 700; }
+.mark-wrong { text-decoration: line-through; }
+.feedback {
+  border: 1.5px solid #000; border-inline-start-width: 6px;
+  padding: 8px 12px; margin-top: 12px;
+}
+.feedback .rationale { border-top: 1px dashed #000; margin-top: 8px; padding-top: 8px; }
+
+/* progress bar */
+.progress { border: 2px solid #000; height: 20px; max-width: 460px; }
+.progress .fill { height: 100%; background: #d9d9d9; }
+
+/* reader layout: RTL flex → first child sits on the RIGHT */
+.layout { display: flex; gap: 20px; align-items: flex-start; }
+.sidebar { flex: 0 0 300px; border: 1.5px solid #000; padding: 12px; }
+.content { flex: 1 1 auto; min-width: 0; }
+
+/* lesson tree */
+.tree { list-style: none; padding: 0; font-size: 14px; }
+.tree .unit { font-weight: 700; border-top: 1.5px solid #000; margin-top: 8px; padding: 6px 0 2px; }
+.tree li:not(.unit) { display: flex; gap: 8px; align-items: baseline; padding: 2px 0; }
+.tree .mark { flex: none; width: 1.6em; }
+.tree .dur { margin-inline-start: auto; font-size: 12.5px; white-space: nowrap; }
+.tree .soon { color: #888; }
+.legend { font-size: 12.5px; border: 1px dashed #000; padding: 6px 8px; margin-top: 10px; }
+
+/* roadmap */
+.stages { display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap; }
+.stage { flex: 1 1 280px; border: 1.5px solid #000; padding: 10px 12px; }
+.node {
+  display: flex; justify-content: space-between; gap: 8px;
+  border: 1px solid #000; padding: 2px 8px; margin: 5px 0;
+}
+.node--done { background: #d9d9d9; }   /* light-gray shading = done */
+.node--partial { border-width: 3px; }
+.node--locked { border-style: dashed; color: #888; }
+.deliverable { border: 4px double #000; padding: 8px 10px; margin-top: 10px; font-weight: 700; }
+.arrow { text-align: center; font-size: 24px; align-self: center; }
+
+/* knowledge graph / wiki */
+.kg-node { border: 2px solid #000; padding: 10px 12px; }
+.kg-node--selected { border-width: 4px; }
+.alias {
+  display: inline-block; border: 1px solid #000;
+  padding: 0 8px; margin: 2px; font-size: 13px;
+}
+.kg-edge { font-size: 12.5px; }
+
+/* empty state */
+.empty { border: 2px dashed #000; padding: 14px; text-align: center; }
+
+/* free-module path */
+.path { border: 1.5px solid #000; padding: 4px 12px; }
+.step { border-bottom: 1px dashed #000; padding: 8px 0; }
+.step:last-child { border-bottom: 0; }
+
+/* dated rows (working notes, release notes) */
+.row {
+  display: flex; gap: 6px 14px; align-items: baseline; flex-wrap: wrap;
+  border: 1px solid #000; padding: 8px 12px; margin: 8px 0;
+}
+.row .when {
+  flex: none; direction: ltr; unicode-bidi: isolate;
+  font-family: ui-monospace, "Courier New", monospace; font-size: 13px;
+}
+.row .what { flex: 1 1 320px; }
+.row .go { flex: none; white-space: nowrap; }
+
+/* wireframe annotations */
+.ann { font-family: ui-monospace, "Courier New", monospace; font-size: 12px; }
+.ann::before { content: "◀ "; }
+
+/* inline LTR islands inside RTL sentences (English terms, math, dates, IDs) */
+.ltr { direction: ltr; unicode-bidi: isolate; }
+.math { direction: ltr; unicode-bidi: isolate; overflow-wrap: anywhere; }
+
+/* gray = not-yet / distinction only */
+.dim { color: #888; }
+.fill-gray { background: #f2f2f2; }
+
+/* card grid (course home) */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+
+hr.rule { border: 0; border-top: 1.5px solid #000; margin: 14px 0; }
+
+table.wf { border-collapse: collapse; width: 100%; }
+table.wf th, table.wf td { border: 1px solid #000; padding: 4px 8px; text-align: start; vertical-align: top; }
+
+/* phone frames (mobile screen) */
+.phones { display: flex; gap: 28px; flex-wrap: wrap; justify-content: center; align-items: flex-start; direction: rtl; }
+.phone { width: 400px; border: 3px solid #000; padding: 8px; background: #fff; direction: rtl; }
+.phone .screen { border: 1px solid #000; padding: 10px; min-height: 660px; position: relative; }
+.phone h1 { font-size: 16px; }
+.phone h2 { font-size: 14px; margin: 12px 0 6px; }
+.phone .section { padding: 8px 10px; }
+
+/* docs-alignment additions (all still black/white/gray only) */
+
+/* deep footer = the real sitemap */
+.footer {
+  border-top: 2px solid #000; margin-top: 18px; padding-top: 10px;
+  display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px;
+}
+
+/* per-entry illustration placeholder (release notes) */
+.imgph {
+  display: inline-block; width: 46px; height: 46px; flex: none;
+  border: 1px solid #000; background: #f2f2f2;
+}
+
+/* precomputed "explain simpler" disclosure */
+details.wf { border: 1px dashed #000; padding: 6px 10px; margin-top: 8px; }
+details.wf summary { cursor: pointer; font-weight: 700; }
+
+/* graph toolbar: search + course filter + progress filter + view modes */
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; }
+.sel { border: 1.5px solid #000; padding: 2px 10px; font: inherit; background: #fff; display: inline-block; }
+.mode { border: 1.5px solid #000; padding: 1px 10px; font-size: 13px; display: inline-block; }
+.mode--on { border-width: 3px; font-weight: 700; }
+
+/* node tinted by progress (light gray = completed concept) */
+.node--tinted { background: #d9d9d9; }
