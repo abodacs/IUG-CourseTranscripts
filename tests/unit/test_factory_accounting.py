@@ -113,12 +113,45 @@ def test_reference_worksheet_covers_all_required_classes():
     assert "labels are recorded BEFORE any judge score" in worksheet["policy"]["order"]
 
 
+
+def row_id(worksheet, class_id):
+    return next(r["ref_id"] for r in worksheet["rows"] if r["expected_class"] == class_id)
+
+
+def test_reference_excerpts_are_filled_with_provenance():
+    worksheet = references.build_worksheet("PLX", "1.0-draft")
+    for row in worksheet["rows"]:
+        assert row["excerpt"], f"{row['ref_id']} has no excerpt"
+        assert row["excerpt_provenance"], f"{row['ref_id']} has no provenance"
+    verbatim = [r for r in worksheet["rows"] if "verbatim" in r["excerpt_provenance"]]
+    assert len(verbatim) == 3  # good_ar, good_en, mixed_direction from dev families
+    h06 = next(r for r in worksheet["rows"] if r["expected_class"] == "H06")
+    assert '"answer": 1' in h06["excerpt"]  # the wrong key is the point
+
+
+def test_labeler_view_strips_sealed_fields():
+    worksheet = references.build_worksheet("PLX", "1.0-draft")
+    view = references.labeler_view(worksheet)
+    assert len(view["rows"]) == len(worksheet["rows"])
+    assert all("expected_class" not in row and "class_title" not in row for row in view["rows"])
+    assert all(row["excerpt"] for row in view["rows"])
+    # the seal check inside labeler_view would have raised if anything leaked
+
+
+def test_labeler_view_refuses_to_leak_classes():
+    worksheet = references.build_worksheet("PLX", "1.0-draft")
+    for row in worksheet["rows"]:
+        row["excerpt"] = row["excerpt"] + f" [{row['expected_class']}]"
+    with pytest.raises(references.WorksheetError, match="leaked"):
+        references.labeler_view(worksheet)
+
+
 def test_labeling_requires_named_human_and_valid_label():
     worksheet = references.build_worksheet("PLX", "1.0-draft")
     with pytest.raises(references.WorksheetError, match="named human labeler"):
-        references.label_row(worksheet, "ref-h06", "bad", "")
+        references.label_row(worksheet, row_id(worksheet, "H06"), "bad", "")
     with pytest.raises(references.WorksheetError, match="'good' or 'bad'"):
-        references.label_row(worksheet, "ref-h06", "correct", "د. المراجع")
+        references.label_row(worksheet, row_id(worksheet, "H06"), "correct", "د. المراجع")
     with pytest.raises(references.WorksheetError, match="unknown ref_id"):
         references.label_row(worksheet, "ref-nope", "bad", "د. المراجع")
 
@@ -127,11 +160,11 @@ def test_scoring_compares_labels_against_sealed_classes_only_after_labeling():
     worksheet = references.build_worksheet("PLX", "1.0-draft")
     with pytest.raises(references.WorksheetError, match="unlabeled"):
         references.validate_complete(worksheet)
-    references.label_row(worksheet, "ref-h06", "bad", "د. فيزياء")     # agrees (bad)
-    references.label_row(worksheet, "ref-good_en", "bad", "د. لغة")     # disagrees (good)
+    references.label_row(worksheet, row_id(worksheet, "H06"), "bad", "د. فيزياء")     # agrees (bad)
+    references.label_row(worksheet, row_id(worksheet, "good_en"), "bad", "د. لغة")     # disagrees (good)
     score = references.score_against_expected(worksheet)
     assert score["labeled"] == 2
     assert score["disagreements"] == [
-        {"ref_id": "ref-good_en", "expected_class": "good_en", "labeled": "bad"}
+        {"ref_id": row_id(worksheet, "good_en"), "expected_class": "good_en", "labeled": "bad"}
     ]
     assert score["agreement_rate"] == pytest.approx(0.5)
