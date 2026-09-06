@@ -76,6 +76,34 @@ def test_sequence_hints_count_numbered_titles():
     assert order_tool.numbered_title_count(order) == 4  # NA title excluded
 
 
+def test_lecture_number_extraction_handles_digits_and_ordinals():
+    assert order_tool.lecture_number_in("المحاضرة 12") == {12}
+    assert order_tool.lecture_number_in("المحاضرة السادسة بصريات هندسية") == {6}
+    # relative references carry no absolute number
+    assert order_tool.lecture_number_in("المحاضرة السابقة") == set()
+    assert order_tool.lecture_number_in("المحاضرة القادمة") == set()
+    assert order_tool.title_lecture_number("بصريات هندسية: المحاضرة 1") == 1
+    assert order_tool.title_lecture_number("مقدمة عامة") is None
+
+
+def test_transcript_conflict_downgrades_position_to_unknown(tmp_path):
+    order = order_tool.parse_order_tsv(
+        "1\tAAAAAAAAAAA\tالمحاضرة 2\t900\n2\tBBBBBBBBBBB\tالمحاضرة 3\t900\n3\tCCCCCCCCCCC\tالمحاضرة 4\t900\n"
+    )
+    (tmp_path / "AAAAAAAAAAA_raw.json").write_text(json.dumps(
+        {"segments": [{"text": "في المحاضرة الخامسة تحدثنا عن العدسات"}]}, ensure_ascii=False))
+    (tmp_path / "BBBBBBBBBBB_raw.json").write_text(json.dumps(
+        {"segments": [{"text": "كما رأينا في المحاضرة الثالثة"}]}, ensure_ascii=False))
+    order_tool.cross_check_transcript_references(order, tmp_path)
+    assert order[0]["order_evidence"]["quality"] == "unknown_transcript_conflict"
+    assert "conflict" in order[0]["order_evidence"]
+    assert order[1]["order_evidence"]["quality"] == "verified_playlist_and_transcript"
+    assert order[2]["order_evidence"]["quality"] == "playlist_title_only"  # no transcript file
+    unavailable = order_tool.parse_order_tsv("1\tSAq013FtOLQ\tNA\tNA\n")
+    order_tool.cross_check_transcript_references(unavailable, tmp_path)
+    assert unavailable[0]["order_evidence"]["quality"] == "unavailable_entry"
+
+
 def test_build_document_end_to_end():
     manifest = manifest_with("3U8quwM9QDg", "SAq013FtOLQ")
     manifest["videos"][1]["source_gap"] = {"skip_flag": 1}

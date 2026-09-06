@@ -122,27 +122,11 @@ def verify_segment(segment, text):
     return True
 
 
-@dataclasses.dataclass(frozen=True)
-class Correction:
-    video_id: str
-    segment_id: str
-    original_excerpt: str
-    corrected_text: str
-    evidence_span: str
-    derivation: str
+class AppendOnlyJsonLog:
+    """Shared shape for append-only record stores: records are never edited,
+    dispositions are appended, state is derived by folding."""
 
-    @classmethod
-    def new(cls, video_id, segment_id, corrected_text, evidence_span, derivation, original_excerpt=""):
-        if not evidence_span:
-            raise EvidencePolicyError("a correction needs recorded evidence for the change")
-        if not derivation:
-            raise EvidencePolicyError("a correction needs a source-based derivation, not taste")
-        return cls(video_id, segment_id, original_excerpt, corrected_text, evidence_span, derivation)
-
-
-class CorrectionLedger:
-    """Append-only records: `correction` entries never change; dispositions
-    are appended as new records and folded to derive current state."""
+    PREFIX = "r"
 
     def __init__(self, path):
         self.path = Path(path)
@@ -157,17 +141,56 @@ class CorrectionLedger:
             encoding="utf-8",
         )
 
-    def propose(self, video_id, segment_id, original_excerpt, corrected_text, evidence_span, derivation):
+    def _next_id(self):
+        return f"{self.PREFIX}-{len(self.records) + 1:04d}"
+
+
+@dataclasses.dataclass(frozen=True)
+class Correction:
+    video_id: str
+    segment_id: str
+    original_excerpt: str
+    corrected_text: str
+    evidence_span: str
+    derivation: str
+    affected_artifacts: tuple = ()
+    uncertain_note: str = ""
+
+    @classmethod
+    def new(cls, video_id, segment_id, corrected_text, evidence_span, derivation,
+            original_excerpt="", affected_artifacts=None, uncertain_note=""):
+        if not evidence_span:
+            raise EvidencePolicyError("a correction needs recorded evidence for the change")
+        if not derivation:
+            raise EvidencePolicyError("a correction needs a source-based derivation, not taste")
+        if affected_artifacts is not None and not all(isinstance(a, str) and a for a in affected_artifacts):
+            raise EvidencePolicyError("affected artifact IDs must be non-empty strings")
+        return cls(
+            video_id, segment_id, original_excerpt, corrected_text, evidence_span, derivation,
+            tuple(affected_artifacts or ()), uncertain_note,
+        )
+
+
+class CorrectionLedger(AppendOnlyJsonLog):
+    """Append-only records: `correction` entries never change; dispositions
+    are appended as new records and folded to derive current state."""
+
+    PREFIX = "c"
+
+    def propose(self, video_id, segment_id, original_excerpt, corrected_text, evidence_span,
+                derivation, affected_artifacts=None, uncertain_note=""):
         correction = Correction.new(
-            video_id, segment_id, corrected_text, evidence_span, derivation, original_excerpt
+            video_id, segment_id, corrected_text, evidence_span, derivation, original_excerpt,
+            affected_artifacts, uncertain_note,
         )
         record = {
             "kind": "correction",
-            "correction_id": f"c-{len(self.records) + 1:04d}",
+            "correction_id": self._next_id(),
             "disposition": "proposed",
             "created_at": _now(),
             **dataclasses.asdict(correction),
         }
+        record["affected_artifacts"] = list(record["affected_artifacts"])
         self.records.append(record)
         self._save()
         return record
@@ -253,22 +276,11 @@ def validate_coverage(segments, references):
     return CoverageResult(covered=covered, uncovered=uncovered, total_references=len(references))
 
 
-class DiagramStore:
+class DiagramStore(AppendOnlyJsonLog):
     """Captured diagrams are immutable byte-revisions; replacing a capture
     creates a new revision and approvals bind to the exact revision."""
 
-    def __init__(self, path):
-        self.path = Path(path)
-        self.records = []
-        if self.path.exists():
-            self.records = json.loads(self.path.read_text(encoding="utf-8"))["records"]
-
-    def _save(self):
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        self.path.write_text(
-            json.dumps({"records": self.records}, ensure_ascii=False, indent=2) + "\n",
-            encoding="utf-8",
-        )
+    PREFIX = "d"
 
     def bind(self, video_id, timestamp, capture_sha256, captured_at, revision_id=None, replaces=None):
         if revision_id is not None:
@@ -280,7 +292,7 @@ class DiagramStore:
             return existing
         revision = {
             "kind": "diagram_revision",
-            "revision_id": f"d-{len(self.records) + 1:04d}",
+            "revision_id": self._next_id(),
             "video_id": video_id,
             "timestamp": timestamp,
             "capture_sha256": capture_sha256,
@@ -348,7 +360,7 @@ def build_evidence_index(root, playlist_id=PLAYLIST_ID):
                     for s in segments
                 ],
             }
-        elif VIDEO_ID_RE.fullmatch(path.name.split("_")[0]) and "_" in path.name or path.name.endswith(".srt"):
+        elif "_" in path.name or path.name.endswith(".srt"):
             non_raw_skipped.append(path.name)
     return {
         "playlist_id": playlist_id,

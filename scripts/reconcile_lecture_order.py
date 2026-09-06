@@ -13,10 +13,24 @@ import argparse
 import collections
 import datetime
 import json
+import re
 import sys
 
 TOOL = "yt-dlp[default]==2026.8.19 (uv run --isolated --no-project)"
 NA = "NA"
+
+# Absolute Arabic ordinals/digits that can appear after "المحاضرة". Relative
+# references (السابقة/القادمة = previous/next) carry no absolute number and
+# are never treated as evidence.
+ORDINAL_WORDS = {
+    "الأولى": 1, "الأول": 1, "الثانية": 2, "الثاني": 2, "الثالثة": 3, "الثالث": 3,
+    "الرابعة": 4, "الرابع": 4, "الخامسة": 5, "الخامس": 5, "السادسة": 6, "السادس": 6,
+    "السابعة": 7, "السابع": 7, "الثامنة": 8, "الثامن": 8, "التاسعة": 9, "التاسع": 9,
+    "العاشرة": 10, "العاشر": 10, "الحادية عشرة": 11, "الثانية عشرة": 12,
+    "الثالثة عشرة": 13, "الرابعة عشرة": 14, "الخامسة عشرة": 15,
+    "السادسة عشرة": 16, "السابعة عشرة": 17, "الثامنة عشرة": 18, "التاسعة عشرة": 19,
+}
+LECTURE_WORD_RE = re.compile(r"[مم]حاضرة\s+([0-9]+|[^\s،.!?]+(?:\s+[^\s،.!?]+)?)")
 
 
 def parse_order_tsv(text):
@@ -96,8 +110,62 @@ def numbered_title_count(order):
     return sum(1 for entry in order if entry["title"] and any(m in entry["title"] for m in markers))
 
 
-def build_document(tsv_text, manifest, playlist_id, fetched_at):
+def lecture_number_in(text):
+    """Absolute lecture numbers referenced in a title or transcript
+    ('المحاضرة 5', 'المحاضرة السادسة'). Relative references (السابقة/القادمة)
+    are ignored: they carry no absolute number."""
+    numbers = set()
+    for match in LECTURE_WORD_RE.finditer(text or ""):
+        token = match.group(1).strip()
+        if token.isdigit():
+            numbers.add(int(token))
+            continue
+        for word, number in ORDINAL_WORDS.items():
+            if token == word or token.startswith(word + " "):
+                numbers.add(number)
+                break
+    return numbers
+
+
+def title_lecture_number(title):
+    return next(iter(lecture_number_in(title)), None) if title else None
+
+
+def cross_check_transcript_references(order, data_dir):
+    """Compare each entry's title number against absolute 'المحاضرة N'
+    references in its transcript. A conflict downgrades the position to
+    unknown; missing references leave the playlist evidence unverified."""
+    data_dir = Path(data_dir) if data_dir else None
+    for entry in order:
+        entry["order_evidence"] = {"source": "playlist_metadata", "quality": "playlist_title_only"}
+        if entry["unavailable"]:
+            entry["order_evidence"]["quality"] = "unavailable_entry"
+            continue
+        title_number = title_lecture_number(entry["title"])
+        entry["order_evidence"]["title_lecture_number"] = title_number
+        if title_number is None or data_dir is None:
+            continue
+        raw_path = data_dir / f"{entry['video_id']}_raw.json"
+        if not raw_path.exists():
+            continue
+        payload = json.loads(raw_path.read_text(encoding="utf-8"))
+        transcript_text = " ".join(
+            segment.get("text", "") for segment in payload.get("segments", [])
+        )
+        references = lecture_number_in(transcript_text)
+        entry["order_evidence"]["transcript_lecture_references"] = sorted(references)
+        if references and title_number not in references:
+            entry["order_evidence"]["quality"] = "unknown_transcript_conflict"
+            entry["order_evidence"]["conflict"] = (
+                f"title says المحاضرة {title_number} but transcript references {sorted(references)}"
+            )
+        elif references:
+            entry["order_evidence"]["quality"] = "verified_playlist_and_transcript"
+
+
+def build_document(tsv_text, manifest, playlist_id, fetched_at, data_dir=None):
     order = parse_order_tsv(tsv_text)
+    cross_check_transcript_references(order, data_dir)
     return {
         "playlist_id": playlist_id,
         "fetch": {
@@ -130,18 +198,29 @@ def main(argv=None):
     parser.add_argument("--output", type=Path, default=Path("artifacts/opto-2311/lecture-order.json"))
     parser.add_argument("--playlist", default="PL9fwy3NUQKway0xLRTe7OlRxcQic7R2s-")
     parser.add_argument("--fetched-at", default=None, help="ISO fetch timestamp; defaults to now (UTC)")
+    parser.add_argument(
+        "--data-dir", type=Path, default=None,
+        help="data/<playlist> dir for the transcript cross-check; omit to skip it",
+    )
     args = parser.parse_args(argv)
     root = Path(__file__).resolve().parents[1]
     manifest_path = args.manifest if args.manifest.is_absolute() else root / args.manifest
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))["manifest"]
     fetched_at = args.fetched_at or datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
+    data_dir = args.data_dir if args.data_dir is None else (
+        args.data_dir if args.data_dir.is_absolute() else root / args.data_dir
+    )
+    if data_dir is None:
+        data_dir = root / "data" / args.playlist
     document = build_document(
-        args.tsv.read_text(encoding="utf-8"), manifest, args.playlist, fetched_at
+        args.tsv.read_text(encoding="utf-8"), manifest, args.playlist, fetched_at, data_dir
     )
     output = args.output if args.output.is_absolute() else root / args.output
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(document, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     recon = document["reconciliation"]
+    quality = collections.Counter(entry["order_evidence"]["quality"] for entry in document["order"])
+    print(f"order evidence quality: {dict(quality)}")
     print(f"order entries: {recon['playlist_entries']}; local manifest videos: {recon['local_manifest_videos']}")
     print(f"playlist entries without local raw: {len(recon['playlist_entries_without_local_raw'])}")
     print(f"local videos absent from playlist: {len(recon['local_videos_absent_from_playlist'])}")

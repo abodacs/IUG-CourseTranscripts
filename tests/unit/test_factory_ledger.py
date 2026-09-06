@@ -83,8 +83,8 @@ def test_response_loss_keeps_unknown_reservation_and_blocks_dispatch(ledger):
         dispatch.guarded_dispatch(ledger, FakeProvider(behavior="lost"), unit_id="u1",
                                   model="m", reserved_in=100, reserved_out=40)
     fresh = Ledger(ledger.path)
-    assert fresh.dispatch_blocked_reason() == "unresolved_outcome_or_inflight"
-    with pytest.raises(LedgerPolicyError, match="unresolved_outcome_or_inflight"):
+    assert fresh.dispatch_blocked_reason() == "unresolved_unknown_outcome"
+    with pytest.raises(LedgerPolicyError, match="unresolved_unknown_outcome"):
         fresh.reserve("u2", "m", 10, 10)  # unknown outcome stops ALL new dispatch
     attempt = fresh.conn.execute("SELECT attempt_id FROM reservations").fetchone()["attempt_id"]
     fresh.reconcile_unknown(attempt, 100, 40)
@@ -164,6 +164,50 @@ def test_unknown_reconciliation_above_reservation_writes_observed_usage(ledger):
     notes = ledger.conn.execute("SELECT note FROM observed_usage").fetchall()
     assert any("exceeded its reservation" in row["note"] for row in notes)
     assert ledger.get(attempt)["state"] == "succeeded"
+
+
+def test_inflight_dispatched_attempts_do_not_block_other_workers(ledger):
+    """Ordinary concurrency: a worker with an in-flight dispatched attempt
+    must not stop a second worker (only unknown outcomes block)."""
+    ledger.register_unit("u1")
+    attempt = ledger.reserve("u1", "m", 100, 40)
+    ledger.mark_dispatched(attempt)
+    assert ledger.dispatch_blocked_reason() is None
+    ledger.reserve("u2", "m", 10, 10)  # second worker proceeds
+
+
+def test_outside_subscription_usage_counts_against_the_cap(ledger):
+    ledger.set_allocation("pilot", 200, "tight test cap")
+    dispatch.guarded_dispatch(ledger, FakeProvider(), unit_id="u1", model="m",
+                              reserved_in=100, reserved_out=40)
+    ledger.record_observed_usage("outside:operator-export", 50, 30)
+    assert ledger.observed_outside_total() == 80
+    assert ledger.dispatch_blocked_reason() == "outside_usage_unreconciled"
+    with pytest.raises(LedgerPolicyError, match="outside_usage"):
+        ledger.reserve("u2", "m", 10, 10)
+
+
+def test_quota_period_rollover_re_records_allocation(ledger):
+    ledger.set_allocation("pilot", 100, "period 2026-09")
+    ledger.reserve("u1", "m", 60, 40)  # consumes the period's cap
+    with pytest.raises(LedgerPolicyError, match="allowance pilot"):
+        ledger.reserve("u2", "m", 10, 10)
+    ledger.set_allocation("pilot", 10_000, "period rolled over 2026-10; new measured balance")
+    assert ledger.allocation("pilot") == 10_000
+    assert ledger.dispatch_blocked_reason() is None
+    ledger.reserve("u2", "m", 10, 10)
+
+
+def test_late_response_after_confirmed_failure_cannot_complete(ledger):
+    ledger.register_unit("u1")
+    attempt = ledger.reserve("u1", "m", 100, 40)
+    ledger.mark_dispatched(attempt)
+    ledger.fail_confirmed(attempt)  # operator confirmed nothing was spent
+    with pytest.raises(LedgerPolicyError, match="cannot complete"):
+        ledger.complete(attempt, 100, 40)  # a late provider response arrives
+    ledger.record_observed_usage("late-provider-report", 100, 40,
+                                 note="provider later reported usage for a confirmed-failed attempt")
+    assert ledger.observed_outside_total() == 140
 
 
 def test_allocations_stay_open_until_measured(ledger):

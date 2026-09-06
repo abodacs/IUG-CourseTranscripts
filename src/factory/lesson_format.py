@@ -90,6 +90,7 @@ def parse_lesson(source):
     for node_id, text in paragraphs:
         validate_math_in(text)
         validate_urls_in(text)
+        validate_tables_in(text)
         nodes.append({"node_id": node_id, "text": text})
 
     ids = [node["node_id"] for node in nodes]
@@ -106,12 +107,15 @@ def parse_quiz(payload_text, owner_node):
         payload = json.loads(payload_text)
     except json.JSONDecodeError as error:
         raise DialectError(f"quiz payload is not valid JSON: {error}") from error
-    required = {"quiz_id", "prompt", "choices", "answer", "rationale", "feedback"}
+    required = {"quiz_id", "skill_refs", "prompt", "choices", "answer", "rationale", "feedback"}
     missing = required - set(payload)
     if missing:
         raise DialectError(f"quiz payload missing fields: {sorted(missing)}")
     if not QUIZ_ID_RE.match(payload["quiz_id"]):
         raise DialectError(f"quiz_id violates the naming rule: {payload['quiz_id']!r}")
+    skill_refs = payload["skill_refs"]
+    if not isinstance(skill_refs, list) or not skill_refs or not all(isinstance(s, str) and s for s in skill_refs):
+        raise DialectError("quiz skill_refs must be a non-empty list of skill/outcome IDs")
     if not isinstance(payload["choices"], list) or len(payload["choices"]) < 2:
         raise DialectError("quiz needs at least two choices")
     if not isinstance(payload["answer"], int) or not 0 <= payload["answer"] < len(payload["choices"]):
@@ -122,6 +126,31 @@ def parse_quiz(payload_text, owner_node):
     payload["owner_node"] = owner_node
     validate_urls_in(payload["prompt"])
     return payload
+
+
+def validate_tables_in(text):
+    """Pipe tables: header row, `---` separator, consistent column counts."""
+    rows = [line for line in text.splitlines() if line.strip().startswith("|")]
+    if not rows:
+        return
+    parsed = [[cell.strip() for cell in row.strip().strip("|").split("|")] for row in rows]
+    is_table = len(parsed) >= 2 and all(
+        re.fullmatch(r":?-{3,}:?", cell or "---") for cell in parsed[1]
+    )
+    if not is_table:
+        raise DialectError("pipe table lacks a |---|---| separator row")
+    widths = {len(row) for row in parsed}
+    if len(widths) != 1:
+        raise DialectError("pipe table rows have inconsistent column counts")
+
+
+def render_table(text):
+    rows = [[cell.strip() for cell in line.strip().strip("|").split("|")] for line in text.splitlines() if line.strip().startswith("|")]
+    parts = ["<table>", "<thead>", "<tr>" + "".join(f"<th>{_escape(cell)}</th>" for cell in rows[0]) + "</tr>", "</thead>", "<tbody>"]
+    for row in rows[2:]:
+        parts.append("<tr>" + "".join(f"<td>{_escape(cell)}</td>" for cell in row) + "</tr>")
+    parts.append("</tbody>\n</table>")
+    return "\n".join(parts)
 
 
 def validate_math_in(text):
@@ -184,9 +213,12 @@ def render_html(document, *, title, lang="ar", direction="rtl"):
         quiz_by_node.setdefault(quiz["owner_node"], []).append(quiz)
     for node in document["nodes"]:
         parts.append(f"<section id=\"{_escape(node['node_id'])}\">")
-        for paragraph in node["text"].split("\n\n"):
-            if paragraph.strip():
-                parts.append(f"<p>{_escape(paragraph.strip())}</p>")
+        blocks = node["text"].split("\n\n")
+        for block in blocks:
+            if block.strip().startswith("|"):
+                parts.append(render_table(block))
+            elif block.strip():
+                parts.append(f"<p>{_escape(block.strip())}</p>")
         for quiz in quiz_by_node.get(node["node_id"], []):
             parts.append(f"<form class=\"quiz\" data-quiz-id=\"{_escape(quiz['quiz_id'])}\">")
             parts.append(f"<p class=\"quiz-prompt\">{_escape(quiz['prompt'])}</p>")
@@ -196,7 +228,7 @@ def render_html(document, *, title, lang="ar", direction="rtl"):
                     f" value=\"{choice_index}\"> {_escape(choice)}</label>"
                 )
             parts.append("</form>")
-            parts.append("</section>")
+        parts.append("</section>")
     parts.append("</main>\n</body>\n</html>\n")
     html = "\n".join(parts)
     assert_no_answer_leak(html, document)
@@ -208,7 +240,7 @@ def assert_no_answer_leak(html, document):
     never appear in the rendered HTML. (The answer choice's text legitimately
     appears as one of the displayed choices; which one is correct must not.)"""
     for quiz in document["quizzes"]:
-        if "data-answer" in html or '"answer"' in html or f"value=\"{quiz['answer']}\"></input>" in html:
+        if "data-answer" in html or '"answer"' in html:
             raise DialectError(f"{quiz['quiz_id']}: the answer marker leaked into the HTML")
         if quiz["rationale"] and _escape(quiz["rationale"]) in html:
             raise DialectError(f"{quiz['quiz_id']}: the rationale leaked into the HTML")

@@ -23,6 +23,8 @@ def base_outcome(**overrides):
         "evidence": ["AAAAAAAAAAA:seg:0000"],
         "sufficiency": "supported",
         "prerequisites": [],
+        "intended_learner": "طالب بكالوريوس يحمل متطلبات الفيزياء العامة",
+        "required_components": {"explanation": [], "example": [], "practice": [], "transfer_task": []},
     }
     outcome.update(overrides)
     return outcome
@@ -94,6 +96,25 @@ def test_lesson_grouping_must_be_prerequisite_closed():
         ],
     }
     with pytest.raises(outcomes.MatrixError, match="not in the same or an earlier lesson"):
+        outcomes.validate_outcome_matrix(matrix, evidence_index())
+
+
+def test_outcome_missing_learner_or_components_rejected():
+    with pytest.raises(outcomes.MatrixError, match="intended learner"):
+        outcomes.validate_outcome_matrix(base_matrix(intended_learner=""), evidence_index())
+    with pytest.raises(outcomes.MatrixError, match="required_components"):
+        outcomes.validate_outcome_matrix(base_matrix(required_components=None), evidence_index())
+
+
+def test_unassigned_outcomes_rejected():
+    matrix = {
+        "outcomes": [
+            base_outcome(),
+            base_outcome(outcome_id="O-002"),
+        ],
+        "lessons": [{"lesson_id": "L-001", "outcome_ids": ["O-001"]}],
+    }
+    with pytest.raises(outcomes.MatrixError, match="assigned to no lesson"):
         outcomes.validate_outcome_matrix(matrix, evidence_index())
 
 

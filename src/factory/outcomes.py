@@ -41,6 +41,15 @@ def validate_outcome_matrix(matrix, evidence_index):
             outcome.get("sufficiency") in SUFFICIENCY_VALUES,
             f"{oid}: sufficiency must be one of {SUFFICIENCY_VALUES}",
         )
+        _require(
+            isinstance(outcome.get("intended_learner"), str) and outcome["intended_learner"],
+            f"{oid}: the intended learner must be recorded",
+        )
+        for component in ("explanation", "example", "practice", "transfer_task"):
+            _require(
+                isinstance((outcome.get("required_components") or {}).get(component), list),
+                f"{oid}: required_components.{component} IDs must be recorded (possibly empty)",
+            )
         evidence = outcome.get("evidence") or []
         _require(evidence, f"{oid}: at least one evidence reference is required")
         for ref in evidence:
@@ -68,6 +77,8 @@ def validate_outcome_matrix(matrix, evidence_index):
         _require(lid and lid not in lesson_order, f"lesson_id missing or duplicated: {lid!r}")
         lesson_order[lid] = position
     seen = set()
+    by_id = {o["outcome_id"]: o for o in matrix["outcomes"]}
+    lesson_of = {}
     for lesson in matrix["lessons"]:
         outcome_ids = lesson.get("outcome_ids") or []
         _require(outcome_ids, f"{lesson['lesson_id']}: lesson has no outcomes")
@@ -75,16 +86,15 @@ def validate_outcome_matrix(matrix, evidence_index):
             _require(oid in known_outcomes, f"{lesson['lesson_id']}: unknown outcome {oid}")
             _require(oid not in seen, f"{oid}: assigned to more than one lesson")
             seen.add(oid)
-        by_id = {o["outcome_id"]: o for o in matrix["outcomes"]}
+            lesson_of[oid] = lesson["lesson_id"]
         for oid in outcome_ids:
             for prereq in by_id[oid].get("prerequisites") or []:
-                prereq_lessons = [
-                    other["lesson_id"] for other in matrix["lessons"] if prereq in (other.get("outcome_ids") or [])
-                ]
                 _require(
-                    prereq_lessons and lesson_order[prereq_lessons[0]] <= lesson_order[lesson["lesson_id"]],
+                    prereq in lesson_of and lesson_order[lesson_of[prereq]] <= lesson_order[lesson["lesson_id"]],
                     f"{lesson['lesson_id']}: prerequisite {prereq} is not in the same or an earlier lesson",
                 )
+    unassigned = known_outcomes - seen
+    _require(not unassigned, f"outcomes assigned to no lesson: {sorted(unassigned)}")
     return matrix
 
 

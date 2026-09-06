@@ -2,9 +2,12 @@
 
 **Status:** DRAFT prepared by the agent on 2026-09-06. **Subject reviewer: OPEN — nothing here is approved.** This sheet is the reviewer's first-review input (30–45 min): work one worked example and one unseen task per lecture independently, before any judge exists. Candidate skills are drafts with recorded evidence spans; verdicts and corrections belong to the reviewer.
 
-## Verified lecture order
+## Lecture order — evidence quality
 
-Fetched with the pinned toolchain (`yt-dlp[default]==2026.8.19`, flat-playlist, metadata only) on 2026-09-06 → `artifacts/opto-2311/lecture-order.json` (local):
+Fetched with the pinned toolchain (`yt-dlp[default]==2026.8.19`, flat-playlist, metadata only) on 2026-09-06 → `artifacts/opto-2311/lecture-order.json` (local). **Order evidence: playlist metadata + numbered titles, cross-checked against transcripts; not yet reviewer-confirmed.**
+
+- **106 playlist entries ↔ 106 manifest videos; zero missing in either direction.** The local corpus and the live playlist correspond exactly.
+- **Transcript cross-check (plan §5.2): 0 conflicts.** Absolute «المحاضرة N» references in transcripts never contradict the title numbers; position 1 is double-verified (playlist + transcript). Most transcripts use only relative references (السابقة/القادمة), so 104 positions stand on playlist metadata + numbered titles — recorded per-position as `order_evidence.quality` in the artifact.
 
 - **106 playlist entries ↔ 106 manifest videos; zero missing in either direction.** The local corpus and the live playlist correspond exactly.
 - **`SAq013FtOLQ` sits at position 8 and was unavailable at fetch (title/duration NA)** — first real disposition evidence: it contributes no teaching content *now*; curriculum impact still needs the reviewer's judgment (CF-03).

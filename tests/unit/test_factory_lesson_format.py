@@ -14,6 +14,7 @@ def lesson_with(quiz_payload=None, body=None):
     quiz = quiz_payload if quiz_payload is not None else json.dumps(
         {
             "quiz_id": "opto2311:quiz:q1",
+            "skill_refs": ["O-001"],
             "prompt": "ما وحدة قوة العدسة؟",
             "choices": ["ديوبتر", "متر"],
             "answer": 0,
@@ -64,13 +65,17 @@ def test_math_subset_is_enforced():
 
 
 def test_quiz_payload_failures():
-    bad = json.dumps({"quiz_id": "x:quiz:q", "prompt": "س", "choices": ["أ", "ب"], "answer": 5,
-                      "rationale": "ر", "feedback": "ف"}, ensure_ascii=False)
+    bad = json.dumps({"quiz_id": "x:quiz:q", "skill_refs": ["O-1"], "prompt": "س", "choices": ["أ", "ب"],
+                      "answer": 5, "rationale": "ر", "feedback": "ف"}, ensure_ascii=False)
     with pytest.raises(lf.DialectError, match="in range"):
         lf.parse_lesson(lesson_with(bad))
-    missing = {"quiz_id": "x:quiz:q", "prompt": "س", "choices": ["أ", "ب"], "answer": 0}
+    missing = {"quiz_id": "x:quiz:q", "skill_refs": ["O-1"], "prompt": "س", "choices": ["أ", "ب"], "answer": 0}
     with pytest.raises(lf.DialectError, match="missing fields"):
         lf.parse_lesson(lesson_with(json.dumps(missing, ensure_ascii=False)))
+    no_skills = {"quiz_id": "x:quiz:q", "skill_refs": [], "prompt": "س", "choices": ["أ", "ب"], "answer": 0,
+                 "rationale": "ر", "feedback": "ف"}
+    with pytest.raises(lf.DialectError, match="skill_refs"):
+        lf.parse_lesson(lesson_with(json.dumps(no_skills, ensure_ascii=False)))
     unclosed = "[opto2311:node:a]\nنص\n```quiz\n{}\n"
     with pytest.raises(lf.DialectError, match="not closed"):
         lf.parse_lesson(unclosed)
@@ -122,6 +127,24 @@ def test_answer_index_is_undetectable_in_markup():
         assert f'value="{choice_index}"' in html  # all choices rendered equally
     assert "data-answer" not in html
     assert "correct" not in html.lower()
+
+
+def test_tables_validate_and_render():
+    table = "| الحالة | المعادلة |\n|---|---|\n| عدسة مجمعة | $$\\frac{1}{f} > 0$$ |\n"
+    document = lf.parse_lesson(f"[opto2311:node:a]\n{table}")
+    html = lf.render_html(document, title="t")
+    assert "<table>" in html and "<th>الحالة</th>" in html
+    with pytest.raises(lf.DialectError, match="separator row"):
+        lf.parse_lesson("[opto2311:node:a]\n| أ | ب |\n| ج | د |\n")
+    with pytest.raises(lf.DialectError, match="inconsistent column"):
+        lf.parse_lesson("[opto2311:node:a]\n| أ | ب |\n|---|---|\n| ج |\n")
+
+
+def test_renderer_html_is_wellformed_per_node():
+    body = "[opto2311:node:a]\nفقرة أولى\n\nفقرة ثانية\n"
+    document = lf.parse_lesson(lesson_with(body=body))
+    html = lf.render_html(document, title="t")
+    assert html.count("<section") == html.count("</section>") == 1
 
 
 def test_oversized_document_rejected():

@@ -79,7 +79,6 @@ class Ledger:
         self.conn = sqlite3.connect(self.path, isolation_level=None)
         self.conn.row_factory = sqlite3.Row
         self.conn.executescript(SCHEMA)
-        self._sequence = 0
 
     def close(self):
         self.conn.close()
@@ -146,20 +145,32 @@ class Ledger:
 
     # -- reservation lifecycle ---------------------------------------------
     def dispatch_blocked_reason(self):
-        """Global stop conditions: any unproven outcome or over-reservation
-        stops new dispatch until reconciled."""
+        """Global stop conditions: an unproven outcome (work whose spend
+        cannot be measured) stops new dispatch; ordinary in-flight
+        `dispatched` attempts are normal concurrent operation. Outside
+        observed usage eats the same subscription cap."""
         row = self.conn.execute(
-            "SELECT COUNT(*) AS n FROM reservations WHERE state IN ('outcome_unknown','dispatched')"
+            "SELECT COUNT(*) AS n FROM reservations WHERE state = 'outcome_unknown'"
         ).fetchone()
         if row["n"]:
-            return "unresolved_outcome_or_inflight"
+            return "unresolved_unknown_outcome"
         for scope in ("pilot",):
             cap = self.allocation(scope)
             if cap is None:
                 return f"allocation_{scope}_open"
             if self.consumed(scope) > cap:
                 return "over_reservation_reconcile"
+        outside = self.observed_outside_total()
+        if cap is not None and outside and self.consumed(scope) + outside > cap:
+            return "outside_usage_unreconciled"
         return None
+
+    def observed_outside_total(self):
+        row = self.conn.execute(
+            "SELECT COALESCE(SUM(in_tokens + out_tokens), 0) AS total FROM observed_usage"
+            " WHERE source != 'reconciliation'"
+        ).fetchone()
+        return row["total"]
 
     def reserve(self, unit_id, model, reserved_in, reserved_out, run_id="pilot"):
         if reserved_in < 0 or reserved_out < 0:
@@ -176,7 +187,6 @@ class Ledger:
                 raise LedgerPolicyError(
                     f"dispatch refused: allowance {scope} has {self.remaining(scope)} < {needed} tokens"
                 )
-        self._sequence += 1
         row = self.conn.execute("SELECT COALESCE(MAX(rowid), 0) + 1 AS next FROM reservations").fetchone()
         attempt_id = f"a-{row['next']:06d}"
         self.conn.execute(
