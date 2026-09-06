@@ -208,6 +208,8 @@ Captured fully (S4):
 
 ## 4. Patterns worth stealing
 
+*Adopted patterns are propagated into the [platform brief](platform-map-brief.md) (constraints 4 and 6 and the benchmarks paragraph), the [skills map](skills-map.md) (graphify UX bar, client-side search, taste-skill brief), and the pilot release work in [NEXT_STEPS.md](NEXT_STEPS.md) (milestone 4).*
+
 1. **Ship the map before the course.** The roadmap graph and the unfinished course's working notes are public; the map sells the sequenced product (S3, S15).
 2. **Progress is a graph property.** Progress filters into the knowledge graph (S6) and carries across papers (S2) — completion is visible on every structural view, not just a course checklist.
 3. **Alias search in the concept graph.** "Search concepts, aliases, and lessons" (S6) is the exact hook Arabic/English terminology needs.

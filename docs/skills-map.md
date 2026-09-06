@@ -32,7 +32,7 @@ Companion to [platform-map-brief.md](platform-map-brief.md). Research date: 2026
 
 ### graphify (Graphify-Labs) ✅ — the direct hit
 `/graphify` turns any folder into a queryable knowledge graph. Ingests **markdown/docs** (plus code via AST, PDFs via citation mining, images via vision). Outputs `graph.json`, interactive `graph.html`, an **Obsidian vault**, a **Wikipedia-style `wiki/` per community**, and a report (god nodes, surprising connections). Every edge tagged EXTRACTED / INFERRED / AMBIGUOUS. Apache-2.0, 114k★, pushed today.
-- **Use for:** brief constraint 6 — concept nodes + typed edges across the corpus, and a strong candidate substrate for the per-course/lesson openwiki layer (evaluate its wiki output vs. OKF v0.2 representation).
+- **Use for:** brief constraint 6 — concept nodes + typed edges across the corpus, and a strong candidate substrate for the per-course/lesson openwiki layer (evaluate its wiki output vs. OKF v0.2 representation). The UX bar on top of this output is Fanout's Knowledge Topography ([fanout-feature-analysis.md](fanout-feature-analysis.md) §3.3): a first-class destination page, search over concepts/aliases/lessons (the Arabic ↔ English term hook), a course filter, progress-tinted nodes, and a drag-to-neighbors view — none ship with graphify; treat them as our layer.
 - **Watch out:** Arabic NLP quality rides on the underlying model, not graphify; edges need our pedagogy-aware ontology typing. Markdown/docs semantic extraction also uses a model; budget it alongside wiki generation, not just image ingestion. Verify outputs against the chosen revision. [Upstream runtime distinction](https://github.com/Graphify-Labs/graphify#readme).
 
 ## 3. Lesson visuals (Excalidraw + motion)
@@ -68,6 +68,10 @@ Very well-crafted skill ("simplify the telling, never the claims", standalone-re
 Installed skill version 0.2.0 was read for this documentation pass. Reported MIT. Its output rules include: action first, numbered steps, ≤5-item lists, visible progress, time estimates, no preamble/filler.
 - **Use for:** (a) output style for our own build agents; (b) more importantly, the rules translate directly into **lesson formatting for attention** — chunking, progress indicators, next-step cues in the reader UI. Rules are trivially translatable to Arabic; the repo has no Arabic translation.
 
+### Client-side search index (Pagefind-style) 📐 pattern
+Fanout's Cmd+K searches lessons, papers, tools, and notes with course-aware scopes ([fanout-feature-analysis.md](fanout-feature-analysis.md) §3.14). The static-first analogue is a prebuilt client-side search index (Pagefind-style; MIT reported — verify the chosen revision before adoption) with course context as the scope filter.
+- **Use for:** the platform search surface, post-v1. The pattern to keep: one index, scopes that follow the active course.
+
 ## 5. Writing style — Arabic & English
 
 ### Arab-Writer (turky015-oss) 📐 reference candidate — reuse permission unresolved
@@ -83,7 +87,7 @@ Applies the GOV.UK style guide: front-load everything, one idea per sentence (~1
 
 ### taste-skill (Leonxlnx) 📦 already installed
 84k★ anti-slop frontend framework (13 skills: design dials, GSAP skeletons, pre-flight checks). Already on this machine as `design-taste-frontend` (+ `-v1`, `gpt-taste`, `minimalist-ui`, `brandkit`, `image-to-code`, …).
-- **Use for:** the Apple-grade bar on course landing pages and the reader UI. Zero RTL awareness — always run alongside the RTL skill below.
+- **Use for:** the Apple-grade bar on course landing pages and the reader UI. Brief it with the adopted Fanout design system ([fanout-feature-analysis.md](fanout-feature-analysis.md) §3.15, §4.11): one accent color per course carried across every surface, one identical card grammar everywhere — rebuilt RTL-first, Thmanyah stays the house typeface. Zero RTL awareness — always run alongside the RTL skill below.
 
 ### ui-skills.com (ibelick — not shadcn; shadcn contributes) ✅
 Curated hub + `npx ui-skills` CLI + registry (~120 skills). First-party: `ui-skills-root` (router), **`improve-ui`** (audits UI against its own design evidence → implementation plan), `baseline-ui`, **`fixing-accessibility`**, `fixing-motion-performance`, `create-design-md`.
