@@ -28,6 +28,7 @@
 | [platform-map-brief.md](platform-map-brief.md) | The broader courses platform: reading experience, RTL, quizzes, graph/wiki, and stack-comparison scope. | You are planning platform features beyond the factory. |
 | [skills-map.md](skills-map.md) | Candidate skills/tools, their possible roles, license questions, and operating costs. | You are choosing a tool for a specific stage. |
 | [fanout-feature-analysis.md](fanout-feature-analysis.md) | Feature-by-feature disassembly of Fanout (fanout.sh) from the `inspiring/fanout-company/` screenshots, with adopt/adapt/skip verdicts against the platform map. Its adopted patterns are folded into the brief, skills map, and pilot milestones. | You are designing a platform feature and want the benchmark or the reason to skip. |
+| [context-management-mcp-token-cost.md](context-management-mcp-token-cost.md) | Measured "empty prompt" token cost of every installed MCP server and the skills index, industry benchmarks, and the ranked context-management fixes for this machine. | You are tuning agent token budgets, quota burn, or fanout per-agent overhead. |
 
 The repository's [root README](../README.md) is the short project entrypoint with setup, test, and inventory commands.
 
