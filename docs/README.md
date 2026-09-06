@@ -15,8 +15,7 @@
 | [content-factory-v1-goal.md](content-factory-v1-goal.md) | The v1 objective, fixed decisions, quality/cost rules, and definition of done. | You need to decide what v1 must deliver. |
 | [KEYFRAME_CAPTURE.md](KEYFRAME_CAPTURE.md) | Working JSON-to-video-frame tool, commands, verification, and evaluation of the Answer.AI workflow. | You need to recover a diagram from a lecture. |
 | [content-factory-v1-pilot.md](content-factory-v1-pilot.md) | The selected optics course, verified local counts, challenge cases, and review fields. | You are preparing sources or arranging a reviewer. |
-| [pilot-opto-2311-plan.md](pilot-opto-2311-plan.md) | The full ticket-by-ticket pilot execution plan: phases CF-01…CF-12, gates, artifacts, budget checkpoints, schedule, risks, and session briefs. | You are executing, scheduling, or resourcing the pilot. |
-| [pilot-opto-2311-production-review.md](pilot-opto-2311-production-review.md) | Production-cycle review: release-gate conflicts, missing operational controls, proposed ticket additions, and discovery drills. | You are closing blind spots before dispatch, publication, or production acceptance. |
+| [pilot-opto-2311-plan.md](pilot-opto-2311-plan.md) | The full production plan: CF-01…CF-13, evidence/qualification subtickets, release gates, operations and repair, 21 control findings, discovery drills, and session briefs. | You are executing, scheduling, or resourcing the pilot. |
 
 ## Reference files
 
