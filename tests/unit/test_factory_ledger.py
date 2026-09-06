@@ -1,5 +1,7 @@
 """CF-04 failure probes: every plan-required fault, proven against a FAKE
 provider. No real provider is ever contacted."""
+import threading
+
 import pytest
 
 from src.factory import dispatch
@@ -216,3 +218,69 @@ def test_allocations_stay_open_until_measured(ledger):
         ledger.remaining("run:cf07")
     ledger.set_allocation("run:cf07", 1_000, "measured from CF-07 actuals (placeholder evidence)")
     assert ledger.remaining("run:cf07") == 1_000
+
+
+def test_simultaneous_workers_cannot_overreserve_the_last_allowance(tmp_path):
+    """The plan's contention probe with two REAL workers: separate
+    connections racing the same last allowance must yield exactly one
+    reservation — a lost update would over-reserve the shared cap."""
+    book_path = tmp_path / "race.sqlite"
+    primer = Ledger(book_path)
+    primer.set_allocation("pilot", 200, "exactly one 200-token reservation fits")
+    primer.close()
+    results, errors = [], []
+    barrier = threading.Barrier(2)
+
+    def worker(unit_id):
+        book = Ledger(book_path)
+        barrier.wait()  # both connections hit reserve() at the same moment
+        try:
+            results.append(book.reserve(unit_id, "m", 120, 80))
+        except LedgerPolicyError as refused:
+            errors.append(str(refused))
+        finally:
+            book.close()
+
+    threads = [threading.Thread(target=worker, args=(u,)) for u in ("u1", "u2")]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+
+    assert len(results) == 1, f"expected exactly one winner, got {results}"
+    assert len(errors) == 1 and "allowance" in errors[0]
+    fresh = Ledger(book_path)
+    assert fresh.consumed("pilot") == 200  # held, not double-counted
+    assert fresh.dispatch_blocked_reason() is None  # fully reserved, not oversubscribed
+
+
+def test_concurrent_retry_counting_cannot_exceed_the_bound(tmp_path):
+    """Durable attempt limits under contention: N workers racing
+    count_event on one unit must never push a counter past its bound."""
+    book_path = tmp_path / "lineage-race.sqlite"
+    Ledger(book_path).close()
+    succeeded, exhausted = [], []
+    barrier = threading.Barrier(4)
+
+    def worker():
+        book = Ledger(book_path)
+        barrier.wait()
+        try:
+            book.count_event("u1", "transient_retry")
+            succeeded.append(True)
+        except LineageExhausted:
+            exhausted.append(True)
+        finally:
+            book.close()
+
+    threads = [threading.Thread(target=worker) for _ in range(4)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+
+    assert len(succeeded) == 2  # the bound itself, never more
+    assert len(exhausted) == 2
+    fresh = Ledger(book_path)
+    assert fresh.lineage("u1")["transient_retries"] == 2
+    assert fresh.lineage("u1")["status"] == "quarantined"  # and the quarantine persisted
