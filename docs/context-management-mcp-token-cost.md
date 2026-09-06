@@ -27,7 +27,7 @@ Note: the −24% delta is smaller than the ~35k of disabled schema tokens becaus
 - **Plugins disabled** in `~/.claude/settings.json` (backup `settings.json.bak-round2-20260906`): `mattpocock-skills` (its skills remain available under identical bare names from `~/.agents/skills`/`~/.zcode/skills`) and `marketing-board` (zero uses ever). Heavily-used plugins untouched: typescript-lsp (4,621 uses), pyright-lsp (3,082), caveman (237), pyright (495).
 - **Correction to round 1:** `expect` was called "dead weight" — usage data shows 13 calls, the last 3 days ago. Retested after clearing the corrupted npx cache: `expect-cli` fails to launch at `@latest` *and* `0.1.3` even on fresh installs (upstream ESM breakage, `--help` exits 1). It stays disabled until upstream fixes it; restore from `~/.claude/disabled-mcp-servers.json`, or use it from Cursor where it is also configured.
 
-Repo-side round-2 changes (this branch): added a root **`CLAUDE.md`** (with an **`AGENTS.md`** symlink) so agents orient from one ~350-token file instead of re-reading the map each session, and converted two blindspots evidence links that point into the git-ignored local corpus to code spans (they broke for every fresh clone/GitHub reader, verified by link check across all docs).
+Repo-side round-2 changes (this branch): added a root **`AGENTS.md`** (with a **`CLAUDE.md`** symlink) so agents orient from one ~350-token file instead of re-reading the map each session, and converted two blindspots evidence links that point into the git-ignored local corpus to code spans (they broke for every fresh clone/GitHub reader, verified by link check across all docs).
 
 ---
 
