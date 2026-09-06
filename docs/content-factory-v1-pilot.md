@@ -1,6 +1,6 @@
 # Content Factory v1 — optics pilot packet
 
-**Quick read:** The selected course, actual local coverage, challenge cases, and reviewer inputs. Open [the first task](NEXT_STEPS.md#ticket-cf-01-build-the-optics-source-manifest) to prepare the sources.
+**Quick read:** The selected course, actual local coverage, challenge cases, and reviewer inputs. Open [the current task](NEXT_STEPS.md#next-task-prepare-the-scope-review-evidence) to prepare the sources.
 
 **Source rule:** reprocess the optics course from transcripts. Use its matching YouTube lectures only to recover needed diagrams. Legacy generated chapters/lessons remain inventory artifacts; their presence does not skip v1 work. See the [binding policy](content-factory-v1-goal.md#allowed-teaching-sources--user-confirmed).
 
@@ -61,4 +61,4 @@ These are small validation excerpts, not additional whole-course launches. Readi
 
 Per-outcome records must capture the learner/task/prerequisites; original evidence IDs/timecodes/revisions; sufficiency and correction decisions; worked example/practice/unaided transfer task with independent answers; required lesson/quiz/diagram/wiki/graph IDs. The detailed rules live in [the resolution](content-factory-v1-resolution.md).
 
-**Next action — under 2 minutes:** open [Ticket CF-01](NEXT_STEPS.md#ticket-cf-01-build-the-optics-source-manifest). Offline preparation can proceed while reviewer availability is being arranged.
+**Next action — under 2 minutes:** open [the scope-review preparation task](NEXT_STEPS.md#next-task-prepare-the-scope-review-evidence). Offline preparation can proceed while reviewer availability is being arranged.

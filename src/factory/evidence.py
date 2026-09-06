@@ -163,6 +163,8 @@ class Correction:
             raise EvidencePolicyError("a correction needs recorded evidence for the change")
         if not derivation:
             raise EvidencePolicyError("a correction needs a source-based derivation, not taste")
+        if not isinstance(original_excerpt, str) or not original_excerpt.strip():
+            raise EvidencePolicyError("a correction needs a non-empty original excerpt")
         if affected_artifacts is not None and not all(isinstance(a, str) and a for a in affected_artifacts):
             raise EvidencePolicyError("affected artifact IDs must be non-empty strings")
         return cls(
@@ -213,7 +215,7 @@ class CorrectionLedger(AppendOnlyJsonLog):
         self._save()
 
     def state(self):
-        corrections = {r["correction_id"]: r for r in self.records if r["kind"] == "correction"}
+        corrections = {r["correction_id"]: dict(r) for r in self.records if r["kind"] == "correction"}
         for record in self.records:
             if record["kind"] == "disposition" and record["correction_id"] in corrections:
                 corrections[record["correction_id"]]["disposition"] = record["decision"]
@@ -247,7 +249,9 @@ def apply_corrections(segments, ledger):
             quarantined.append(cid)
             continue
         text = edits[target]
-        if record["original_excerpt"] and record["original_excerpt"] not in text:
+        if not isinstance(record["original_excerpt"], str) or not record["original_excerpt"].strip():
+            raise EvidenceIntegrityError(f"{cid}: recorded original excerpt is empty")
+        if record["original_excerpt"] not in text:
             raise EvidenceIntegrityError(
                 f"{cid}: recorded excerpt is no longer present in {target}; evidence drifted"
             )

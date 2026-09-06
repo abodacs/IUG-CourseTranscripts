@@ -86,7 +86,7 @@ def test_lecture_number_extraction_handles_digits_and_ordinals():
     assert order_tool.title_lecture_number("مقدمة عامة") is None
 
 
-def test_transcript_conflict_downgrades_position_to_unknown(tmp_path):
+def test_transcript_mentions_remain_hints_without_identity_verdicts(tmp_path):
     order = order_tool.parse_order_tsv(
         "1\tAAAAAAAAAAA\tالمحاضرة 2\t900\n2\tBBBBBBBBBBB\tالمحاضرة 3\t900\n3\tCCCCCCCCCCC\tالمحاضرة 4\t900\n"
     )
@@ -95,9 +95,12 @@ def test_transcript_conflict_downgrades_position_to_unknown(tmp_path):
     (tmp_path / "BBBBBBBBBBB_raw.json").write_text(json.dumps(
         {"segments": [{"text": "كما رأينا في المحاضرة الثالثة"}]}, ensure_ascii=False))
     order_tool.cross_check_transcript_references(order, tmp_path)
-    assert order[0]["order_evidence"]["quality"] == "unknown_transcript_conflict"
-    assert "conflict" in order[0]["order_evidence"]
-    assert order[1]["order_evidence"]["quality"] == "verified_playlist_and_transcript"
+    assert order[0]["order_evidence"]["quality"] == "playlist_title_only"
+    assert order[0]["order_evidence"]["transcript_lecture_references"] == [5]
+    assert "conflict" not in order[0]["order_evidence"]
+    assert order[1]["order_evidence"]["quality"] == "playlist_title_only"
+    assert order[1]["order_evidence"]["transcript_lecture_references"] == [3]
+    assert [entry["position"] for entry in order] == [1, 2, 3]
     assert order[2]["order_evidence"]["quality"] == "playlist_title_only"  # no transcript file
     unavailable = order_tool.parse_order_tsv("1\tSAq013FtOLQ\tNA\tNA\n")
     order_tool.cross_check_transcript_references(unavailable, tmp_path)
