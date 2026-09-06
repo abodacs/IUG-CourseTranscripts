@@ -18,6 +18,19 @@ Note: the −24% delta is smaller than the ~35k of disabled schema tokens becaus
 
 ---
 
+## ROUND 2 (2026-09-06): skill-index prune, guided by usage data — applied
+
+`~/.claude.json` records per-skill/per-plugin usage across 3,063 startups, so pruning ran on evidence, not vibes:
+
+- **Skills index: ~12,499 → ~10,510 tokens** (204 → 165 indexed `SKILL.md` files). 39 skill dirs with **zero recorded use ever** moved to `~/.agents/skills-disabled/` (manifest + `restore.sh` inside; restore one or all).
+- **Cross-reference safety filter:** a first pass flagged 55 candidates, but 16 of them (`polish`, `clarify`, `audit`, `extract`, `critique`, `harden`, …) are referenced by heavily-used kept skills (`impeccable`, `thermo-nuclear-code-quality-review`, …) — those were **spared**. Keep-policy union: ever used, member of a used suite, modified in 30 days, or referenced by a kept skill.
+- **Plugins disabled** in `~/.claude/settings.json` (backup `settings.json.bak-round2-20260906`): `mattpocock-skills` (its skills remain available under identical bare names from `~/.agents/skills`/`~/.zcode/skills`) and `marketing-board` (zero uses ever). Heavily-used plugins untouched: typescript-lsp (4,621 uses), pyright-lsp (3,082), caveman (237), pyright (495).
+- **Correction to round 1:** `expect` was called "dead weight" — usage data shows 13 calls, the last 3 days ago. Retested after clearing the corrupted npx cache: `expect-cli` fails to launch at `@latest` *and* `0.1.3` even on fresh installs (upstream ESM breakage, `--help` exits 1). It stays disabled until upstream fixes it; restore from `~/.claude/disabled-mcp-servers.json`, or use it from Cursor where it is also configured.
+
+Repo-side round-2 changes (this branch): added a root **`CLAUDE.md`** (with an **`AGENTS.md`** symlink) so agents orient from one ~350-token file instead of re-reading the map each session, and converted two blindspots evidence links that point into the git-ignored local corpus to code spans (they broke for every fresh clone/GitHub reader, verified by link check across all docs).
+
+---
+
 **Question:** what does it cost us, in tokens, to have our MCP servers and tool/skill definitions loaded before any real work starts — and what is the best context-management practice around it?
 
 **Method:** measured on this machine (2026-09-06) by launching the actual MCP servers, calling `tools/list`, and tokenizing the exact JSON schemas with `tiktoken o200k_base` (within ~10% of Claude/GLM tokenizers). Skills index measured from the 204 installed `SKILL.md` frontmatters. Industry benchmarks from the sources at the bottom.
