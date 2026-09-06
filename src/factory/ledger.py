@@ -78,7 +78,15 @@ class Ledger:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.conn = sqlite3.connect(self.path, isolation_level=None)
         self.conn.row_factory = sqlite3.Row
+        self.conn.execute("PRAGMA busy_timeout = 5000")
         self.conn.executescript(SCHEMA)
+
+    def _begin_write(self):
+        """Serialize check-then-write sequences across workers: BEGIN
+        IMMEDIATE takes the write lock up front, so an allowance check and
+        its insert (or a lineage check and its increment) are atomic even
+        against another process holding its own connection."""
+        self.conn.execute("BEGIN IMMEDIATE")
 
     def close(self):
         self.conn.close()
@@ -129,19 +137,29 @@ class Ledger:
 
     def count_event(self, unit_id, kind):
         column = {"transient_retry": "transient_retries", "repair": "repairs", "premium_escalation": "premium_escalations"}[kind]
-        lineage = self.lineage(unit_id)
-        if lineage["status"] == "quarantined":
-            raise LineageExhausted(f"{unit_id} is quarantined")
-        if lineage[column] >= LIMITS[column]:
+        self._begin_write()
+        try:
+            lineage = self.lineage(unit_id)
+            if lineage["status"] == "quarantined":
+                self.conn.execute("ROLLBACK")
+                raise LineageExhausted(f"{unit_id} is quarantined")
+            if lineage[column] >= LIMITS[column]:
+                self.conn.execute(
+                    "UPDATE unit_lineage SET status='quarantined' WHERE unit_id=?", (unit_id,)
+                )
+                self.conn.execute("COMMIT")  # the quarantine itself must persist
+                raise LineageExhausted(
+                    f"{unit_id}: {kind} would exceed the bound of {LIMITS[column]}; unit quarantined"
+                )
             self.conn.execute(
-                "UPDATE unit_lineage SET status='quarantined' WHERE unit_id=?", (unit_id,)
+                f"UPDATE unit_lineage SET {column} = {column} + 1 WHERE unit_id=?", (unit_id,)
             )
-            raise LineageExhausted(
-                f"{unit_id}: {kind} would exceed the bound of {LIMITS[column]}; unit quarantined"
-            )
-        self.conn.execute(
-            f"UPDATE unit_lineage SET {column} = {column} + 1 WHERE unit_id=?", (unit_id,)
-        )
+            self.conn.execute("COMMIT")
+        except LineageExhausted:
+            raise
+        except BaseException:
+            self.conn.execute("ROLLBACK")
+            raise
 
     # -- reservation lifecycle ---------------------------------------------
     def dispatch_blocked_reason(self):
@@ -175,25 +193,31 @@ class Ledger:
     def reserve(self, unit_id, model, reserved_in, reserved_out, run_id="pilot"):
         if reserved_in < 0 or reserved_out < 0:
             raise LedgerPolicyError("reservations are non-negative integer tokens")
-        blocked = self.dispatch_blocked_reason()
-        if blocked:
-            raise LedgerPolicyError(f"dispatch refused: {blocked}")
-        lineage = self.lineage(unit_id)
-        if lineage["status"] == "quarantined":
-            raise LedgerPolicyError(f"dispatch refused: unit {unit_id} is quarantined")
-        needed = int(reserved_in) + int(reserved_out)
-        for scope in {run_id, "pilot"}:
-            if self.remaining(scope) < needed:
-                raise LedgerPolicyError(
-                    f"dispatch refused: allowance {scope} has {self.remaining(scope)} < {needed} tokens"
-                )
-        row = self.conn.execute("SELECT COALESCE(MAX(rowid), 0) + 1 AS next FROM reservations").fetchone()
-        attempt_id = f"a-{row['next']:06d}"
-        self.conn.execute(
-            "INSERT INTO reservations (attempt_id, unit_id, model, reserved_in, reserved_out,"
-            " state, run_id, created_at) VALUES (?,?,?,?,?,?,?,?)",
-            (attempt_id, unit_id, model, int(reserved_in), int(reserved_out), "reserved", run_id, _now()),
-        )
+        self._begin_write()
+        try:
+            blocked = self.dispatch_blocked_reason()
+            if blocked:
+                raise LedgerPolicyError(f"dispatch refused: {blocked}")
+            lineage = self.lineage(unit_id)
+            if lineage["status"] == "quarantined":
+                raise LedgerPolicyError(f"dispatch refused: unit {unit_id} is quarantined")
+            needed = int(reserved_in) + int(reserved_out)
+            for scope in {run_id, "pilot"}:
+                if self.remaining(scope) < needed:
+                    raise LedgerPolicyError(
+                        f"dispatch refused: allowance {scope} has {self.remaining(scope)} < {needed} tokens"
+                    )
+            row = self.conn.execute("SELECT COALESCE(MAX(rowid), 0) + 1 AS next FROM reservations").fetchone()
+            attempt_id = f"a-{row['next']:06d}"
+            self.conn.execute(
+                "INSERT INTO reservations (attempt_id, unit_id, model, reserved_in, reserved_out,"
+                " state, run_id, created_at) VALUES (?,?,?,?,?,?,?,?)",
+                (attempt_id, unit_id, model, int(reserved_in), int(reserved_out), "reserved", run_id, _now()),
+            )
+        except BaseException:
+            self.conn.execute("ROLLBACK")
+            raise
+        self.conn.execute("COMMIT")
         return attempt_id
 
     def _get(self, attempt_id):
