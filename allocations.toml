@@ -1,28 +1,40 @@
 # CF-04 token allocations — operator-measured inputs.
-# Every value below is OPEN until the operator records a real zIDE
-# observation (quota currency, remaining balance, observation lag, outside
-# usage). The ledger refuses dispatch while an allocation stays OPEN or is
-# missing. Replace placeholders with measured integers + derivation notes;
-# never invent numbers.
+# Measured 2026-09-07 by the operator from the Z.ai plan dashboard; derived
+# caps follow docs/pilot-opto-2311-plan.md §17 (pilot_cap = min(remaining −
+# margin, estimated need); run caps allocated by expected bounded work and
+# summing exactly to the pilot cap).
+#
+# Quota currency per operator observation 2026-09-07:
+#   * guaranteed anytime balance: 2,000,000 tokens
+#   * nightly off-peak window:    ~10,000,000 tokens between 22:00–04:00
+#     Africa/Cairo (mechanics unverified; treated as uncounted bonus until
+#     the first morning reconciliation verifies it)
 
 [pilot]
-remaining_quota_tokens = "OPEN"          # measured remaining zIDE balance
-safety_margin_tokens = "OPEN"            # operator-chosen reserve
-pilot_cap_tokens = "OPEN"                # min(remaining - margin, estimated need)
+remaining_quota_tokens = 2_000_000
+safety_margin_tokens = 200_000   # 10% of the guaranteed balance
+pilot_cap_tokens = 1_800_000     # min(2_000_000 − 200_000, est. need ≈ 3.2M nominal)
+                                 # → need-bound pilot: the nightly window is the
+                                 # intended primary fuel once verified
 
 [preparation]
-allowance_tokens = "OPEN"                # bounded allowance for model-assisted agent sessions
-prior_usage_tokens = "OPEN"              # attributable usage already consumed
+allowance_tokens = 1_200_000      # model-assisted agent sessions — sized for the full
+                                  # 105-video matrix pass (~10K/video incl. overhead)
+prior_usage_tokens = 0            # no local usage counter; pre-2026-09-07 spend unverifiable
 
 [runs]
 # One entry per bounded run; allocate by expected work, not equal division.
-cf06_calibration = "OPEN"                # before any live CF-06 judge dispatch
-cf07_trial = "OPEN"
-cf08_production = "OPEN"
+cf06_calibration = 200_000
+cf07_trial = 150_000
+cf08_production = 150_000         # deliberately small PLACEHOLDER: re-record after the
+                                  # nightly window verifies AND CF-07 measures the real
+                                  # per-lesson cost — 100 lessons cannot fit 150K; the
+                                  # verified window is production's actual fuel
 
 [maintenance]
-headroom_tokens = "OPEN"                 # reserved before CF-13 operation
+headroom_tokens = 100_000        # reserved before CF-13 operation
+                                 # 1200 + 200 + 150 + 150 + 100 = 1_800_000 = pilot cap
 
 [reconciliation]
-observation_cadence = "OPEN"             # compatible with the cap, not merely weekly
-quota_period_reset = "OPEN"              # measured period boundary
+observation_cadence = "each morning after the nightly window: reconcile window usage against the ledger; re-record remaining_quota_tokens upward if the ~10M nightly allowance verifies"
+quota_period_reset = "unverified: guaranteed balance assumed non-refilling; nightly 22:00–04:00 Africa/Cairo allowance assumed recurring (operator-observed 2026-09-07); re-measure at first observed reset"
