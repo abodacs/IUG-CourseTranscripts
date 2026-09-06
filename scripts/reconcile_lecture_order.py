@@ -132,9 +132,11 @@ def title_lecture_number(title):
 
 
 def cross_check_transcript_references(order, data_dir):
-    """Compare each entry's title number against absolute 'المحاضرة N'
-    references in its transcript. A conflict downgrades the position to
-    unknown; missing references leave the playlist evidence unverified."""
+    """Collect absolute lecture-number mentions as review hints.
+
+    A mention may refer to another lecture; it neither verifies nor disputes
+    the current video's identity or its playlist position.
+    """
     data_dir = Path(data_dir) if data_dir else None
     for entry in order:
         entry["order_evidence"] = {"source": "playlist_metadata", "quality": "playlist_title_only"}
@@ -154,13 +156,6 @@ def cross_check_transcript_references(order, data_dir):
         )
         references = lecture_number_in(transcript_text)
         entry["order_evidence"]["transcript_lecture_references"] = sorted(references)
-        if references and title_number not in references:
-            entry["order_evidence"]["quality"] = "unknown_transcript_conflict"
-            entry["order_evidence"]["conflict"] = (
-                f"title says المحاضرة {title_number} but transcript references {sorted(references)}"
-            )
-        elif references:
-            entry["order_evidence"]["quality"] = "verified_playlist_and_transcript"
 
 
 def build_document(tsv_text, manifest, playlist_id, fetched_at, data_dir=None):

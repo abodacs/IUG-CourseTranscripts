@@ -33,9 +33,9 @@
 - Challenge excerpts (فيزياء عامة أ `1noCDAkxHwg`; اللغة الإنجليزية `0mkSe0xrqKk`; digital-logic `Kzxd5D8ZgnQ` 13:37) remain development-only data.
 - Any later scope change = new scope revision + repeated review + invalidation of affected artifacts.
 
-## Sign-off (required to unfreeze)
+## Sign-off (required to freeze)
 
-To sign, replace the OPEN line with your name, the date, and the words "approved as DRAFT scope" (or list required changes). An agent cannot sign on your behalf — plan controls F08/F13 forbid agent-created approvals.
+Complete all nine checklist items and identify the reviewed matrix/scope revision before requesting sign-off. Each signer records their name, date, and approval of that completed revision (or required changes). Approval of this draft alone does not freeze scope. An agent cannot sign on your behalf — plan controls F08/F13 forbid agent-created approvals.
 
 ```
 Operator (Abdullah):  ____________________  date: ________  decision: ________

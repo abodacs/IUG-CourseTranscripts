@@ -1,10 +1,10 @@
 # Documentation map
 
-**Open [NEXT_STEPS.md](NEXT_STEPS.md) to start the optics source-manifest task.** Read this map in about 2 minutes; open the longer references only when the task needs them.
+**Open [NEXT_STEPS.md](NEXT_STEPS.md) to prepare the optics scope-review evidence.** Read this map in about 2 minutes; open the longer references only when the task needs them.
 
 **Teaching sources:** reprocess transcripts into new v1 content; use the matching YouTube lecture only when a needed diagram is missing or unclear. Old generated lessons are audit-only. [Full source policy](content-factory-v1-goal.md#allowed-teaching-sources--user-confirmed).
 
-**Current position:** the keyframe capture CLI works and legacy integrity safeguards are available for pilot preparation. The v1 runtime, calibrated quality gates, learner trial, and deployment are still unfinished.
+**Current position:** the source manifest, keyframe capture CLI, and offline preparation helpers exist. The transcript-backed outcome matrix, live runtime, calibrated quality gates, learner trial, and deployment are still unfinished.
 
 ## Start here
 
@@ -49,4 +49,4 @@ The repository's [root README](../README.md) is the short project entrypoint wit
 
 The optics pilot has **106 recorded video IDs**, **105 raw/post-processed transcript sets**, **105 chapter files**, and **83 legacy v2 outputs**. One skipped source is absent; 22 available-source videos have no v2 output. All 105 available transcript sets are in scope for fresh v1 processing; old output counts do not reduce that work. Its playlist `entries` field is truncated, so lecture order still needs trustworthy evidence.
 
-**Next action — under 2 minutes:** open [Ticket CF-01](NEXT_STEPS.md#ticket-cf-01-build-the-optics-source-manifest).
+**Next action:** open [the scope-review preparation task](NEXT_STEPS.md#next-task-prepare-the-scope-review-evidence).

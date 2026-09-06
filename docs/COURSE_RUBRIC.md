@@ -42,9 +42,9 @@ Prose paragraphs; math spans; code blocks; tables; quiz choices, keys, and ratio
 
 - **Calibrated inexpensive judge** produces coverage verdicts: batched, stable per-unit IDs ([judging.py](../src/factory/judging.py)), whole-lesson context in every call, and a strict output contract — a missing ID, unknown ID, malformed payload, or invalid verdict fails the whole batch.
 - **Premium model** is reserved for generation, bounded escalations, and deep audits — never for routine coverage verdicts.
-- **Dispatch gating:** real judges run only through the CF-04 ledger with a recorded, non-OPEN allocation; until the operator measures quotas, all judging is fake/dry mode.
+- **Implementation boundary:** the harness supports only the local scripted `FakeJudge`. Live judging still needs an observed zIDE adapter with durable reservations, output persistence, and usage reconciliation; recording an allocation alone cannot enable it.
 - **Verdict cache keys** include content hash, evidence refs, lesson context, rubric version, prompt version, schema version, and model — identical accepted reruns make zero calls.
-- **Human reference sets:** Arabic-first good + the 12 hard-failure classes + English + mixed-direction cases, labeled by humans **before** any judge score (F13); judge–human disagreement is reported, never averaged away.
+- **Human reference sets:** Arabic-first good + the 12 hard-failure classes + English + mixed-direction cases, prepared locally with source context and labeled by humans **before** any judge score (F13). The worksheet supplies blank slots; intended construction classes are not ground truth. Compare judge verdicts with independent human labels.
 
 ## Threshold fields — OPEN until calibration
 

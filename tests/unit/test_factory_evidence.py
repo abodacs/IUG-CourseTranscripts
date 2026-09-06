@@ -77,6 +77,29 @@ def test_correction_requires_evidence_and_derivation():
         evidence.Correction.new(evidence.VIDEO_ID, f"{evidence.VIDEO_ID}:seg:0000", "نص", "raw @12s", None)
 
 
+@pytest.mark.parametrize("excerpt", ["", "   ", None])
+def test_correction_rejects_empty_original_excerpt(tmp_path, excerpt):
+    ledger = evidence.CorrectionLedger(tmp_path / "corrections.json")
+    with pytest.raises(evidence.EvidencePolicyError, match="original excerpt"):
+        ledger.propose(
+            evidence.VIDEO_ID, f"{evidence.VIDEO_ID}:seg:0000", excerpt,
+            "replacement", "raw segment 0", "source-based correction",
+        )
+    assert not ledger.path.exists()
+
+
+def test_legacy_empty_excerpt_cannot_corrupt_transcript(raw_video, tmp_path):
+    ledger = evidence.CorrectionLedger(tmp_path / "corrections.json")
+    ledger.records = [{
+        "kind": "correction", "correction_id": "c-0001", "disposition": "approved",
+        "segment_id": f"{evidence.VIDEO_ID}:seg:0000",
+        "original_excerpt": "", "corrected_text": "replacement",
+    }]
+    segments = evidence.load_raw_video(raw_video, evidence.PLAYLIST_ID, evidence.VIDEO_ID)
+    with pytest.raises(evidence.EvidenceIntegrityError, match="original excerpt is empty"):
+        evidence.apply_corrections(segments, ledger)
+
+
 def test_unreviewed_correction_quarantines_instead_of_applying(raw_video, tmp_path):
     ledger = evidence.CorrectionLedger(tmp_path / "corrections.json")
     correction = ledger.propose(
@@ -115,6 +138,12 @@ def test_reviewer_approval_applies_correction_and_is_append_only(raw_video, tmp_
     assert "الحجم المضبوط" in outcome.texts[0]
     reloaded = evidence.CorrectionLedger(ledger_path)
     assert reloaded.approved_ids() == {correction["correction_id"]}
+    # Reading derived state must not rewrite original records on a later save.
+    reloaded.record_disposition(correction["correction_id"], reviewer="د. المراجع", decision="rejected")
+    persisted = json.loads(ledger_path.read_text(encoding="utf-8"))["records"]
+    assert persisted[0]["disposition"] == "proposed"
+    assert [record["decision"] for record in persisted[1:]] == ["approved", "rejected"]
+    assert evidence.CorrectionLedger(ledger_path).approved_ids() == set()
 
 
 def test_coverage_validation_uses_references_not_counts(raw_video):

@@ -4,12 +4,10 @@
 
 ## Lecture order — evidence quality
 
-Fetched with the pinned toolchain (`yt-dlp[default]==2026.8.19`, flat-playlist, metadata only) on 2026-09-06 → `artifacts/opto-2311/lecture-order.json` (local). **Order evidence: playlist metadata + numbered titles, cross-checked against transcripts; not yet reviewer-confirmed.**
+Fetched with the pinned toolchain (`yt-dlp[default]==2026.8.19`, flat-playlist, metadata only) on 2026-09-06 → `artifacts/opto-2311/lecture-order.json` (local). **Order evidence: playlist metadata + numbered titles; transcript identity and teaching sequence remain subject to review.**
 
 - **106 playlist entries ↔ 106 manifest videos; zero missing in either direction.** The local corpus and the live playlist correspond exactly.
-- **Transcript cross-check (plan §5.2): 0 conflicts.** Absolute «المحاضرة N» references in transcripts never contradict the title numbers; position 1 is double-verified (playlist + transcript). Most transcripts use only relative references (السابقة/القادمة), so 104 positions stand on playlist metadata + numbered titles — recorded per-position as `order_evidence.quality` in the artifact.
-
-- **106 playlist entries ↔ 106 manifest videos; zero missing in either direction.** The local corpus and the live playlist correspond exactly.
+- **Transcript mentions are review hints.** An absolute «المحاضرة N» mention can refer to another lecture. Matching or differing numbers do not verify or contradict the current video's identity. The reconciler records mentions without an automatic identity verdict; available entries retain `playlist_title_only`. Older local artifacts with automated verification/conflict labels must be rebuilt before review.
 - **`SAq013FtOLQ` sits at position 8 and was unavailable at fetch (title/duration NA)** — first real disposition evidence: it contributes no teaching content *now*; curriculum impact still needs the reviewer's judgment (CF-03).
 - **One re-upload pair:** «التمرين الثالث بصريات هندسية» (114 s) exists twice — `3LETQng8kTU` and `E4SfMpVuLYk`. Recorded as one content family for CF-06.
 - **Positions 105–106 are exam-logistics notices** («التنبيه… تعليمات بخصوص الامتحان النهائي»), not lectures; excluded from the teaching sequence with this recorded reason.
@@ -64,6 +62,6 @@ Evidence refs are `segment[i] @seconds` in the raw whisper JSON plus legacy chap
 1. Work each lecture's worked example and unseen task independently; note prerequisite gaps observed while working (feeds the learner-assumption record).
 2. Confirm or correct each candidate skill's classification, especially the `needs_youtube_diagram` calls and whether ray diagrams / power crosses are load-bearing.
 3. Judge whether position 8's missing lecture (`SAq013FtOLQ`, unavailable at fetch) leaves any promised outcome unsupported (with CF-03).
-4. Approve the teaching sequence derived from the verified order, or flag unknowns.
+4. Approve the teaching sequence derived from the recorded playlist order, or flag unknowns.
 
 **Reviewer: OPEN.** Until the first review is recorded, scope freeze (CF-03) and all downstream gates stay blocked.

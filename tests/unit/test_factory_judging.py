@@ -9,7 +9,6 @@ from src.factory.judging import (
     FakeJudge,
     JudgeContractError,
     batch_items_for_lesson,
-    ensure_dispatch_allowed,
     parse_judge_response,
     run_judging,
     summarize_verdicts,
@@ -94,25 +93,18 @@ def test_batching_splits_calls_but_keeps_whole_lesson_context():
     assert judge.calls == 3  # ceil(5 items / 2)
 
 
-def test_real_judge_without_ledger_is_blocked(tmp_path):
+@pytest.mark.parametrize("is_fake", [False, True])
+def test_provider_is_blocked_even_if_it_claims_to_be_fake(is_fake):
     class RealJudge:
-        is_fake = False
         model = "expensive-1"
 
         def call(self, batch_items, lesson_context):  # pragma: no cover - must never run
             raise AssertionError("real dispatch must be refused")
 
-    with pytest.raises(DispatchBlocked, match="no ledger"):
-        run_judging(lesson_document(), provenance(), RealJudge(), lesson_context=CONTEXT)
-    from src.factory.ledger import Ledger
-
-    book = Ledger(tmp_path / "spend.sqlite")  # allocation OPEN
-    try:
-        with pytest.raises(DispatchBlocked, match="real judging refused"):
-            run_judging(lesson_document(), provenance(), RealJudge(), lesson_context=CONTEXT, ledger=book)
-        ensure_dispatch_allowed(FakeJudge(), None)  # fake/dry always allowed
-    finally:
-        book.close()
+    judge = RealJudge()
+    judge.is_fake = is_fake
+    with pytest.raises(DispatchBlocked, match="dry-only"):
+        run_judging(lesson_document(), provenance(), judge, lesson_context=CONTEXT)
 
 
 def test_cache_reuses_verdicts_and_keys_track_model_and_context():

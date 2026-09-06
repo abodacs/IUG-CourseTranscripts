@@ -6,9 +6,8 @@ expected ID must come back exactly once with a valid verdict — a missing ID,
 an unknown ID, unparseable output, or an invalid verdict value fails the whole
 batch (never silently passes).
 
-Dispatch gating: a real (non-fake) judge may run only through the CF-04
-ledger with a recorded, non-OPEN allocation. Fake/dry judges — the only mode
-used until the operator measures quotas — run without dispatch.
+This is a dry harness using FakeJudge only. A live adapter with durable
+reservations, output persistence, and usage reconciliation is not implemented.
 
 Verdict cache keys follow the CF-05 identity rules: content hash + evidence
 refs + lesson context + rubric version + prompt version + model + schema
@@ -29,14 +28,13 @@ class JudgeContractError(ValueError):
 
 
 class DispatchBlocked(RuntimeError):
-    """A non-fake judge was attempted without a recorded ledger allocation."""
+    """A provider was passed to the dry-only harness."""
 
 
 class FakeJudge:
     """Scripted dry-mode judge. `replies` maps item_id -> verdict; items
     without a scripted reply default to `default_verdict`."""
 
-    is_fake = True
     model = "fake-judge-v0"
 
     def __init__(self, replies=None, default_verdict="pass", raw_response=None):
@@ -53,18 +51,6 @@ class FakeJudge:
             verdict_id: self.replies.get(verdict_id, self.default_verdict)
             for verdict_id, _kind, _refs in batch_items
         }
-
-
-def ensure_dispatch_allowed(judge, ledger):
-    """A real judge dispatches only with a recorded pilot allocation; OPEN or
-    missing allocations confine all judging to fake/dry mode."""
-    if getattr(judge, "is_fake", False):
-        return
-    if ledger is None:
-        raise DispatchBlocked("no ledger provided; real judging requires a CF-04 reservation")
-    reason = ledger.dispatch_blocked_reason()
-    if reason:
-        raise DispatchBlocked(f"real judging refused: {reason}")
 
 
 def batch_items_for_lesson(lesson_document, provenance):
@@ -122,11 +108,12 @@ def parse_judge_response(response, expected_ids):
 
 
 def run_judging(lesson_document, provenance, judge, *, lesson_context, batch_size=8,
-                cache=None, ledger=None):
+                cache=None):
     """Judge every teaching-bearing unit of one lesson in batches, with
     whole-lesson context per call. Fails on any contract violation; caches
-    per the CF-05 key rules; gates real dispatch through the ledger."""
-    ensure_dispatch_allowed(judge, ledger)
+    per the CF-05 key rules. Only the local scripted FakeJudge is supported."""
+    if type(judge) is not FakeJudge:
+        raise DispatchBlocked("dry-only harness: live judge integration is not implemented")
     items = batch_items_for_lesson(lesson_document, provenance)
     context_hash = hashlib.sha256(lesson_context.encode("utf-8")).hexdigest()
     verdicts = {}
@@ -142,8 +129,7 @@ def run_judging(lesson_document, provenance, judge, *, lesson_context, batch_siz
             pending.append(item)
     for start in range(0, len(pending), batch_size):
         batch = pending[start:start + batch_size]
-        batch_payload = [(item_id, kind, evidence_refs) for item_id, kind, evidence_refs in batch]
-        response = judge.call(batch_payload, lesson_context)
+        response = judge.call(batch, lesson_context)
         if isinstance(response, str):
             try:
                 response = json.loads(response)

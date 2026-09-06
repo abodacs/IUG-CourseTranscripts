@@ -1,6 +1,6 @@
 # OPTO 2311 pilot — full execution plan
 
-**Quick read:** the complete ticket-by-ticket plan for reprocessing **OPTO 2311 — البصريات الهندسية** into an accepted, published v1 pilot course. It decomposes the [four milestones](NEXT_STEPS.md) into tickets CF-01…CF-13 (including CF-02A and CF-11A), and names every action, artifact, gate, command, owner, and open human input. [Ticket CF-01](NEXT_STEPS.md#ticket-cf-01-build-the-optics-source-manifest) is still the immediate action; this plan orders everything after it.
+**Quick read:** the complete ticket-by-ticket plan for reprocessing **OPTO 2311 — البصريات الهندسية** into an accepted, published v1 pilot course. It decomposes the [four milestones](NEXT_STEPS.md) into tickets CF-01…CF-13 (including CF-02A and CF-11A), and names every action, artifact, gate, command, owner, and open human input. CF-01 is implemented; [NEXT_STEPS](NEXT_STEPS.md) records the current scope-review preparation task and implementation limits.
 
 Status: planning document, adopted 2026-09-06. It sequences and details work defined by the [goal](content-factory-v1-goal.md), [resolution](content-factory-v1-resolution.md), and [pilot packet](content-factory-v1-pilot.md); it changes no fixed decision. Durations are planning estimates, not commitments. Values marked **OPEN** are required evidence or authorization — they are recorded when obtained, never invented.
 
@@ -70,7 +70,7 @@ Mapping to [NEXT_STEPS.md](NEXT_STEPS.md): milestone 1 = Phases 1–2, milestone
 
 ## 4. Phase 0 — CF-01, source manifest (offline, no model calls)
 
-The full brief lives in [NEXT_STEPS.md](NEXT_STEPS.md#ticket-cf-01-build-the-optics-source-manifest). Execution details that the session must honor:
+CF-01 is implemented; see the [source review](opto-2311-source-review.md). Preserve these requirements when rerunning or changing the exporter:
 
 1. **DB reads:** copy `youtube-iug.db` to a temp dir; open with `mode=ro&immutable=1`; refuse a nonempty WAL (existing scanner pattern). Join `sync_github.playlist_id` → `playlists.source_id` (verified linkage; `playlists.id` is a rowid, not the YouTube ID).
 2. **Order fields:** record `sync_github.created_at`/`modified_at` as *download* evidence only, and mark lecture order `unknown` — the timestamps are one batch import.
