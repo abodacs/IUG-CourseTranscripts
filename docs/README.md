@@ -19,6 +19,7 @@
 | [opto-2311-source-review.md](opto-2311-source-review.md) | CF-01 evidence report: recomputed counts, eligible vs audit-only variants, integrity findings, source gaps, order evidence, and scope-freeze blockers. | You need the current source-truth for the optics pilot. |
 | [opto-2311-first-review.md](opto-2311-first-review.md) | CF-02 draft skill sheet for the first/middle/final lectures with candidate skills, evidence spans, and reviewer decisions. | You are the subject reviewer, or preparing their first review. |
 | [opto-2311-scope-freeze.md](opto-2311-scope-freeze.md) | CF-03 scope-freeze DRAFT: verified inputs, the nine-item freeze checklist, and remaining OPEN gates. | You are closing or checking the scope freeze. |
+| [COURSE_RUBRIC.md](COURSE_RUBRIC.md) | The v1 grading rubric: four checks, the 12 hard-failure classes, teaching-node coverage, judge plan, and OPEN calibration thresholds. | You are calibrating, judging, or reviewing lessons. |
 
 ## Reference files
 

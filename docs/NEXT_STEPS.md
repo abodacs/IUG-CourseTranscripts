@@ -1,8 +1,15 @@
 # Next steps — Content Factory v1
 
-**Ticket CF-01 is implemented (2026-09-06):** offline exporter [`scripts/build_pilot_manifest.py`](../scripts/build_pilot_manifest.py), generated manifest `artifacts/opto-2311/source-manifest.json` (local), and the human report [docs/opto-2311-source-review.md](opto-2311-source-review.md). Suite: 214 passing (181 baseline + 33 new focused tests). The report names the seven recorded blockers that still prevent scope freeze.
+**Offline implementation status (2026-09-06, branch `pilot/cf-01-source-manifest`):** CF-01 (source manifest + [review](opto-2311-source-review.md)), CF-02 (lecture order + [first-review sheet](opto-2311-first-review.md) + family reservation), CF-02A (raw-only evidence boundary + corrections ledger), CF-03 (matrix validators + discovery worksheet + [scope-freeze DRAFT](opto-2311-scope-freeze.md)), CF-04 (spend ledger + failure probes + [allocations.toml](../allocations.toml) placeholders), CF-05 (dialect validators, RTL renderer, dispositions, node history), and CF-06 ([COURSE_RUBRIC](COURSE_RUBRIC.md) + dry-mode judge harness + reference-labeling worksheet) are implemented. Suite: 301 passing (181 baseline + 120 new).
 
-**Current position: start Ticket CF-02 (lecture order via the pinned yt-dlp fetch) with the CF-04 operator preflight in parallel; reviewer recruitment remains open from day 1.** Existing inventory and legacy integrity safeguards are available. The zIDE quota integration, quality gates, lesson renderer, and deployment still need implementation or proof. The CF-01 task brief at the end is kept for reference.
+**Current position: everything remaining needs human input — no further offline ticket can advance the plan.** In order:
+
+1. **Operator + subject reviewer sign-off** on [opto-2311-scope-freeze.md](opto-2311-scope-freeze.md) (reviewer must be recruited first; their first review awaits in [opto-2311-first-review.md](opto-2311-first-review.md)).
+2. **Operator quota measurements** recorded in [allocations.toml](../allocations.toml) (zIDE remaining balance, observation cadence) — the ledger refuses all real dispatch while values are OPEN.
+3. **Reference-set labeling** by competent human labelers: fill `artifacts/opto-2311/reference-worksheet.json` (labels before any judge score).
+4. Then: CF-06 calibration → CF-07 trial lesson → CF-08 production → CF-09/10 evaluation → CF-11/11A release → CF-13 operations → CF-12 report (per [the plan](pilot-opto-2311-plan.md) §15).
+
+The CF-01 task brief at the end is kept for reference.
 
 ## Decisions already made
 
