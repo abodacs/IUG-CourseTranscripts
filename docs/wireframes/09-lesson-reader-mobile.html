@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[09] Lesson reader (mobile) — wireframe</title>
+<link rel="stylesheet" href="assets/wireframe.css">
+</head>
+<body>
+
+<div class="meta">
+  <b>SCREEN 09 / 09 — LESSON READER (MOBILE) · قارئ الدرس على الجوال</b> — OPTO 2311 pilot wireframes
+  <span class="dirmark">dir="rtl" · Arabic first · reads right→left</span>
+</div>
+
+<div class="ann ltr-note" style="max-width:1140px; margin:0 auto 10px; direction:rtl">إطاران بعرض هاتف (<span class="ltr">390px</span>): (أ) افتراضي — الشريط الجانبي مطوي &nbsp;/&nbsp; (ب) بعد فتح «☰ الدروس»</div>
+
+<div class="phones">
+
+  <!-- ============ Phone A: collapsed ============ -->
+  <div class="phone">
+    <div class="meta" style="margin:0 0 8px; font-size:11px"><b>A — DEFAULT</b><span class="dirmark">dir="rtl"</span></div>
+    <div class="screen">
+
+      <div style="display:flex; gap:10px; align-items:center; border-bottom:2px solid #000; padding-bottom:6px; margin-bottom:8px">
+        <span class="btn kbd-focus" style="padding:1px 10px">☰ الدروس</span>
+        <strong style="font-size:13px; margin-inline-start:auto">OPTO 2311 — البصريات الهندسية</strong>
+      </div>
+      <p class="ann">[زر الشريط الجانبي — حلقة تركيز لوحة المفاتيح ظاهرة عليه]</p>
+
+      <div class="banner" style="padding:4px 8px; font-size:12.5px">
+        <strong>هذا المساق قيد الإنشاء — الدروس المقبولة تُنشر تدريجيًا</strong>
+      </div>
+
+      <p class="dim" style="font-size:12.5px">الوحدة ١ ← درس 02</p>
+      <h1 style="font-size:16px">درس 02 — قانونا الانعكاس والمرايا المستوية</h1>
+      <p class="dim" style="font-size:12.5px">١٤ دقيقة · ◐ قيد التعلّم · المصدر: فيديو <span class="ltr">[video_id]</span> · <span class="ltr">[12:40–21:05]</span></p>
+
+      <section class="section">
+        <div class="section-head"><span class="badge">المهارة</span></div>
+        <p style="font-size:13.5px">تتبُّع شعاع ساقط على سطح عاكس وقياس الزوايا من العمود المُقام.</p>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><span class="badge">لحظة الفهم</span></div>
+        <p style="font-size:13.5px">الزوايا من العمود المُقام لا من السطح — <span class="ltr">Law of Reflection</span> — إذن <span class="math">θᵢ = θᵣ</span>.</p>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><span class="badge">المخطط</span></div>
+        <div class="diagram" style="padding:6px">
+          <svg width="100%" viewBox="0 0 330 200" role="img" aria-label="مخطط انعكاس شعاع على مرآة مستوية">
+            <defs>
+              <marker id="ah2" markerWidth="9" markerHeight="8" refX="7" refY="3" orient="auto">
+                <path d="M0,0 L7,3 L0,6 z" fill="black"/>
+              </marker>
+            </defs>
+            <line x1="240" y1="15" x2="240" y2="185" stroke="black" stroke-width="2.5"/>
+            <line x1="240" y1="45" x2="254" y2="31" stroke="black"/>
+            <line x1="240" y1="95" x2="254" y2="81" stroke="black"/>
+            <line x1="240" y1="145" x2="254" y2="131" stroke="black"/>
+            <line x1="70" y1="100" x2="305" y2="100" stroke="black" stroke-dasharray="6 4"/>
+            <line x1="85" y1="35" x2="240" y2="100" stroke="black" stroke-width="2" marker-end="url(#ah2)"/>
+            <line x1="240" y1="100" x2="85" y2="165" stroke="black" stroke-width="2" marker-end="url(#ah2)"/>
+            <text x="72" y="92" font-size="12">العمود المُقام</text>
+            <text x="178" y="80" font-size="13" class="ltr">θᵢ</text>
+            <text x="178" y="132" font-size="13" class="ltr">θᵣ</text>
+          </svg>
+        </div>
+        <div class="alt" style="font-size:12.5px"><strong>نص بديل (عربي):</strong> «شعاع يسقط على مرآة مستوية وينعكس بزاوية مساوية عن العمود المُقام.»</div>
+      </section>
+
+      <div class="quiz" style="padding:8px">
+        <p class="qid">quiz #q-opto2311-u1-l02-q1</p>
+        <p style="font-size:13.5px"><strong>يشعّ شعاع بزاوية <span class="ltr">35°</span> عن العمود المُقام. ما زاوية انعكاسه؟</strong></p>
+        <ul class="choices">
+          <li class="choice" style="font-size:13px"><span class="radio"></span><span>أ) <span class="ltr">35°</span> عن السطح</span></li>
+          <li class="choice choice--selected" style="font-size:13px"><span class="radio"></span><span>ب) <span class="ltr">35°</span> عن العمود المُقام</span></li>
+          <li class="choice" style="font-size:13px"><span class="radio"></span><span>ج) <span class="ltr">55°</span> عن العمود</span></li>
+          <li class="choice" style="font-size:13px"><span class="radio"></span><span>د) <span class="ltr">70°</span> عن السطح</span></li>
+        </ul>
+        <p style="margin-top:8px"><span class="btn btn--primary" style="width:100%; text-align:center">تحقق من الإجابة</span></p>
+      </div>
+
+      <p><span class="btn btn--primary" style="width:100%; text-align:center">الدرس التالي</span></p>
+
+      <hr class="rule">
+      <p class="ann" style="font-size:11.5px">[لا اقتصاص للنص العربي ولا للرياضيات: <span class="ltr">dir="ltr"</span> + <span class="ltr">overflow-wrap:anywhere</span> — مثال يلتف سليمًا: <span class="math">n₁ sin θ₁ = n₂ sin θ₂</span> وكلمة مثل <span class="ltr">Total&nbsp;Internal&nbsp;Reflection</span> تنكسر للسطر التالي دون قصّ]</p>
+      <p class="ann" style="font-size:11.5px">[المحتوى عمود واحد؛ الشجرة تختفي خلف زر ☰ — لا شرائط تمرير أفقية]</p>
+
+    </div>
+  </div>
+
+  <!-- ============ Phone B: drawer open ============ -->
+  <div class="phone">
+    <div class="meta" style="margin:0 0 8px; font-size:11px"><b>B — DRAWER OPEN</b><span class="dirmark">dir="rtl"</span></div>
+    <div class="screen screen--tall">
+
+      <div style="display:flex; gap:10px; align-items:center; border-bottom:2px solid #000; padding-bottom:6px; margin-bottom:8px">
+        <span class="btn" style="padding:1px 10px">☰ الدروس</span>
+        <strong style="font-size:13px; margin-inline-start:auto">OPTO 2311 — البصريات الهندسية</strong>
+      </div>
+
+      <div class="banner" style="padding:4px 8px; font-size:12.5px">
+        <strong>هذا المساق قيد الإنشاء — الدروس المقبولة تُنشر تدريجيًا</strong>
+      </div>
+
+      <p class="dim" style="font-size:12.5px">درس 02 — قانونا الانعكاس والمرايا المستوية</p>
+
+      <!-- dimmed page behind drawer -->
+      <div class="fill-gray" style="position:absolute; inset:0; opacity:.55" aria-hidden="true"></div>
+
+      <!-- drawer panel from the inline-start edge (right in RTL) -->
+      <div style="position:absolute; top:0; bottom:0; inset-inline-start:0; width:78%; background:#fff; border-inline-end:2px solid #000; padding:10px; overflow:hidden">
+        <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #000; padding-bottom:6px">
+          <strong>شجرة الدروس</strong>
+          <span class="btn btn--ghost" style="padding:0 10px">✕ إغلاق</span>
+        </div>
+        <ul class="tree" style="font-size:13px">
+          <li class="unit">الوحدة ١ — الضوء والانعكاس</li>
+          <li><span class="mark">✓</span><span>01 طبيعة الضوء</span><span class="dur">١٢ د</span></li>
+          <li><span class="mark">◐</span><strong>02 قانونا الانعكاس</strong><span class="dur">١٤ د</span></li>
+          <li><span class="mark dim">—</span><span class="soon">03 المرايا المقعّرة</span><span class="dur soon">١٦ د</span></li>
+          <li><span class="mark dim">—</span><span class="soon">04 المرايا المحدبة</span><span class="dur soon">١٠ د</span></li>
+          <li class="unit">الوحدة ٢ — الانكسار والعدسات</li>
+          <li><span class="mark dim">—</span><span class="soon">05 قانون سنل</span><span class="dur soon">١٥ د</span></li>
+          <li><span class="mark dim">—</span><span class="soon">06 الزاوية الحرجة</span><span class="dur soon">١٢ د</span></li>
+          <li><span class="mark dim">—</span><span class="soon">07 العدسات الرقيقة</span><span class="dur soon">١٨ د</span></li>
+          <li class="unit">الوحدة ٣ — الأدوات البصرية</li>
+          <li><span class="mark dim">—</span><span class="soon">08 العين والنظارة</span><span class="dur soon">١٤ د</span></li>
+        </ul>
+        <div class="legend" style="font-size:11.5px">✓ منشور ومُنجز · ◐ قيد التعلّم · رمادي = غير منشور<br>تقدّمك محلي على جهازك.</div>
+        <p class="ann" style="font-size:11.5px">[طبقة منزلقة فوق المحتوى من جهة البداية (يمين)؛ تُغلق بزر ✕ أو مفتاح Esc؛ بلا حركة إلزامية]</p>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<p class="next" style="text-align:center">العودة إلى: <a href="index.html">فهرس الإطارات</a></p>
+
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[03] Inline quiz + states — wireframe</title>
+<link rel="stylesheet" href="assets/wireframe.css">
+</head>
+<body>
+
+<div class="meta">
+  <b>SCREEN 03 / 09 — INLINE QUIZ COMPONENT + STATES · مكوّن الاختبار الداخلي وحالاته</b> — OPTO 2311 pilot wireframes
+  <span class="dirmark">dir="rtl" · Arabic first · reads right→left</span>
+</div>
+
+<div class="frame">
+
+  <div class="ann ltr-note">dir=rtl — اتجاه القراءة: ⟵ — أربع حالات لنفس السؤال، بالترتيب من اليمين</div>
+
+  <nav class="topnav" aria-label="تنقل رئيسي">
+    <span class="brand">OPTO 2311 — البصريات الهندسية</span>
+    <a href="01-course-home.html">الرئيسية</a>
+    <a href="04-working-notes.html">دفتر العمل</a>
+    <a href="05-roadmap.html">خارطة الطريق</a>
+    <a href="06-knowledge-graph.html">خريطة المفاهيم</a>
+    <a href="07-free-module.html">الوحدة المجانية</a>
+    <a href="08-release-notes.html">ملاحظات الإصدار</a>
+  </nav>
+
+  <div class="banner" role="status">
+    <span class="ann">[STATUS]</span>
+    <strong>هذا المساق قيد الإنشاء — الدروس المقبولة تُنشر تدريجيًا</strong>
+    <a href="08-release-notes.html">ما الجديد؟ ←</a>
+  </div>
+
+  <h1>اختبر نفسك — المكوّن وحالاته</h1>
+  <p>مكوّن واحد يُزرع داخل الدرس. <span class="ann">[حقول الاختبار: <span class="ltr">id</span> ثابت · مرجع المهارة <span class="ltr">skill_ref</span> · السؤال <span class="ltr">prompt</span> · <span class="ltr">4</span> اختيارات <span class="ltr">choices</span> · الإجابة <span class="ltr">answer</span> · التعليل <span class="ltr">rationale</span> · التغذية الراجعة <span class="ltr">feedback</span>]</span></p>
+  <p class="ann">[الاختبار مُضمَّن في Markdown الدرس (كتلة <span class="ltr">quiz</span> مُسيَّجة تُتحقَّق من مخطط) — مرجع التجربة: <span class="ltr">mdbook-quiz</span> · العرض لا يكشف الإجابة قبل المحاولة]</p>
+  <p class="ann">[قاعدة ثابتة: الإجابة والتعليل لا يظهران قبل أول محاولة — زر «تحقق من الإجابة» معطّل قبل اختيار خيار]</p>
+
+  <div class="cards">
+
+    <!-- الحالة ٠ -->
+    <section class="card">
+      <p><span class="chip">الحالة ٠ — قبل أي محاولة</span> <span class="ann ltr">state: unanswered</span></p>
+      <p class="qid">quiz #q-opto2311-u1-l02-q1</p>
+      <p><strong>يشعّ شعاع نحو مرآة مستوية بزاوية <span class="ltr">35°</span> عن العمود المُقام. ما زاوية انعكاسه؟</strong></p>
+      <ul class="choices">
+        <li class="choice"><span class="radio"></span><span>أ) <span class="ltr">35°</span> عن سطح المرآة</span></li>
+        <li class="choice"><span class="radio"></span><span>ب) <span class="ltr">35°</span> عن العمود المُقام</span></li>
+        <li class="choice"><span class="radio"></span><span>ج) <span class="ltr">55°</span> عن العمود المُقام</span></li>
+        <li class="choice"><span class="radio"></span><span>د) <span class="ltr">70°</span> عن سطح المرآة</span></li>
+      </ul>
+      <p style="margin-top:10px"><span class="btn btn--disabled" aria-disabled="true">تحقق من الإجابة</span></p>
+      <p class="ann">[لا إشارة إلى الإجابة الصحيحة ولا تظليل — أربع اختيارات متكافئة]</p>
+    </section>
+
+    <!-- الحالة ١ -->
+    <section class="card">
+      <p><span class="chip">الحالة ١ — اختيار خيار</span> <span class="ann ltr">state: selected</span></p>
+      <p class="qid">quiz #q-opto2311-u1-l02-q1</p>
+      <p><strong>يشعّ شعاع نحو مرآة مستوية بزاوية <span class="ltr">35°</span> عن العمود المُقام. ما زاوية انعكاسه؟</strong></p>
+      <ul class="choices">
+        <li class="choice"><span class="radio"></span><span>أ) <span class="ltr">35°</span> عن سطح المرآة</span></li>
+        <li class="choice choice--selected"><span class="radio"></span><span>ب) <span class="ltr">35°</span> عن العمود المُقام</span> <span class="ann">[محدَّد]</span></li>
+        <li class="choice"><span class="radio"></span><span>ج) <span class="ltr">55°</span> عن العمود المُقام</span></li>
+        <li class="choice"><span class="radio"></span><span>د) <span class="ltr">70°</span> عن سطح المرآة</span></li>
+      </ul>
+      <p style="margin-top:10px"><span class="btn btn--primary kbd-focus">تحقق من الإجابة</span> <span class="ann">[فعّال بعد الاختيار — حلقة تركيز لوحة المفاتيح ظاهرة]</span></p>
+      <p class="ann">[ما زال بلا كشف للإجابة]</p>
+    </section>
+
+    <!-- الحالة ٢ -->
+    <section class="card">
+      <p><span class="chip">الحالة ٢ — إجابة صحيحة</span> <span class="ann ltr">state: correct feedback</span></p>
+      <p class="qid">quiz #q-opto2311-u1-l02-q1</p>
+      <ul class="choices">
+        <li class="choice choice--correct"><span class="radio"></span><span>ب) <span class="ltr">35°</span> عن العمود المُقام</span> <span class="mark-correct">✓ إجابتك — صحيحة</span></li>
+      </ul>
+      <div class="feedback">
+        <p><strong>أحسنت!</strong> قستَ الزاوية من العمود المُقام فكان التحليل مباشرًا.</p>
+        <div class="rationale">
+          <strong>التعليل:</strong> قانون الانعكاس <span class="math">θᵢ = θᵣ</span>، والزاويتان هنا مُعطاتان عن العمود المُقام أصلًا.
+        </div>
+      </div>
+      <p style="margin-top:10px"><a class="btn btn--primary" href="02-lesson-reader-desktop.html">الدرس التالي</a></p>
+      <p class="ann">[بعد النجاح: ✓ في شجرة الدروس + يُفتح «الدرس التالي»]</p>
+    </section>
+
+    <!-- الحالة ٣ -->
+    <section class="card">
+      <p><span class="chip">الحالة ٣ — إجابة خاطئة</span> <span class="ann ltr">state: incorrect feedback</span></p>
+      <p class="qid">quiz #q-opto2311-u1-l02-q1</p>
+      <ul class="choices">
+        <li class="choice choice--wrong"><span class="radio"></span><span class="mark-wrong">أ) <span class="ltr">35°</span> عن سطح المرآة</span> <span class="mark-wrong">✗ إجابتك — خطأ</span></li>
+        <li class="choice choice--correct"><span class="radio"></span><span>ب) <span class="ltr">35°</span> عن العمود المُقام</span> <span class="mark-correct">✓ الإجابة الصحيحة</span></li>
+      </ul>
+      <div class="feedback">
+        <p><strong>ليست هذه.</strong> خيارك يقيس الزاوية من سطح المرآة، والقانون يعتمد مرجعًا آخر.</p>
+        <div class="rationale">
+          <strong>التعليل:</strong> المعطى <span class="ltr">35°</span> هو عن العمود المُقام أصلًا، إذن <span class="math">θᵣ = θᵢ = 35°</span>. خيارك قاس الزاوية من السطح — عن السطح تكون <span class="math">90° − 35° = 55°</span>.
+        </div>
+      </div>
+      <p style="margin-top:10px">
+        <span class="btn">حاول مرة أخرى</span>
+        <a class="btn btn--ghost" href="02-lesson-reader-desktop.html">راجع «لحظة الفهم»</a>
+      </p>
+      <p class="ann">[الكشف يحدث فقط بعد المحاولة؛ لا عقوبة ولا عدّاد محاولات]</p>
+    </section>
+
+  </div>
+</div>
+
+<p class="next">التالي: <a href="04-working-notes.html">04 — دفتر العمل</a></p>
+
+</body>
+</html>
