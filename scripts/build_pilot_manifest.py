@@ -530,14 +530,14 @@ def build_video_record(video_id, context, variant_paths, root):
             "coverage": raw_json_probe["coverage"],
             "screening": raw_json_probe["screening"],
         }
-        findings.extend(raw_json_probe["findings"])
+        findings.extend(dict(item, variant="raw_transcript_json") for item in raw_json_probe["findings"])
     if raw_srt_records:
         raw_srt_probe = probe_srt(root / raw_srt_records[0]["path"])
         integrity["raw_srt"] = {
             "cue_count": raw_srt_probe["cue_count"],
             "coverage": raw_srt_probe["coverage"],
         }
-        findings.extend(raw_srt_probe["findings"])
+        findings.extend(dict(item, variant="raw_transcript_srt") for item in raw_srt_probe["findings"])
     if raw_json_probe and raw_srt_probe:
         integrity["cross_checks"]["raw_json_vs_raw_srt"] = {
             "segment_count_delta": count_delta(
@@ -557,7 +557,7 @@ def build_video_record(video_id, context, variant_paths, root):
             "cue_count": probe["cue_count"],
             "coverage": probe["coverage"],
         }
-        findings.extend(probe["findings"])
+        findings.extend(dict(item, variant=role) for item in probe["findings"])
         if raw_json_probe:
             integrity["cross_checks"][f"{role}_vs_raw_json"] = {
                 "cue_count_delta": count_delta(
@@ -577,7 +577,7 @@ def build_video_record(video_id, context, variant_paths, root):
     chapters_records = variants.get("chapter_hints", [])
     if chapters_records:
         keyframe_hints, hint_findings = probe_keyframe_hints(root / chapters_records[0]["path"])
-        findings.extend(hint_findings)
+        findings.extend(dict(item, variant="chapter_hints") for item in hint_findings)
     if variants.get("unclassified"):
         findings.append(
             finding(

@@ -260,6 +260,12 @@ def test_malformed_srt_blocks_are_flagged(pilot_tree):
     assert "timestamp line" in details
     assert "end<start" in details
     assert {"zero_duration_cue", "duplicate_timestamp_range"} <= codes(bad)
+    srt_findings = [
+        item for item in bad["integrity"]["findings"]
+        if item["code"] in ("invalid_cue", "zero_duration_cue", "duplicate_timestamp_range")
+    ]
+    assert srt_findings
+    assert {item["variant"] for item in srt_findings} == {"raw_transcript_srt"}
 
 
 def test_postprocess_fidelity_status_separates_identical_from_unchecked(pilot_tree):

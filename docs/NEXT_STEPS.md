@@ -1,8 +1,8 @@
 # Next steps — Content Factory v1
 
-**Start Ticket CF-01: build a trustworthy source manifest for the optics pilot.** Copy the task brief at the end into your next zIDE session. Allow about 5 minutes to read this guide.
+**Ticket CF-01 is implemented (2026-09-06):** offline exporter [`scripts/build_pilot_manifest.py`](../scripts/build_pilot_manifest.py), generated manifest `artifacts/opto-2311/source-manifest.json` (local), and the human report [docs/opto-2311-source-review.md](opto-2311-source-review.md). Suite: 214 passing (181 baseline + 33 new focused tests). The report names the seven recorded blockers that still prevent scope freeze.
 
-**Current position: preparation, before v1 execution.** Existing inventory and legacy integrity safeguards are available. The source manifest, zIDE quota integration, quality gates, lesson renderer, and deployment still need implementation or proof.
+**Current position: start Ticket CF-02 (lecture order via the pinned yt-dlp fetch) with the CF-04 operator preflight in parallel; reviewer recruitment remains open from day 1.** Existing inventory and legacy integrity safeguards are available. The zIDE quota integration, quality gates, lesson renderer, and deployment still need implementation or proof. The CF-01 task brief at the end is kept for reference.
 
 ## Decisions already made
 
