@@ -63,6 +63,16 @@ def test_flat_key_moments_and_identity_mismatch(tmp_path):
         capture.load_plan(wrong_name)
 
 
+def test_suffix_stems_infer_video_id_and_lecture_context_reports_no_hints(tmp_path):
+    v2 = tmp_path / f"{VIDEO_ID}_v2_content.json"
+    v2.write_text(json.dumps({"key_moments": [{"timestamp": 2, "description": "diagram"}]}))
+    assert capture.load_plan(v2)["video_id"] == VIDEO_ID
+    lecture_context = tmp_path / f"{VIDEO_ID}_lecture_context.json"
+    lecture_context.write_text(json.dumps({"course_name": "OPTO 2311", "duration": 1380}))
+    with pytest.raises(ValueError, match="no capture hints"):
+        capture.load_plan(lecture_context)
+
+
 def test_dry_run_has_no_network_or_writes_and_enforces_frame_limit(tmp_path, monkeypatch, capsys):
     path = metadata(tmp_path)
     output = tmp_path / "captures"

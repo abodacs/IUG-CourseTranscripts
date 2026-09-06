@@ -36,6 +36,8 @@ For an already available matching video, use the same JSON with `--video /absolu
 | `--refresh` | Recapture existing frames. Otherwise reuse only images whose recorded hashes and source identity match. |
 | `--max-frames 500 --timeout 90` | Set the invocation's frame limit and per-command timeout. The default limit is 50; directory input discovers `*_chapters.json` recursively. |
 
+Single-file mode infers the video ID from `_chapters`, `_v2_content`, `_lecture_context`, or `_raw` filename stems. A `_lecture_context.json` holds lecture context metadata, not keyframe hints: planning stops there — and most copies are Python-literal rather than strict JSON, so they fail JSON parsing first.
+
 For a course-wide plan, pass the course's `GeminiLongContext/<playlist_id>` directory with `--dry-run --max-frames 500`. The inspected optics directory has **105 JSON files**, **420 distinct chosen timestamps**, and **897 timestamps when including all candidates**. There are **131 chosen-hint/chapter-range warnings**. These are capture hints, not accepted diagrams or trusted course order.
 
 ## What the tool reads and saves

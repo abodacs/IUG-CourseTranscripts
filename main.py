@@ -26,16 +26,16 @@ def main():
     conn = get_db_connection()
     unsynced_videos = conn.execute("SELECT video_id, playlist_id FROM sync_github WHERE downloaded_r2 = 0 OR downloaded_r2 IS NULL").fetchall()
     for video_id, playlist_id in unsynced_videos:
-        local_filename = f"data/raw/{playlist_id}/{video_id}_raw.json"
+        local_filename = f"data/{playlist_id}/{video_id}_raw.json"
         if not os.path.exists(local_filename):
-            os.makedirs(f"data/raw/{playlist_id}", exist_ok=True)
+            os.makedirs(f"data/{playlist_id}", exist_ok=True)
             if extract.download_file_from_r2(video_id, "youtube-iug-asdj", local_filename):
                 load.update_downloaded_r2(video_id, playlist_id, 1)
 
     # 5. Process raw transcripts into SRT format and fix typos
     print("Processing transcripts...")
-    for playlist_dir in os.scandir("data/raw"):
-        if playlist_dir.is_dir():
+    for playlist_dir in os.scandir("data"):
+        if playlist_dir.is_dir() and playlist_dir.name not in {"raw", "processed", "final"}:
             for raw_transcript_file in os.scandir(playlist_dir.path):
                 if raw_transcript_file.name.endswith(".json"):
                     video_id = raw_transcript_file.name.replace("_raw.json", "")

@@ -47,7 +47,7 @@ def load_plan(path, all_candidates=False, offsets=(0.0,)):
     data = json.loads(path.read_text())
     if not isinstance(data, dict):
         raise ValueError("video JSON must be an object")
-    match = re.fullmatch(r"([A-Za-z0-9_-]{11})(?:_chapters|_v2_content|_raw)?", path.stem)
+    match = re.fullmatch(r"([A-Za-z0-9_-]{11})(?:_chapters|_v2_content|_lecture_context|_raw)?", path.stem)
     inferred = match.group(1) if match else None
     video_id = data.get("video_id", inferred)
     if not isinstance(video_id, str) or not VIDEO_ID.fullmatch(video_id):

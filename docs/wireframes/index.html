@@ -9,8 +9,8 @@
 <body>
 
 <div class="meta" style="max-width:1140px">
-  <b>WIREFRAME SET — OPTO 2311 · البصريات الهندسية · public pilot</b> — 9 screens + this index
-  <span class="dirmark">all product frames: dir="rtl", Arabic first</span>
+  <b>WIREFRAME SET — OPTO 2311 · البصريات الهندسية · public pilot</b> — 9 product screens + 1 engineering frame + this index
+  <span class="dirmark">product frames: dir="rtl", Arabic first · frame 10: engineering, dir="ltr"</span>
 </div>
 
 <div class="frame" style="direction:ltr; text-align:left">
@@ -60,6 +60,7 @@
     <tr><td>One accent color per course; identical card grammar everywhere (fanout §3.15, adopted)</td><td>Frame 01 annotations + card grammar note; monochrome stands in for the accent.</td></tr>
     <tr><td>Cmd+K global search, course-aware scopes, static search index (fanout §3.14, verdict 🔧)</td><td>Frames 01, 06 search hints.</td></tr>
     <tr><td>Accessibility: keyboard focus visible, Arabic alt text, reduced motion, WCAG-minded (brief constraint 4; goal rendering gates)</td><td>Focus rings (02, 03, 09), alt-text placeholders (02, 09), «بلا حركة إلزامية» (06, 09), pure B/W = max contrast.</td></tr>
+    <tr><td>Corpus layout: raw transcripts are the only teaching input; the cleaned GeminiLongContext/ store is audit-only for authoring (docs/README.md corpus table; AGENTS.md source policy; pilot plan CF-01 variant mapping)</td><td>Frame 10 (engineering, LTR): per-file roles under <code>data/&lt;playlist_id&gt;/</code> and <code>GeminiLongContext/&lt;playlist_id&gt;/</code>, dashed = audit-only for authoring, local-only warning, known quirks.</td></tr>
   </table>
 
   <h2>Screens</h2>
@@ -83,6 +84,8 @@
         <td>Dated changelog, one feature/lesson per entry, each with a deep link.</td></tr>
     <tr><td>09</td><td><a href="09-lesson-reader-mobile.html">09-lesson-reader-mobile.html</a></td><td>Lesson reader (mobile) · الجوال</td>
         <td>Phone width; sidebar collapses behind ☰; RTL text and inline math wrap without clipping.</td></tr>
+    <tr><td>10</td><td><a href="10-source-pipeline.html">10-source-pipeline.html</a></td><td>Source pipeline (engineering) · مسار المصادر</td>
+        <td>Corpus on disk: <code>data/&lt;pid&gt;/&lt;vid&gt;_raw.json</code> → v1 factory; the cleaned <code>GeminiLongContext/&lt;pid&gt;/</code> content store (dashed = audit-only for authoring). Not a product screen.</td></tr>
   </table>
 
   <h2>Flow map</h2>
@@ -101,6 +104,8 @@
 "what's new?" (every page, from the STATUS banner) --> [08 release notes]
 
 [09 mobile] = [02] at phone width; sidebar collapses behind [☰]
+
+[10 source pipeline] — engineering frame: corpus on disk → lesson bundle; not a product screen
 </pre>
 
   <h2>Shared facts baked into the frames</h2>

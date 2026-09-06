@@ -37,6 +37,21 @@
 
 The repository's [root README](../README.md) is the short project entrypoint with setup, test, and inventory commands.
 
+## Corpus layout (local only — never commit)
+
+| Path pattern | Contents |
+|---|---|
+| `data/<playlist_id>/<video_id>_raw.json` | Raw Whisper output (`segments[]` with start/end/text) — the canonical teaching source for v1. Sibling `.srt` variants live beside it. |
+| `GeminiLongContext/<playlist_id>/<video_id>_chapters.json` | Cleaned, chapter-organized lecture structure: chapter titles + timestamps, pondering introduction, opening/essential questions, main topics, and keyframe hints. |
+| `GeminiLongContext/<playlist_id>/<video_id>_v2_content.json` | Cleaned transcript text organized per chapter (`title`, `start`/`end`, `cleaned_transcript_text`, `subtitle_count`). `_content.json` is an earlier variant of the same. |
+| `GeminiLongContext/<playlist_id>/<video_id>_lecture_context.json` | Per-lecture context metadata: study language, faculty, course, audience, title, duration. In the pilot course 94 of 105 are Python-literal, not strict JSON. |
+
+`GeminiLongContext/` is the cleaned and organized per-video content store the historical long-context processing produced from the raw transcripts. They are prior model outputs: per the [source policy](content-factory-v1-goal.md#allowed-teaching-sources--user-confirmed) they stay audit-only for v1 — fresh lessons are reprocessed from the raw transcripts, never regenerated from these files.
+
+- Both roots are git-ignored (`data`, `GeminiLongContext`, plus the global `*.json` rule): a fresh clone has none of this. Never commit or upload it.
+- Playlist IDs end in `-`, so a nested path reads as if the playlist and video IDs were concatenated (`…R2s-/-AsaJEAav4s_chapters.json`); the trees are still nested by playlist.
+- Known quirks: legacy flat `PL*` folders at the repo root, the `data/L9fwy3NUQKwYNxhPlUU9pxwfg8zlh4TPZ/` alias folder (playlist ID missing its leading `P`), and stray non-conforming files at the `GeminiLongContext/` root. [The inventory](content-factory-v1-inventory.md) holds the measured counts.
+
 ## Which document wins?
 
 1. The **goal** owns current v1 scope and fixed decisions: transcript-based reprocessing with YouTube diagrams only as needed, optics, zIDE quota, zero incremental cash, and Cloudflare Pages.

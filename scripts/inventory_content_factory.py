@@ -34,7 +34,7 @@ def main():
     metadata={p['source_id']:p for p in playlists}
     rows_by_playlist=defaultdict(list)
     for row in sync: rows_by_playlist[row['playlist_id']].append(row)
-    rx=re.compile(r'^([A-Za-z0-9_-]{11})(_raw\.json|_raw\.srt|_chapters\.json|_v2_content\.json|\.srt)$')
+    rx=re.compile(r'^([A-Za-z0-9_-]{11})(_raw\.json|_raw\.srt|_chapters\.json|_v2_content\.json|_lecture_context\.json|_content\.json|\.srt)$')
     artifacts={}
     for label,base in [('data',root/'data'),('GeminiLongContext',root/'GeminiLongContext'),('root_sample',root)]:
         groups=defaultdict(lambda:defaultdict(list))

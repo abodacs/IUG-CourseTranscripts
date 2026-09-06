@@ -52,7 +52,7 @@ class TestMainPipelineIntegration:
         mock_playlist_dir = Mock()
         mock_playlist_dir.name = 'playlist456'
         mock_playlist_dir.is_dir.return_value = True
-        mock_playlist_dir.path = 'data/raw/playlist456'
+        mock_playlist_dir.path = 'data/playlist456'
         
         mock_raw_file = Mock()
         mock_raw_file.name = 'video123_raw.json'
@@ -208,7 +208,7 @@ class TestMainPipelineIntegration:
         mock_insert_videos.assert_called_once()
         
         # Directory scanning should still happen but find nothing
-        mock_scandir.assert_called_once_with("data/raw")
+        mock_scandir.assert_called_once_with("data")
     
     @patch('main.get_db_connection')
     @patch('main.conn_sync')
@@ -243,7 +243,7 @@ class TestMainPipelineIntegration:
         mock_playlist_dir = Mock()
         mock_playlist_dir.name = 'playlist456'
         mock_playlist_dir.is_dir.return_value = True
-        mock_playlist_dir.path = 'data/raw/playlist456'
+        mock_playlist_dir.path = 'data/playlist456'
         
         mock_raw_file1 = Mock()
         mock_raw_file1.name = 'video123_raw.json'
@@ -274,6 +274,55 @@ class TestMainPipelineIntegration:
             'data/processed/playlist456/video789.srt',
             'data/final/playlist456/video789_clarified.srt'
         )
+
+    @patch('main.get_db_connection')
+    @patch('main.conn_sync')
+    @patch('main.extract.process_playlists')
+    @patch('main.load.insert_videos_to_db')
+    @patch('main.transform.fix_typos')
+    @patch('main.os.path.exists')
+    @patch('main.os.makedirs')
+    @patch('main.os.scandir')
+    def test_main_pipeline_skips_support_directories(
+        self,
+        mock_scandir,
+        mock_makedirs,
+        mock_exists,
+        mock_fix_typos,
+        mock_insert_videos,
+        mock_process_playlists,
+        mock_conn_sync,
+        mock_get_conn
+    ):
+        """Playlists sit directly under data/; raw/processed/final support dirs are not playlists."""
+        mock_connection = Mock()
+        mock_get_conn.return_value = mock_connection
+        mock_connection.execute.return_value.fetchall.return_value = []
+
+        mock_playlist_dir = Mock()
+        mock_playlist_dir.name = 'PL9fwy3NUQKway0xLRTe7OlRxcQic7R2s-'
+        mock_playlist_dir.is_dir.return_value = True
+        mock_playlist_dir.path = 'data/PL9fwy3NUQKway0xLRTe7OlRxcQic7R2s-'
+
+        support_dirs = []
+        for name in ('raw', 'processed', 'final'):
+            entry = Mock()
+            entry.name = name
+            entry.is_dir.return_value = True
+            support_dirs.append(entry)
+
+        mock_scandir.side_effect = [
+            [*support_dirs, mock_playlist_dir],  # data/ scan
+            [],                                  # files inside the playlist directory
+        ]
+
+        with patch('builtins.print'):
+            main()
+
+        # Only data/ and the real playlist directory are scanned; support dirs are skipped
+        scanned = [call.args[0] for call in mock_scandir.call_args_list]
+        assert scanned == ['data', 'data/PL9fwy3NUQKway0xLRTe7OlRxcQic7R2s-']
+        mock_fix_typos.assert_not_called()
     
     @patch('main.get_db_connection')
     @patch('main.conn_sync')
@@ -343,7 +392,7 @@ class TestMainPipelineFileOperations:
             main()
             
             # Verify directory creation
-            mock_makedirs.assert_called_once_with('data/raw/playlist456', exist_ok=True)
+            mock_makedirs.assert_called_once_with('data/playlist456', exist_ok=True)
     
     @patch('main.get_db_connection')
     @patch('main.conn_sync')
@@ -380,8 +429,8 @@ class TestMainPipelineFileOperations:
             
             # Verify correct file paths were constructed
             expected_calls = [
-                ('video123', 'youtube-iug-asdj', 'data/raw/playlist456/video123_raw.json'),
-                ('video789', 'youtube-iug-asdj', 'data/raw/playlist789/video789_raw.json')
+                ('video123', 'youtube-iug-asdj', 'data/playlist456/video123_raw.json'),
+                ('video789', 'youtube-iug-asdj', 'data/playlist789/video789_raw.json')
             ]
             
             actual_calls = mock_download_r2.call_args_list
@@ -479,12 +528,12 @@ class TestMainPipelineEndToEnd:
         cs_dir = Mock()
         cs_dir.name = 'CS101'
         cs_dir.is_dir.return_value = True
-        cs_dir.path = 'data/raw/CS101'
+        cs_dir.path = 'data/CS101'
         
         math_dir = Mock()
         math_dir.name = 'MATH201'
         math_dir.is_dir.return_value = True
-        math_dir.path = 'data/raw/MATH201'
+        math_dir.path = 'data/MATH201'
         
         cs_file1 = Mock()
         cs_file1.name = 'abc123_raw.json'
@@ -495,7 +544,7 @@ class TestMainPipelineEndToEnd:
         math_file1.name = 'ghi789_raw.json'
         
         mock_scandir.side_effect = [
-            [cs_dir, math_dir],           # Main data/raw directory
+            [cs_dir, math_dir],           # Main data directory
             [cs_file1, cs_file2],         # CS101 directory
             [math_file1]                  # MATH201 directory
         ]
