@@ -20,6 +20,8 @@
 | [opto-2311-first-review.md](opto-2311-first-review.md) | CF-02 draft skill sheet for the first/middle/final lectures with candidate skills, evidence spans, and reviewer decisions. | You are the subject reviewer, or preparing their first review. |
 | [opto-2311-scope-freeze.md](opto-2311-scope-freeze.md) | CF-03 scope-freeze DRAFT: verified inputs, the nine-item freeze checklist, and remaining OPEN gates. | You are closing or checking the scope freeze. |
 | [COURSE_RUBRIC.md](COURSE_RUBRIC.md) | The v1 grading rubric: four checks, the 12 hard-failure classes, teaching-node coverage, judge plan, and OPEN calibration thresholds. | You are calibrating, judging, or reviewing lessons. |
+| [opto-2311-operations.md](opto-2311-operations.md) | CF-13 runbook skeleton: problem-report route, incident schema, severity/response targets (OPEN), monitoring, repair loop, backup and rehearsal. | You are preparing or executing operations. |
+| [opto-2311-learner-trial.md](opto-2311-learner-trial.md) | CF-10 instrument drafts: recruitment screen, baseline check, session script, transfer task + rubric, observation sheet, retention variant. | You are preparing or running the learner trial. |
 
 ## Reference files
 
