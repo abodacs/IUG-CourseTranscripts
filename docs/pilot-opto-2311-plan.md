@@ -1,8 +1,12 @@
 # OPTO 2311 pilot — full execution plan
 
-**Quick read:** the complete ticket-by-ticket plan for reprocessing **OPTO 2311 — البصريات الهندسية** into an accepted, published v1 pilot course. It decomposes the [four milestones](NEXT_STEPS.md) into tickets CF-01…CF-12, and names every action, artifact, gate, command, owner, and open human input. [Ticket CF-01](NEXT_STEPS.md#ticket-cf-01-build-the-optics-source-manifest) is still the immediate action; this plan orders everything after it.
+**Quick read:** the complete ticket-by-ticket plan for reprocessing **OPTO 2311 — البصريات الهندسية** into an accepted, published v1 pilot course. It decomposes the [four milestones](NEXT_STEPS.md) into tickets CF-01…CF-13 (including CF-02A and CF-11A), and names every action, artifact, gate, command, owner, and open human input. [Ticket CF-01](NEXT_STEPS.md#ticket-cf-01-build-the-optics-source-manifest) is still the immediate action; this plan orders everything after it.
 
 Status: planning document, adopted 2026-09-06. It sequences and details work defined by the [goal](content-factory-v1-goal.md), [resolution](content-factory-v1-resolution.md), and [pilot packet](content-factory-v1-pilot.md); it changes no fixed decision. Durations are planning estimates, not commitments. Values marked **OPEN** are required evidence or authorization — they are recorded when obtained, never invented.
+
+**Production-cycle integration (2026-09-06):** this plan now includes source normalization, full-course sufficiency, durable artifact/release controls, and the operate → repair → republish cycle. The 21 findings and their required closure proofs are retained in §19; discovery drills are in §20. These are implementation requirements, not evidence of completion. Publishing permissions, empirical inputs, and unresolved release/holdout decisions remain OPEN. The goal still owns fixed scope.
+
+**Execution rule:** every ticket includes its assigned §19 controls and §20 proofs, including when copied into a fresh session. “Offline” or “no model calls” in a script brief means no provider calls from that script; model-assisted agent preparation still consumes the accounted zIDE allowance. Record a bounded preparation allowance before such work, and reconcile prior attributable usage without inventing measurements.
 
 ---
 
@@ -35,7 +39,9 @@ Status: planning document, adopted 2026-09-06. It sequences and details work def
 | Agent (zIDE sessions) | one ticket per session | CF-01 onward | — |
 | Optics subject reviewer | **OPEN** — recruit from day 1 | CF-02 step 6 (first review); every lesson review; correction authority | Lectures can be prepared, but scope freeze, verdicts, and release are blocked |
 | Arabic editorial/visual reviewer | **OPEN** (may be the subject reviewer if qualified) | CF-07 onward | Release blocked |
-| Learners (5–8) | **OPEN** — recruit during Phase 6 | Phase 8 | Pilot cannot complete acceptance; everything else proceeds |
+| Learners (5–8) | **OPEN** — recruit early | Phase 8 | Final course promotion and acceptance blocked |
+| Production owner / backup | Abdullah / **OPEN** | CF-04 storage preflight; CF-11 handover; CF-13 operations | Production readiness blocked without coverage and response targets |
+| Challenge-domain reviewers | **OPEN** — verify competence per reference case | CF-06 | Affected reference labels and evaluation blocked |
 | Rights confirmation (transcripts, diagram captures, Thmanyah font license) | **OPEN** — operator | Before CF-11 promotion | Release blocked; offline work continues |
 
 Rule from the resolution: a reviewer can flag an error but cannot authorize outside teaching material. Reference decisions are made **before** seeing judge scores.
@@ -46,17 +52,21 @@ Rule from the resolution: a reviewer can flag an error but cannot authorize outs
 |---|---|---|---|---|
 | 0. Source manifest | [CF-01](NEXT_STEPS.md#ticket-cf-01-build-the-optics-source-manifest) | `scripts/build_pilot_manifest.py`, `artifacts/opto-2311/source-manifest.json`, `docs/opto-2311-source-review.md` | Stable manifest hash on unchanged rerun; all gaps visible | — |
 | 1. Order & selection | CF-02 | `artifacts/opto-2311/lecture-order.json`, three-lecture skill sheet | Order table has no invented positions; reviewer's first review done | CF-01 |
-| 2. Scope freeze | CF-03 | `docs/opto-2311-scope-freeze.md` + outcome matrix | Operator + reviewer sign-off; every outcome `supported` / `needs_youtube_diagram` / `unsupported` | CF-02, reviewer |
-| 3. Quota & ledger | CF-04 | SQLite spend ledger + fake-provider failure tests + recorded allocations | Failure probes pass; dispatch refuses without reservation | — (parallel with 1–2) |
-| 4. Format & rubric | CF-05, CF-06 | Markdown dialect + validators; `COURSE_RUBRIC.md`; judge harness; reference sets; split manifest | Conformance fixtures pass; thresholds calibrated on dev data | CF-03 (for judge dispatch) |
+| 1A. Evidence preparation | CF-02A | Normalization/correction records, eligible evidence packets | Raw lineage preserved; ambiguities blocked; full-source preparation accounted for | CF-01/02; protected-family access policy |
+| 2. Scope freeze | CF-03 | `docs/opto-2311-scope-freeze.md` + outcome matrix | Operator + reviewer sign-off; every outcome `supported` / `needs_youtube_diagram` / `unsupported` | CF-02/02A, reviewer, CF-04 allocations |
+| 3. Quota & ledger | CF-04 | SQLite spend ledger + fake-provider failure tests + recorded allocations | Failure probes pass; dispatch refuses without reservation | Operator preflight starts before model-assisted preparation; ledger development parallel with 1–2 |
+| 4. Format & rubric | CF-05, CF-06 | Markdown dialect + validators; `COURSE_RUBRIC.md`; judge harness; reference sets; split manifest | Conformance fixtures pass; thresholds calibrated on dev data | CF-03; CF-04 before any live judge/calibration dispatch |
 | 5. Trial lesson | CF-07 | One complete accepted lesson + unit-economics report | Unchanged rerun = zero model calls; reviewer accepts; seeded failures block | 2, 3, 4 |
 | 6. Production | CF-08 | All frozen lessons authored + reviewed + cached | Zero unresolved critical defects; budget never exceeded | 5; CF-11 scaffold in parallel |
 | 7. Course evaluation | CF-09 | Challenge-set + holdout report, coverage audit | All seeded criticals correctly blocked; thresholds not tuned post-hoc | 6 |
 | 8. Learner trial | CF-10 | Formative trial report | Critical teaching failures resolved; limitations stated | 6 (lessons stable) |
-| 9. Release | CF-11 | Promoted Pages release + rollback/withdrawal/restore demos | Preview checklist recorded; rollback proven | 7 (full set); scaffold from 5 |
-| 10. Report | CF-12 | Pilot report + corpus forecast + expansion decision | Every goal definition-of-done checkbox has evidence | all |
+| 9. Qualification & release | CF-11A/CF-11 | Exact approved bundle, clean restore, promoted release | Current CF-09/10 evidence, rights, closure, preview approval, withdrawal/restore proof | 7 and 8; scaffold from 5 |
+| 10. Operate & repair | CF-13 | Incident/runbook records; independently accepted repaired release | Full report → containment → repair → review → republish rehearsal; response targets measured | CF-11; preparation starts before promotion |
+| 11. Report & expansion | CF-12 | Pilot report + initial/maintenance economics + expansion decision | Every goal checkbox and operational rehearsal has evidence | all, including CF-13 rehearsal |
 
-Mapping to [NEXT_STEPS.md](NEXT_STEPS.md): milestone 1 = Phases 1–2, milestone 2 = Phase 3, milestone 3 = Phases 4–5, milestone 4 = Phases 6–10.
+Mapping to [NEXT_STEPS.md](NEXT_STEPS.md): milestone 1 = Phases 1–2, milestone 2 = Phase 3, milestone 3 = Phases 4–5, milestone 4 = Phases 6–11. Ticket numbers preserve the original IDs; CF-13 executes before CF-12 final acceptance.
+
+**Release states and gates:** private engineering previews are not course acceptance. Final course promotion requires current CF-09 and CF-10 evidence for the candidate revision, complete prerequisite-closed scope, valid reviews/verdicts, rights, and preview qualification. The earlier “3+ lessons” public-release shortcut is removed. Interim public teaching remains blocked until CF-03 records a reviewed standalone module scope and explicitly reconciles staged publication with the authoritative complete-course contract; a STATUS banner alone does not authorize it. Apply the same release predicate to every promotion path.
 
 ## 4. Phase 0 — CF-01, source manifest (offline, no model calls)
 
@@ -74,6 +84,8 @@ The full brief lives in [NEXT_STEPS.md](NEXT_STEPS.md#ticket-cf-01-build-the-opt
 
 ## 5. Phase 1 — lecture order and three-lecture selection (CF-02)
 
+Before semantic discovery, reserve candidate evaluation families and record existing exposure, including prior capture inspections. CF-03/06 must resolve protected access for full-course coverage versus the pilot packet’s strict exposure rule (F03). No source already used for tuning can become an unseen holdout.
+
 1. **Primary order evidence — YouTube playlist metadata** (permitted use: identity/order only). Fetch with the pinned toolchain:
    ```bash
    uv run --isolated --no-project --with 'yt-dlp[default]==2026.8.19' \
@@ -90,16 +102,24 @@ The full brief lives in [NEXT_STEPS.md](NEXT_STEPS.md#ticket-cf-01-build-the-opt
 
 **Gate:** order table complete (or unknowns explicit); three-lecture skill sheet exists; reviewer risk note written. *Estimate: 1–2 h agent + 45 min reviewer + 15 min operator fallback if yt-dlp fails (manual playlist-page transcription).*
 
+### CF-02A — normalization, corrections, and eligible evidence
+
+Choose and document raw-only authoring or implement a versioned normalization path. Preserve immutable raw text, segment IDs and timestamps; record aligned transformations, uncertain spans, and append-only corrections with allowed evidence/derivation, reviewer disposition and affected artifact IDs. Enforce input eligibility at authoring and helper-tool boundaries; legacy prose cannot supply teaching facts. Prepare all 105 available sets under the protected-family access policy, not just the three discovery samples.
+
+Bind diagrams to captured bytes, matching-lecture identity evidence, time alignment, capture metadata and visual review. Edited media or replacement captures create a new revision. Independently check the course’s own sign conventions, units, labels and ray directions.
+
+**Gate:** same-length semantic corruption is detected; unsupported corrections quarantine outcomes; source-to-teaching coverage is validated through references, not equal counts. Required controls: F04/F05/F15. Agent prepares; subject reviewer approves. Estimate after source-integrity findings.
+
 ## 6. Phase 2 — scope freeze (CF-03)
 
-1. **Outcome matrix** (`artifacts/opto-2311/outcome-matrix.json`, local; summarized in the committed scope doc): per outcome — `outcome_id`, tangible task, prerequisites, intended learner, evidence refs (transcript spans; diagram video ID + range), required explanation/example/practice/transfer-task IDs, sufficiency status (`supported` / `needs_youtube_diagram` / `unsupported`).
-2. **Skipped-video disposition:** reviewer + operator decide whether `SAq013FtOLQ` covered outcomes the transcripts must supply. No transcript ⇒ those outcomes are `unsupported`: blocked, or excluded via an explicitly reviewed scope revision. Record the decision and reason.
+1. **Full-course discovery and outcome matrix** (`artifacts/opto-2311/outcome-matrix.json`, local; summarized in the committed scope doc): per outcome — `outcome_id`, tangible task, prerequisites, intended learner, evidence refs (transcript spans; diagram video ID + range), required explanation/example/practice/transfer-task IDs, sufficiency status (`supported` / `needs_youtube_diagram` / `unsupported`).
+2. **Skipped-video disposition:** reviewer + operator establish its curriculum impact only from allowed evidence. Do not invent the missing lecture’s topic or declare it irrelevant without support. Retain an explicit completeness blocker/limitation where impact cannot be established; required unsupported outcomes block acceptance unless a smaller scope is explicitly reviewed.
 3. **Lesson plan:** group outcomes into lessons in prereq-closed order following verified lecture order; target ~1 lesson per teaching unit, no outcome dropped to improve yield.
-4. **Reserve evaluation families now:** challenge excerpts (فيزياء عامة أ `1noCDAkxHwg`; اللغة الإنجليزية `0mkSe0xrqKk`; Digital-logic `Kzxd5D8ZgnQ` 13:37) are **development data only**; holdout families for the pilot are drawn from pilot-course videos not exposed during tuning, grouped by source-video/near-duplicate family (watch the sibling-playlist families from CF-01).
+4. **Confirm evaluation families reserved before discovery:** challenge excerpts (فيزياء عامة أ `1noCDAkxHwg`; اللغة الإنجليزية `0mkSe0xrqKk`; Digital-logic `Kzxd5D8ZgnQ` 13:37) are **development data only**; holdout families for the pilot are drawn from pilot-course videos not exposed during tuning, grouped by source-video/near-duplicate family (watch the sibling-playlist families from CF-01).
 5. **Freeze checklist (all must be recorded before CF-07 dispatch):** outcome IDs; lesson scope; assessment requirements; required diagrams with video IDs/ranges; per-course/per-lesson wiki coverage; graph edge types; learner assumption + prerequisites; numeric run/pilot token allocations (from Phase 3); reviewer names.
-6. **Sign-off:** operator + subject reviewer record approval in `docs/opto-2311-scope-freeze.md`. Later changes = a new scope revision repeating the review.
+6. **Sign-off:** operator + subject reviewer record approval in `docs/opto-2311-scope-freeze.md`. All 105 available sources must contribute to the sufficiency/disposition audit; three lectures estimate risk only. Record reviewed teaching order separately from unknown historical positions. Include the factory/platform delivery matrix, release membership rules, review capacity and protected-family access decision. Later changes = a new scope revision repeating the review.
 
-**Gate:** frozen scope; every promised outcome has evidence and prerequisites or an explicit blocker. *Estimate: 3–5 h agent prep + 1–2 h reviewer.*
+**Gate:** frozen scope; every promised outcome has evidence and prerequisites or an explicit blocker. *Estimate: OPEN until full-source volume and reviewer capacity are measured; the earlier sample-based estimate did not cover full-course discovery.*
 
 ## 7. Phase 3 — quota truth and the spend ledger (CF-04, parallel with Phases 1–2)
 
@@ -110,24 +130,32 @@ The full brief lives in [NEXT_STEPS.md](NEXT_STEPS.md#ticket-cf-01-build-the-opt
 5. **Bounded lineage:** ≤2 transient retries, 1 repair cycle, 1 premium escalation per unit — durable across restarts and workers; exhaustion quarantines the unit, never relaxes the rubric.
 6. **Allocation setting (before any dispatch):** measure token volumes on the three Phase-1 lectures; compute per-lesson generation + judging estimates including retries; derive `run_cap` and `pilot_cap` ≤ remaining measured quota with an explicit safety margin. Record numbers + derivation in the ledger config. *Values are OPEN until this measurement; the formula and a worked example are in [§17](#17-budget-checkpoints-and-allocation-method).*
 
-**Gate:** fake-adapter probes pass; real boundary documented; allocations recorded; a dispatch attempt with insufficient allowance is refused by test. *Estimate: 4–8 h agent + operator iterations.*
+**Accounting and durability:** include preparatory agent sessions, tool/context overhead, nested model routes, calibration and graph/wiki work. Verify actual quota currency, observation lag, other operator usage and period resets. Allocate CF-06 before calibration; unknown usage or actual usage above reservation stops new dispatch pending reconciliation. Start independent backup of evidence, editable content, ledger, verdicts, reviews and configuration before live production; define consistent snapshots, retention and capacity. Test quota rollover, late responses, outside usage and over-reservation consumption (F02/F08/F20).
+
+**Gate:** fake-adapter probes pass; real boundary documented; bounded real-workflow reconciliation recorded; allocations recorded; a dispatch attempt with insufficient allowance is refused by test. *Estimate: 4–8 h agent + operator iterations.*
 
 ## 8. Phase 4 — format, rubric, evaluation harness (CF-05 + CF-06)
 
 ### CF-05 — Markdown dialect, validators, preview
 
-- Constrained Markdown + declared extensions: math (`$$…$$` subset validated), tables, stable teaching-node IDs with split/merge history (never paragraph ordinals or content hashes as identity), fenced `quiz` payloads validated against a schema (stable IDs, skill refs, prompt, choices/task, answer, rationale, feedback; answer not exposed before an attempt). No arbitrary JS/MDX/raw HTML/event handlers.
-- Provenance sidecars: per-lesson JSON mapping every teaching node → transcript spans / diagram evidence; stays local until the release pipeline needs it (JSON is git-ignored; release bundles are self-contained).
+- Constrained Markdown + declared extensions: math (`$$…$$` subset validated), tables, stable teaching-node IDs with split/merge history (never paragraph ordinals or content hashes as identity), fenced `quiz` payloads validated against a schema (stable IDs, skill refs, prompt, choices/task, answer, rationale, feedback; answer not displayed through normal UI/accessibility paths before an attempt). No arbitrary JS/MDX/raw HTML/event handlers.
+- Provenance sidecars: per-lesson JSON mapping every teaching node → transcript spans / diagram evidence; durable private storage with versioned backup. Public bundles contain only allowlisted learner-facing artifacts; recovery bundles also retain the private acceptance evidence.
 - Segment-disposition recorder: `included` / `duplicate_of` / `excluded_with_reason` / `unresolved` per source segment, completed per lecture during Phase 6.
 - Renderer for v1 = minimal static HTML generator conforming to the dialect, **RTL-first**, Thmanyah typefaces (license verification is an open rights item), WCAG-minded (contrast, keyboard, reduced motion), framework-agnostic — the platform stack comparison stays platform-map scope.
 - Bounded OKF v0.2 evaluation for the wiki layer; graph output as `graph.json` (+ HTML view later) with typed edges and provenance; prerequisite edges acyclic.
+
+- Artifact states and dependency engine: separate provider success, validation, review, acceptance, quarantine, supersession, invalidation and publication. Bind approvals to exact revisions; implement transitive build dependencies separately from semantic edges. Use revision-checked commits and output ownership so ledger-safe workers cannot overwrite accepted work or reset repair lineage through new IDs (F06/F07).
+- Runtime conformance: declare browser/device/assistive-technology coverage; test Arabic screen reading, math, reflow and font fallback. Static practice hides answers from normal interaction but cannot promise exam secrecy; independent trial answers remain private. Define numeric tolerances, units and valid alternatives (F14/F16).
+- Trust boundaries: allowlist URLs/paths/assets and validate generated SVG as well as Markdown. Reject instruction-driven verdict membership and oversized inputs. Reject executable content unless an explicit isolated, resource-limited worker is implemented for an approved exercise (F17).
+- Persistent schemas and model/tool changes require versioned migration, canaries, invalidation and recovery rules (F19).
 
 ### CF-06 — rubric, judges, reference sets, splits
 
 - Research + version `docs/COURSE_RUBRIC.md`: grounded in Bloom's taxonomy, backward design, cognitive load, retrieval practice, worked examples; four checks (evidence support, subject correctness, editorial/pedagogical contribution, cross-lesson coherence); explicit hard-failure list; threshold fields filled during calibration. Teaching-bearing nodes = prose paragraphs **and** math, code, tables, quiz choices/keys/rationales, diagrams + accessible alternatives, wiki entries, simplified explanations.
 - Judge plan: calibrated inexpensive judge for coverage verdicts (batched, stable IDs, explicit per-item verdicts; missing IDs fail; malformed judge output = failure); premium reserved for generation, escalations, bounded deep audits. Whole-lesson context in every verdict (conservative cache boundary at pilot scale).
 - Reference sets: Arabic-first good + known failures + English + mixed-direction cases, labeled by humans **before** judge scores; all 12 required failure classes represented (wrong assertion, outdated version, transcription ambiguity, absent visual, contamination, wrong quiz key, persuasive wrong solution, missing prerequisite, cross-lesson contradiction, harmful simplification, invalid repair, instruction-like text in source).
-- Split manifest grouped by source-video/near-duplicate family (includes the sibling-optics watchlist); candidate selection only on development data; holdout opened only after candidate selection + thresholds are frozen.
+- Split manifest and access log grouped transitively by source-video/near-duplicate family, including multi-source lessons and shared glossary evidence. Record prior exposure. Resolve protected coverage/reference access before full-course discovery; if the strict exposure rule leaves no eligible families, block a holdout claim and settle the design. Freeze prompts, rubric, model/settings and thresholds before isolated holdout production/evaluation. Candidate tuning only uses development data (F03).
+- Reference decisions require competence per subject/domain, revision-bound assignments, independent labeling before scores, and recorded disagreement resolution (F13).
 - Cache keys: content hash + evidence refs + lesson context + rubric version + prompt version + model/settings + schema/tool versions; quiz placement and graph dependencies inside the relevant keys. Identical accepted reruns make **zero** calls.
 
 **Gate:** validators pass conformance fixtures; rubric v1 committed; calibration report records thresholds + judge disagreement on dev data. *Estimate: 12–20 h agent + 2–3 h reviewer labeling.*
@@ -142,17 +170,18 @@ One complete lesson from the strongest Phase-1 skill (middle lecture), end to en
 4. **Derivatives:** wiki entry, graph nodes/edges with provenance, disposition records for the lecture's segments.
 5. **Evaluation:** deterministic validators → judge verdicts (whole-lesson context) → subject + editorial review (reference decisions before scores).
 6. **Engineering proofs:** unchanged rerun = zero generation/judging calls; interrupted restart resumes without repeat work; full token ledger trail; unit-economics report (tokens per stage, review minutes).
-7. **Seeded-failure probes on this lesson:** wrong quiz key, unsupported claim, broken asset link, missing verdict, injected markup — each must block promotion.
+7. **Seeded-failure probes on this lesson:** wrong quiz key, unsupported claim, broken asset link, missing verdict, injected markup — each must block promotion. Also prove the expected invalidation closure for a shared convention, paragraph move, concept split and diagram replacement; race two workers against the same revision; test source instructions, forbidden paths/URLs/SVG, context truncation and actual Arabic assistive-technology use (F06/F07/F14–F17). Keep intentionally invalid candidates private.
 
 **Gate:** accepted trial lesson + measured economics + all probes block correctly. Rubric/prompt tuning happens **now**, before any holdout opens. *Estimate: 1–2 days agent + 1–2 h reviewers.*
 
 ## 10. Phase 6 — course production (CF-08)
 
-- Per-lesson loop identical to the trial, in prereq-closed course order; parallel workers only after ledger concurrency is proven (Phase 3 tests).
+- Per-lesson loop identical to the trial, in prereq-closed course order; parallel workers only after ledger and artifact-ownership concurrency are proven. Capture output directories remain single-writer. Process protected families only under the frozen CF-06 protocol.
 - Gates per lesson; durable lineage limits; quarantine on exhaustion; budget stop when run allowance is exhausted (stop, report, decide — never relax the rubric).
 - Segment dispositions completed per lecture; weekly status report: tokens vs caps, accepted/quarantined counts, review queue age, cache hit rate.
 - Reviewer cadence agreed (batch size per week); editorial review of **every** complete lesson — sampling is only for deep audits during later expansion.
-- Interim build-in-public: once deployment scaffolding exists (CF-11 starts in parallel after CF-07) and 3+ lessons are accepted, publish working notes behind a STATUS banner; each promoted release remains the complete accepted set so far.
+- Build-in-public surfaces may be prepared with CF-11 after CF-07. Public teaching follows §3 release eligibility; lesson count and STATUS banners do not bypass scope, rights, evaluation or learner gates. Keep engineering candidates private while public eligibility is unresolved.
+- Apply review backpressure, stage timeouts, stuck-job and disk-capacity stops, durable backups and revision-bound review queues. Record disagreements and reviewer availability; no agent-created approval (F08/F11/F13).
 - Any scope change (outcome added/dropped/corrected) = new scope revision + repeated review + invalidation of affected artifacts.
 
 **Gate:** all frozen lessons authored, verdicted, and reviewed; zero unresolved critical defects. *Estimate: dominated by reviewer throughput — assume 1–3 h agent + 20–40 min reviewer per lesson; scale after the first ten lessons report actuals.*
@@ -164,7 +193,7 @@ One complete lesson from the strongest Phase-1 skill (middle lecture), end to en
 3. Course-coherence audit: prerequisite chain closed and acyclic; cross-lesson contradiction probe; concept merge/alias review; whole-coverage check — every teaching node has applicable verdicts; outcome matrix fully closed with explicit denominators; lessons-with-any-critical-defect count.
 4. Publish counts + severity + source-group uncertainty; no population-error claims from a small pilot.
 
-**Gate:** zero unresolved criticals; challenge cases blocked; threshold report recorded. *Estimate: 1–2 days.*
+**Gate:** zero unresolved criticals; challenge cases blocked; threshold report recorded for the candidate revision. CF-10 or CF-13 changes reopen affected checks; prompt/rubric tuning requires retiring the exposed holdout and resolving a fresh evaluation design. *Estimate: 1–2 days.*
 
 ## 12. Phase 8 — formative learner trial (CF-10)
 
@@ -172,7 +201,9 @@ One complete lesson from the strongest Phase-1 skill (middle lecture), end to en
 2. Instruments, all written **before** the trial: prerequisite/baseline check; lesson reading + practice; fresh unaided transfer task scored with a prewritten rubric; delayed variant (1–2 weeks) if retention is claimed.
 3. Protocol: structured observation or think-aloud; record every failure; revise teaching; resolve observed critical failures; report limitations (formative evidence, not causal superiority).
 
-**Gate:** trial report with criterion verdict recorded. *Estimate: 1–2 weeks wall-clock scheduling; agent-time minimal.*
+4. Bind trial instruments/results to the tested revision and named outcomes. Keep answer keys out of public artifacts; record participant choices and identifiable observations privately with retention/deletion handling. Report which outcomes have learner evidence. Critical failures return through correction, invalidation, independent review and fresh task reassessment; tuning reopens CF-09 holdout policy (F12/F14/F18).
+
+**Gate:** trial criterion verdict and remediation/reassessment evidence apply to the release candidate; superseded evidence cannot silently clear final promotion. *Estimate: 1–2 weeks wall-clock scheduling; agent-time minimal.*
 
 ## 13. Phase 9 — release engineering on Cloudflare Pages (CF-11; scaffold starts in parallel after CF-07)
 
@@ -181,9 +212,33 @@ One complete lesson from the strongest Phase-1 skill (middle lecture), end to en
 3. Failure drills: intentionally failed update leaves the last accepted release usable; withdrawal when every available version is invalid (rollback cannot select an invalid release); restore from an independent backup.
 4. Build-in-public surfaces (adopted from [fanout-feature-analysis.md](fanout-feature-analysis.md) §3.12/§4): STATUS banner on every page; public working-notes page listing accepted lessons; the pilot roadmap graph once graph artifacts exist; one coherent **free module** (a standalone path, not a crippled sample) as the public taste test; an illustrated release-notes page as the blog seed. All rebuilt RTL-first in Thmanyah; presentation changes never lower the bar.
 
-**Gate:** complete accepted set promoted; rollback + withdrawal + backup-restore demonstrated with recorded evidence. *Estimate: 4–8 h agent + operator Pages access.*
+### CF-11A — production qualification before promotion
 
-## 14. Phase 10 — pilot report and expansion decision (CF-12)
+Restore evidence, editable content, ledger and approvals into an empty workspace from an independent backup; rebuild the accepted bundle without model calls and retain uncertain reservations. Verify public/private bundle allowlists, dependency/license/rights records, actual accessibility behavior and runtime security probes. Record supported environments and current hosting controls for preview access, historic URLs, caching and withdrawal. Restore credentials through a separate procedure.
+
+Promote the exact preview-approved bundle by release ID/hash. Serialize production promotion and recheck rights, scope and current revision-bound approvals at commit time. Test concurrent promotions, late invalidation, ambiguous deployment completion, private-file inclusion and accessible historic URLs after withdrawal. Already downloaded copies cannot be recalled. Run live release/asset/quiz checks after promotion.
+
+Prepare CF-13 ownership, problem reporting, monitoring, response targets and backup cadence before release. Require current CF-09/10 evidence under §3. Controls F01/F08–F11/F16–F19 are mandatory.
+
+**Gate:** complete eligible set promoted; exact-byte preview/live identity, rollback, withdrawal, clean backup restore and operating handover demonstrated. *Estimate: re-estimate from restore/hosting/accessibility findings; the earlier 4–8 h estimate covered scaffolding only.*
+
+## 14. Phases 10–11 — operations, pilot report and expansion
+
+### CF-13 — operate, repair and republish
+
+**Owners:** operator, named backup, subject and Arabic editorial reviewers. Prepare the runbook before CF-11 promotion; rehearse after the release path is qualified.
+
+1. Expose a problem-report route carrying lesson/node/release IDs; retain private incident records. Set severity, acknowledgement/containment/restoration targets, monitoring and review cadence, backup freshness checks, and coverage when an owner is absent. Keep targets OPEN until agreed.
+2. Detect learner, source, correctness, rights, provider/model or parser/schema changes. Resolve affected evidence, dependencies and every release/derivative. Invalidate unsafe rollback targets and withdraw affected public versions where no safe accepted version exists.
+3. Record append-only corrections backed by allowed evidence; preserve old artifacts. Reserve a bounded maintenance allowance; repair and invalidate through CF-02A/05/07. Renew independent reviews and rendering checks; reopen CF-09/10 where the changed teaching or evaluation requires it.
+4. Republish only the eligible exact bundle through CF-11, verify the public fix and publish an appropriate correction note. Retain a regression case and initial/maintenance costs separately.
+5. Rehearse the full report → impact → containment → repair → independent acceptance → republish → verification loop with a seeded defect in a private production-equivalent environment. Do not intentionally expose learners to known-invalid teaching. Measure response/recovery against the chosen targets; test backup recovery and update/migration canaries.
+
+**Artifacts:** `docs/opto-2311-operations.md`, private incident/change records, revision-bound repair approvals, rehearsal evidence and maintenance-cost report.
+
+**Gate:** runbook and owner/backup established; public health checks work; full operational rehearsal passes; maintenance costs and response times measured. Controls F10–F13/F18–F20 and §20 drills apply. Ongoing operation continues after the report.
+
+### CF-12 — pilot report and expansion decision
 
 - Economics: **LLM cost per accepted lesson** = all attributable token spend (including failures and shared overhead) ÷ first-accepted distinct lesson IDs; accepted outcome coverage reported separately (splitting lessons cannot inflate yield); reuse/cache hit rates; repair and quarantine rates; judge disagreement; reviewer minutes + queue age/throughput; human time vs machine time.
 - Quality: defect counts with named denominators and severity; challenge vs holdout vs audit results kept separate; explicit limitations.
@@ -192,7 +247,9 @@ One complete lesson from the strongest Phase-1 skill (middle lecture), end to en
 - Corpus forecast from measured token volumes with low/base/high scenarios — playlist counts are never a cost estimate; no affordability claim beyond pilot evidence.
 - Expansion decision: measured batch sizing for the next courses; the runner-up جبر حديث 1 is chosen only via a documented rationale if optics proved unrepresentative.
 
-**Gate:** report accepted; expansion decision recorded. *Estimate: half a day.*
+- Operational evidence: CF-13 rehearsal, incident response/recovery times, backup freshness and migration proofs, measured maintenance costs, remaining operational limitations, and the explicit deferred-platform delivery matrix.
+
+**Gate:** report accepted after CF-13 rehearsal; expansion or retirement decision recorded with evidence retention and safe withdrawal handling. *Estimate: half a day.*
 
 ## 15. Schedule and critical path
 
@@ -200,15 +257,15 @@ Relative weeks from adoption (2026-09-06); dates stretch/compress on human avail
 
 | Week | Agent track | Human track (parallel from day 1) |
 |---|---|---|
-| 1 | CF-01 manifest → CF-02 order + selection | Recruit subject reviewer; operator zIDE quota observations (CF-04 step 1) |
-| 2 | CF-03 scope-freeze prep → CF-04 ledger + probes | Reviewer first review (45 min); rights confirmations; learner recruitment starts |
+| 1 | CF-04 preparation/accounting preflight; CF-01 → CF-02; protect evaluation families | Recruit subject reviewer; operator zIDE quota observations (CF-04 step 1) |
+| 2 | CF-02A + full-source CF-03 discovery; CF-04 ledger + backups/probes | Reviewer first review (45 min); rights confirmations; learner recruitment starts |
 | 3 | CF-05 format + CF-06 rubric/harness | Reviewer labels reference sets (2–3 h) |
 | 4 | CF-07 trial lesson → CF-11 scaffold | Trial-lesson reviews; calibrate thresholds on dev data |
-| 5–7 | CF-08 production batches + interim releases | Per-lesson reviews; weekly queue triage |
+| 5–7 | CF-08 production batches + private qualification previews | Per-lesson reviews; weekly queue triage |
 | 8 | CF-09 evaluation → CF-10 trial prep | Holdout unaffected; learner trial runs |
-| 9 | CF-11 release drills → CF-12 report | Final reviews; learner delayed task (if retention claimed) |
+| 9+ | CF-11A qualification → eligible CF-11 release → CF-13 rehearsal → CF-12 report | Final reviews; delayed learner task if claimed; operating handover |
 
-Critical path: manifest → order → scope freeze → trial lesson → production → evaluation → release → report. The ledger (Phase 3) and deployment scaffold (CF-11) are deliberately off the critical path but must finish before first dispatch and first interim release respectively.
+Critical path: manifest → eligible evidence/full-source sufficiency → scope freeze → trial lesson → bounded production → course and learner acceptance → production qualification → release → operational rehearsal → report. Actual quota integration, reviewer capacity, protected evaluation access and restoration proof are blocking dependencies wherever required. Parallel ledger/scaffold development does not remove those gates. The week table is provisional; re-estimate full-source and reviewer effort after CF-07.
 
 ## 16. Risk register
 
@@ -223,25 +280,30 @@ Critical path: manifest → order → scope freeze → trial lesson → producti
 | yt-dlp/FFmpeg breakage on capture | Live capture exit 2 / lookup failure | Pin stays `2026.8.19` (verified); local-video capture path; record failure, block affected outcomes | Affected diagrams |
 | Reviewer queue saturation | Queue age grows week over week | Reduce authoring batch rate, never skip whole-lesson review | Release cadence |
 | Learners unavailable | Phase 8 stalls | Hold release at "engineering-accepted"; acceptance stays incomplete; report honestly | Final acceptance |
-| JSON git-ignore traps | Required artifact silently untracked | JSON stays local by design; committed reports are Markdown; release bundles self-contained | — |
+| JSON git-ignore traps | Required evidence silently absent from recovery store | Versioned private backups, checksums, clean-workspace restore and separate public allowlist | Live production / recovery qualification |
+| Holdout already exposed | Semantic discovery or shared evidence entered tuning | Retire exposed family; resolve protected access and replacement design | Evaluation claim / final acceptance |
+| Stale approval or competing publisher | Candidate hash differs or release invalidated | Revision-bound approvals and serialized promotion | Promotion |
+| Post-launch defect or owner absence | Learner report, failed check, unresolved incident | CF-13 containment, backup owner, bounded repair and requalification | Affected releases / production readiness |
 
 ## 17. Budget checkpoints and allocation method
 
-Enforcement points: (a) allocation recorded before CF-07 dispatch; (b) reservation before every dispatch; (c) weekly reconciliation against zIDE observations; (d) automatic stop at run-cap exhaustion.
+Enforcement points: (a) bounded preparation allowance before model-assisted work, including agent sessions; (b) CF-04 reservation before every production/calibration dispatch, including CF-06; (c) reconcile subscription observations and outside usage at a cadence compatible with the cap, not merely weekly if that is insufficient; (d) stop at exhaustion, unresolved usage or reservation overrun; (e) separate maintenance headroom before CF-13.
 
-Worked method (numbers below are **illustrative placeholders**, replaced by measured values in Phase 3):
+Initial estimation method (heuristics below must be replaced by measured full-workflow usage in CF-04/07):
 
 1. Measure input volume: mean transcript tokens per lecture × 105 → `corpus_input`.
 2. Estimate generation: tokens_in (evidence packet) + tokens_out (lesson + quizzes + diagrams specs) per lesson × lesson count.
 3. Estimate judging: coverage verdicts ≈ 2–3× lesson tokens (paragraph + quiz + lesson-context passes) on the inexpensive judge; reserve premium for generation, escalations, deep audits.
-4. Add overhead: retries (≤2×), one repair cycle, shared indexing/extraction — from Phase-5 actuals once available.
-5. `pilot_cap` = min(remaining measured quota − safety margin, sum of the above). `run_cap` = pilot_cap ÷ planned number of dispatch runs.
+4. Add measured session/tool/context overhead, nested model work, retries, repair/escalation, images, graph/wiki extraction, discarded candidates and shared indexing. Record review time, local storage/backup growth and compute separately. Use long/difficult development sources for tail estimates and preflight usable context limits without exposing protected families.
+5. `pilot_cap` = min(remaining measured quota − safety margin, estimated total need including evaluation and maintenance). This is a ceiling, not affordability proof: report a shortfall if estimated need exceeds available quota. Allocate each `run_cap` by expected bounded work within the shared remaining pilot allowance; do not rely on equal division alone.
 6. Record both in the ledger config with the derivation; the CF-12 report reconciles forecast vs actual.
 
 | Allocation | Value | Set at |
 |---|---|---|
 | Remaining zIDE quota | **OPEN** | CF-04 operator observation |
+| Preparation allowance and prior attributable usage | **OPEN** | Operator preflight before model-assisted preparation |
 | Pilot allowance | **OPEN** | CF-04 after measurement |
+| Calibration / maintenance headroom | **OPEN** | CF-04 before CF-06 / CF-13 |
 | Per-run allowance | **OPEN** | CF-04 after measurement |
 | Measured cost per accepted lesson | **OPEN** | CF-07 then CF-12 |
 
@@ -257,10 +319,11 @@ Worked method (numbers below are **illustrative placeholders**, replaced by meas
 | One consistent accepted set; failed update leaves last release usable; rollback shown | CF-11 drills |
 | Cloudflare Pages: atomic promotion, preview validation, rollback | CF-11 |
 | Zero-cash cap + 300M quota respected; unit economics reported | §17 + CF-12 |
-| Source sufficiency, corrections, exclusions, frozen matrix reviewed | CF-02/CF-03 + scope-revision log |
+| Source sufficiency, corrections, exclusions, frozen matrix reviewed | CF-02/02A/03 + all-source coverage and scope-revision log |
 | Source-grouped holdouts, independent review, node coverage, learner trial | CF-06 splits + CF-08/CF-09 + CF-10 |
 | Crash/concurrency proofs with fake provider before live dispatch | CF-04 |
-| Invalidations, safe execution, withdrawal, backup restore | CF-05 + CF-11 |
+| Invalidations, safe execution, withdrawal, backup restore | CF-05/07 closure and trust probes + CF-11A clean restore + CF-11 withdrawal |
+| Operational cycle, ownership, monitoring, bounded maintenance, drift and migration | CF-13 runbook/rehearsal + CF-04/05 version/usage controls + §20 discovery evidence |
 | Docs, license inventory, reproducible validation commands | CF-12 + updates to README/docs |
 
 ## Appendix A — commands verified on this machine (2026-09-06)

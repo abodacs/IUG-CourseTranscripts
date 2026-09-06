@@ -16,6 +16,7 @@
 | [KEYFRAME_CAPTURE.md](KEYFRAME_CAPTURE.md) | Working JSON-to-video-frame tool, commands, verification, and evaluation of the Answer.AI workflow. | You need to recover a diagram from a lecture. |
 | [content-factory-v1-pilot.md](content-factory-v1-pilot.md) | The selected optics course, verified local counts, challenge cases, and review fields. | You are preparing sources or arranging a reviewer. |
 | [pilot-opto-2311-plan.md](pilot-opto-2311-plan.md) | The full ticket-by-ticket pilot execution plan: phases CF-01…CF-12, gates, artifacts, budget checkpoints, schedule, risks, and session briefs. | You are executing, scheduling, or resourcing the pilot. |
+| [pilot-opto-2311-production-review.md](pilot-opto-2311-production-review.md) | Production-cycle review: release-gate conflicts, missing operational controls, proposed ticket additions, and discovery drills. | You are closing blind spots before dispatch, publication, or production acceptance. |
 
 ## Reference files
 
