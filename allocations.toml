@@ -1,0 +1,28 @@
+# CF-04 token allocations — operator-measured inputs.
+# Every value below is OPEN until the operator records a real zIDE
+# observation (quota currency, remaining balance, observation lag, outside
+# usage). The ledger refuses dispatch while an allocation stays OPEN or is
+# missing. Replace placeholders with measured integers + derivation notes;
+# never invent numbers.
+
+[pilot]
+remaining_quota_tokens = "OPEN"          # measured remaining zIDE balance
+safety_margin_tokens = "OPEN"            # operator-chosen reserve
+pilot_cap_tokens = "OPEN"                # min(remaining - margin, estimated need)
+
+[preparation]
+allowance_tokens = "OPEN"                # bounded allowance for model-assisted agent sessions
+prior_usage_tokens = "OPEN"              # attributable usage already consumed
+
+[runs]
+# One entry per bounded run; allocate by expected work, not equal division.
+cf06_calibration = "OPEN"                # before any live CF-06 judge dispatch
+cf07_trial = "OPEN"
+cf08_production = "OPEN"
+
+[maintenance]
+headroom_tokens = "OPEN"                 # reserved before CF-13 operation
+
+[reconciliation]
+observation_cadence = "OPEN"             # compatible with the cap, not merely weekly
+quota_period_reset = "OPEN"              # measured period boundary

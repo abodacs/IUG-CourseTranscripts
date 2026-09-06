@@ -1,8 +1,15 @@
 # Next steps — Content Factory v1
 
-**Start Ticket CF-01: build a trustworthy source manifest for the optics pilot.** Copy the task brief at the end into your next zIDE session. Allow about 5 minutes to read this guide.
+**Offline implementation status (2026-09-06, branch `pilot/cf-01-source-manifest`):** CF-01 (source manifest + [review](opto-2311-source-review.md)), CF-02 (lecture order + [first-review sheet](opto-2311-first-review.md) + family reservation), CF-02A (raw-only evidence boundary + corrections ledger), CF-03 (matrix validators + discovery worksheet + [scope-freeze DRAFT](opto-2311-scope-freeze.md)), CF-04 (spend ledger + failure probes + [allocations.toml](../allocations.toml) placeholders), CF-05 (dialect validators, RTL renderer, dispositions, node history), and CF-06 ([COURSE_RUBRIC](COURSE_RUBRIC.md) + dry-mode judge harness + reference-labeling worksheet) are implemented. Suite: 301 passing (181 baseline + 120 new).
 
-**Current position: preparation, before v1 execution.** Existing inventory and legacy integrity safeguards are available. The source manifest, zIDE quota integration, quality gates, lesson renderer, and deployment still need implementation or proof.
+**Current position: everything remaining needs human input — no further offline ticket can advance the plan.** In order:
+
+1. **Operator + subject reviewer sign-off** on [opto-2311-scope-freeze.md](opto-2311-scope-freeze.md) (reviewer must be recruited first; their first review awaits in [opto-2311-first-review.md](opto-2311-first-review.md)).
+2. **Operator quota measurements** recorded in [allocations.toml](../allocations.toml) (zIDE remaining balance, observation cadence) — the ledger refuses all real dispatch while values are OPEN.
+3. **Reference-set labeling** by competent human labelers: fill `artifacts/opto-2311/reference-worksheet.json` (labels before any judge score).
+4. Then: CF-06 calibration → CF-07 trial lesson → CF-08 production → CF-09/10 evaluation → CF-11/11A release → CF-13 operations → CF-12 report (per [the plan](pilot-opto-2311-plan.md) §15).
+
+The CF-01 task brief at the end is kept for reference.
 
 ## Decisions already made
 
