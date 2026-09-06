@@ -35,7 +35,14 @@
 
 ## Sign-off (required to unfreeze)
 
+To sign, replace the OPEN line with your name, the date, and the words "approved as DRAFT scope" (or list required changes). An agent cannot sign on your behalf — plan controls F08/F13 forbid agent-created approvals.
+
+```
+Operator (Abdullah):  ____________________  date: ________  decision: ________
+Subject reviewer:     ____________________  date: ________  decision: ________
+```
+
 - Operator (Abdullah): OPEN — not signed.
-- Subject reviewer: OPEN — not recruited, therefore not signed.
+- Subject reviewer: OPEN — not recruited, therefore not signed. (Recruiting checklist: optics-teaching competence; 30–45 min first review — the packet is [opto-2311-first-review.md](opto-2311-first-review.md); name + per-domain competence recorded per F13.)
 
 Nothing downstream (CF-07 dispatch, production, evaluation, release) may treat this draft as a freeze.
