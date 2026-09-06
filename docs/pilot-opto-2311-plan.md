@@ -253,7 +253,7 @@ Prepare CF-13 ownership, problem reporting, monitoring, response targets and bac
 
 ## 15. Schedule and critical path
 
-Relative weeks from adoption (2026-09-06); dates stretch/compress on human availability, not on agent time.
+Relative weeks from adoption (2026-09-06); dates depend on measured production volume, source issues, quota integration and human availability.
 
 | Week | Agent track | Human track (parallel from day 1) |
 |---|---|---|
@@ -326,6 +326,230 @@ Initial estimation method (heuristics below must be replaced by measured full-wo
 | Operational cycle, ownership, monitoring, bounded maintenance, drift and migration | CF-13 runbook/rehearsal + CF-04/05 version/usage controls + §20 discovery evidence |
 | Docs, license inventory, reproducible validation commands | CF-12 + updates to README/docs |
 
+## 19. Production control register — findings and closure proofs
+
+Integrated 2026-09-06 from a review of this plan against the other 12 top-level Markdown documents in `docs/`. This register preserves the reasons for the requirements now assigned in §§3–18 and Appendix B. **Pre-integration findings describe the earlier plan**, not a claim that its revised text still omits those requirements. All controls remain unproved until their ticket evidence is recorded; editing this plan does not close them.
+
+This was a document review, not a runtime or visual audit. Screenshots and the [platform wireframes](wireframes/index.html) remain design references; dated provider/tool/quota/hosting observations were not reverified. The goal owns fixed scope; required controls do not grant permissions or supply missing empirical inputs. The historical blindspot review remains the rationale for earlier resolutions.
+
+Priority: **P0** before dependent dispatch/public promotion; **P1** before production-readiness acceptance; **P2** for repeatability and measured expansion. Each finding's required work and proof is part of the named tickets. Resolve OPEN decisions within those gates; do not invent approvals.
+
+
+### F01 — P0: release eligibility has contradictory definitions
+
+**Pre-integration finding:** plan §3 makes CF-11 depend on course evaluation, without CF-10 learner acceptance. §10 permits public working notes after any three lessons are accepted. §16 says learner unavailability holds the release at engineering acceptance. [NEXT_STEPS milestone 4](NEXT_STEPS.md#4-complete-the-pilot-and-demonstrate-cloudflare-pages-release-recovery) also permits staged public lessons, while the [resolution lifecycle](content-factory-v1-resolution.md#pilot-economics-and-release-lifecycle) requires a complete prerequisite-closed course. This conflict spans documents; the original plan did not create all of it.
+
+**Failure:** three individually accepted lessons ship with an absent prerequisite, or final publication precedes learner evidence. A STATUS banner cannot supply missing release checks.
+
+**Required work — CF-03/09/10/11, operator and reviewers:** distinguish private engineering preview, any explicitly authorized public module, and final accepted course. Define each release's frozen membership and required evidence. Under the current authoritative contract, final course promotion requires CF-09, CF-10, current rights, prerequisite closure, and preview acceptance. If interim teaching publication is retained, reconcile it explicitly with the goal and require a reviewed standalone module scope; “3+ lessons” is not a release criterion. Use one machine-readable release predicate for manual and automated promotion.
+
+**Proof:** missing learner evidence, a quarantined prerequisite, stale review, or pending rights blocks the appropriate promotion path. Public metadata must accurately describe incomplete scope.
+
+### F02 — P0: the accounting boundary starts after some model work
+
+**Pre-integration finding:** plan §17 names allocation enforcement before CF-07, but CF-06 calibration needs judges earlier. Appendix B calls agent-drafted skills and outcome matrices “No model calls.” The [quota contract](content-factory-v1-resolution.md#durable-spending-and-execution-contract) covers all v1 model work. The earlier review recorded 31,152 input tokens for one fresh empty-prompt session in a particular local setup; its context-cost report is no longer present in this checkout. Treat this as historical context and remeasure the actual zIDE workflow before allocation.
+
+**Failure:** the ledger caps explicit pipeline calls while agent drafting, rubric research, tool results, repairs, wiki extraction, and session overhead consume the same subscription outside that ledger. “Offline” does not mean an LLM-assisted task is token-free. The historical 31,152 measurement is a warning signal, not a zIDE billing conversion.
+
+**Required work — CF-04/06, operator:** define “no provider calls from the script” separately from “no model-assisted work.” Account for preparatory sessions and every nested model route. Establish the actual quota currency, cached/reasoning token treatment where applicable, external operator usage, observation lag, and quota-period rollover. Give CF-06 a real allocation before live calibration; all earlier model-assisted preparation needs its own accounted allowance. Unobservable usage stays an explicit limitation, with dispatch stopped where the required guarantee cannot be supported.
+
+**Proof:** reconcile a bounded real workflow against observed subscription consumption, including agent overhead. Test quota rollover, external usage changes, and actual usage exceeding the reservation; block new work on unresolved overspend.
+
+### F03 — P0: scope discovery can consume the supposedly sealed holdout
+
+**Pre-integration finding:** plan §6 reserves pilot videos “not exposed during tuning,” then builds full-course outcomes; §10 processes every frozen lesson before CF-09 opens the holdout. The [pilot packet](content-factory-v1-pilot.md#bounded-challenge-cases) says reading or analyzing an excerpt makes its source family development data. The capture guide already documents inspection of `-AsaJEAav4s`.
+
+**Failure:** a family is labeled unseen although its source, quiz answers, or defects already influenced planning or prompt changes. Full-course coverage and the current strict exposure rule can leave no eligible holdout. Merely adding a split JSON does not resolve this tension.
+
+**Required work — CF-02/03/06, evaluation owner:** reserve families before semantic discovery; record existing exposure, including capture inspections. Define who can access protected evidence for coverage/reference work without feeding candidate selection, or explicitly reconcile the exposure rule with the evaluation protocol. Freeze prompts, rubric, model/settings and thresholds before isolated holdout production/evaluation. Record access and exposure events. If sufficient independent families cannot be preserved, report that limitation and resolve the evaluation design before claiming a valid holdout.
+
+**Proof:** an exposure log, transitive source-family membership checks, a frozen candidate fingerprint, and rejection of an exposed replacement holdout. Multi-source lessons and shared glossary content count when checking leakage.
+
+### F04 — P0: normalization and correction handling have no complete implementation ticket
+
+**Pre-integration finding:** CF-01 inventories and screens variants; CF-07 starts from an evidence packet. The [goal's normalization stage](content-factory-v1-goal.md#quality-control-across-the-whole-pipeline) and [resolution correction contract](content-factory-v1-resolution.md#source-and-curriculum-contract) require traceable normalization and append-only corrections. No ticket clearly owns that entire path.
+
+**Failure:** equal segment counts conceal a lost negation or minus sign; postprocessed text silently becomes authoritative; a reviewer approves a correction without the required source-based derivation.
+
+**Required work — CF-02A before scope approval and repeat per source:** explicitly choose raw-only authoring or implement a versioned normalization path. Preserve immutable raw spans; record aligned transformations, uncertain text, correction evidence, reviewer disposition, and downstream impact. Enforce eligible-input selection at the actual authoring boundary, including helper tools, not just in the manifest. Coverage validation must check references, not counts alone.
+
+**Proof:** legacy prose is rejected as evidence; a same-length altered equation is flagged; an unsupported correction quarantines the affected outcome; included/excluded/duplicate dispositions cannot hide an uncovered skill.
+
+### F05 — P0: three-lecture discovery does not specify full-course sufficiency work
+
+**Pre-integration finding:** CF-02 inspects first/middle/final lectures; CF-03 jumps to a frozen full outcome matrix. [NEXT_STEPS](NEXT_STEPS.md#1-freeze-source-sufficiency-and-skill-outcomes) explicitly warns that three lectures cannot accept the course. The skipped lecture's contents cannot be established from its missing transcript.
+
+**Failure:** the matrix includes only outcomes discovered in easy samples, missing a required topic or prerequisite from the other sources. An unknown source is incorrectly declared irrelevant.
+
+**Required work — CF-03, agent prepares and subject reviewer decides:** add full-source outcome discovery and sufficiency accounting for all 105 available sets, with review effort and evidence per outcome. Resolve the 106th record's effect from allowed evidence or retain an explicit completeness limitation/blocker; do not invent its topic. Distinguish verified historical lecture order from reviewed teaching order. Unknown historical position alone need not imply a missing prerequisite, but the plan must explain how sequencing is approved when positions remain unknown.
+
+**Proof:** every available source contributes to the coverage/disposition audit, including sources outside the three examples; no required outcome disappears through selection. Coordinate this work with F03's protected-family access rules.
+
+### F06 — P0: valid cache keys do not implement dependency invalidation
+
+**Pre-integration finding:** CF-05/06 list cache-key inputs; the [resolution invalidation table](content-factory-v1-resolution.md#format-identity-and-dependency-boundaries) requires shared-term, source, paragraph-placement, prerequisite, and concept-merge propagation. The plan's §18 assigns this proof without a corresponding complete ticket.
+
+**Failure:** the edited lesson is rejudged while a wiki definition, simplified explanation, assessment, or another lesson remains stale. Approval records survive a content edit because only model verdicts were invalidated.
+
+**Required work — CF-05/07:** implement a build-dependency graph distinct from the semantic graph, typed change events, transitive invalidation, and approval records bound to exact artifact/release revisions. Source corrections, review changes, rubric/model changes, and rendering-only changes need explicit rules. Reject undeclared dependencies and references to absent nodes.
+
+**Proof:** change a shared sign convention, move a paragraph, split a concept, and replace a diagram. Compare expected and actual invalidation closure, including human reviews and rendered checks. Unchanged unaffected artifacts retain valid cached work.
+
+### F07 — P0: request states are specified; artifact and release states are not
+
+**Pre-integration finding:** CF-04 defines provider-attempt transitions; CF-08 allows parallel production after ledger concurrency tests. The [resolution](content-factory-v1-resolution.md#durable-spending-and-execution-contract) explicitly separates request success, valid output, acceptance, and publication. The [capture guide](KEYFRAME_CAPTURE.md#failure-and-review-behavior) requires one process per output-video directory.
+
+**Failure:** quota-safe workers overwrite the same lesson/capture; an old worker commits after a newer review; an exhausted repair lineage is reset by creating a new unit ID. A successful API call is accidentally promoted as accepted content.
+
+**Required work — CF-04/05/08:** define candidate, validated, reviewed, accepted, quarantined, superseded, and invalidated artifact transitions; define release transitions separately. Use revision-checked commits and exclusive ownership/leases where workers share output paths. Tie split/merge lineage to retry and repair limits; define what an authorized new revision can reset. Preserve successful outputs before retrying downstream persistence work.
+
+**Proof:** two workers target the same unit; a stale worker attempts to publish; capture workers contend; a reviewer signs revision A while revision B is written. Only the intended current revision can become accepted.
+
+### F08 — P0: production evidence lives outside Git without an early recovery contract
+
+**Pre-integration finding:** plan §4 keeps manifests local; §8 keeps provenance sidecars local; §16 treats globally ignored JSON as having no blocker. CF-11 specifies backup restore, but does not name the full recoverable state. [Inventory](content-factory-v1-inventory.md#reproducible-method) also depends on a consistent private local DB snapshot.
+
+**Failure:** a new clone or lost workstation cannot reconstruct why a published lesson passed, recover unknown spend reservations, or rebuild editable diagrams. Restoring HTML alone restores a website, not the factory.
+
+**Required work — CF-04/05, prove in CF-11:** define separate durable stores for immutable evidence, editable content, verdicts/reviews, ledger, configuration, and public bundles. Start backup before live production. Specify consistent snapshot/restore order, checksums, schema versions, retention, storage capacity, and independently stored copies. Keep sensitive records out of public bundles. Credentials need a separate recovery procedure, not inclusion in content backups.
+
+**Proof:** restore into an empty workspace from the independent copy, validate evidence and ledger consistency, reproduce the accepted bundle using cached artifacts without model calls, and preserve uncertain reservations. Narrowly version synthetic fixtures/config schemas where appropriate; local JSON is not automatically disposable.
+
+### F09 — P0: deployment drills do not yet define the production control boundary
+
+**Pre-integration finding:** CF-11 says preview → validation → atomic promotion, rollback, withdrawal. It does not identify the immutable candidate, competing-release handling, public bundle allowlist, or all reachable old deployment URLs.
+
+**Failure:** preview approval applies to different bytes than production; a second publisher promotes stale content; source packets, judge answers, or learner data enter the static directory; withdrawal fixes the primary URL but leaves an invalid preview publicly accessible.
+
+**Required work — CF-11, release operator:** promote the exact validated bundle by release ID/hash, serialize production promotion, recheck current approvals/rights immediately before promotion, and record deployment identity. Allowlist public files and scan the actual bundle. Verify available hosting controls for preview access, historic deployments, redirects, caching, withdrawal, and failed/ambiguous promotion. Do not assume current Cloudflare behavior from this review.
+
+**Proof:** concurrent promotions, a last-minute invalidation, an injected private fixture, ambiguous deployment completion, and access to old URLs after withdrawal. Document limits: already downloaded copies cannot be remotely recalled.
+
+### Ongoing production controls
+
+### F10 — P1: the plan ends at a report, not an operating handover
+
+**Pre-integration finding:** CF-12 ends with economics and expansion. Existing rollback/withdrawal drills do not specify day-to-day detection, triage, or ownership after launch.
+
+**Required work — CF-13, operator and named reviewers:** add a visible “report a problem” route carrying lesson/node/release IDs; a private incident record; severity and acknowledgement/containment targets; a review cadence; and a backup owner. Correctness and rights incidents must find every affected derivative/release, invalidate unsafe rollback targets, withdraw as needed, repair using allowed evidence, re-review, republish, and verify the public result. Record a regression case and maintenance cost. Choose response targets explicitly; do not imply unattended monitoring from an occasional operator check.
+
+**Proof:** run that entire loop on one deliberately seeded post-publication defect, including the learner-facing correction note. Measure detection, containment, and restoration times against the chosen targets.
+
+### F11 — P1: monitoring covers production throughput, not learner service health
+
+**Pre-integration finding:** CF-08's weekly report covers tokens, queue age, accepted counts and cache hits. CF-11 validates preview, with no recurring public checks.
+
+**Required work — CF-11/13:** define lightweight checks for public availability, expected release ID, broken assets/routes, quiz behavior, and backup freshness, with an owner and cadence. Add stage timeouts, stuck-job detection, queue limits and disk-capacity stops. Define what happens when the operator, reviewer, model service, or host is unavailable for an extended period. Monitoring must fit the zero-cash boundary and its actual unattended capabilities.
+
+**Proof:** break a public asset, fill the output volume in a disposable fixture, stall a job, and miss a scheduled backup. Each produces an actionable record rather than a misleading success status.
+
+### F12 — P1: learner findings do not have a defined return path to acceptance
+
+**Pre-integration finding:** CF-10 says observe, revise, resolve critical failures. CF-09 runs earlier; there is no explicit reevaluation loop after those revisions. Five to eight learners are specified without assigning outcome/task coverage.
+
+**Required work — CF-10/09/11:** bind the trial to the tested release and selected outcomes; define the performance criterion and task coverage before use. Keep fresh unaided tasks separate from worked solutions, hints and public quizzes. A critical finding reopens affected artifact/review gates; prompt or rubric tuning also exposes the holdout and triggers F03. Reassess revised teaching with an appropriate fresh task and record which outcomes have direct learner evidence versus only review evidence. Avoid implying that every outcome was learner-tested by a small sample.
+
+**Proof:** one trial failure leads to a tracked revision, correct invalidation, independent acceptance, and a documented reassessment. No final release consumes superseded learner evidence silently.
+
+### F13 — P1: human review is a role list, not a workable review system
+
+**Pre-integration finding:** the plan names reviewer vacancies and per-lesson review, but no review queue schema, disagreement resolution, substitute authority, or challenge-domain reviewer coverage. The [inventory challenge notes](content-factory-v1-inventory.md#earlier-pilotchallenge-candidates--historical) specifically call out physics expertise.
+
+**Required work — CF-03/06/08:** retain assignments, competency by case/domain, content revision, independent reference decision, disposition, timestamps and discrepancy resolution. An optics title alone does not establish English/digital-logic expertise. Separate blind reference labeling from review after model feedback. Agree measurable weekly capacity and stop/backpressure rules. Schedule full-course sufficiency review as well as final lesson review.
+
+**Proof:** a disputed answer and an unavailable reviewer have an explicit routing/blocking outcome; an agent cannot synthesize approval. Replace calendar guesses with measured lesson/outcome volume and reviewer availability after the engineering trial.
+
+### F14 — P1: static quizzes have an unresolved answer-visibility contract
+
+**Pre-integration finding:** CF-05/11 require answers not exposed before an attempt, while delivering static client-side artifacts. No threat model or distinction between practice and assessment is stated.
+
+**Required work — CF-05/10:** for formative practice, define no premature answer display through the normal UI, accessibility tree, hints, search snippets, or print view. A self-contained static quiz that evaluates answers locally necessarily gives the client enough information to inspect them; it cannot promise exam secrecy. Keep the learner trial's independent task/answer materials outside the public bundle. Define numerical tolerance, units, multiple valid answers, retry/hint behavior, and how free-response optics work is scored.
+
+**Proof:** keyboard/screen-reader attempts and print/search paths do not reveal practice answers prematurely; the trial answer packet is absent from every public artifact. Independently check derived task solutions and convention-dependent answers.
+
+### F15 — P1: diagram identity and teaching correctness can drift together
+
+**Pre-integration finding:** the [capture guide](KEYFRAME_CAPTURE.md#failure-and-review-behavior) says YouTube ID is not an immutable media revision, local identity is caller-supplied, timestamps are not guaranteed frame-exact, and caches need refresh after edits. CF-07 mainly records ID/time/PNG hash.
+
+**Required work — CF-02A/07:** bind each accepted visual to the captured bytes, fetch/capture metadata, matching-lecture identity evidence, reviewed timestamp alignment and reviewer disposition. Preserve evidence when a live video changes. Record source-supported derivations for redraws and new exercises. An optics checklist should cover the course's own sign conventions, units, ray directions, labels and diagram/text agreement; do not import missing conventions from model memory.
+
+**Proof:** simulate an edited/retimed upload or wrong local file, unreadable labels, and a redraw with a reversed ray. Refresh must create a new evidence revision and invalidate affected outputs, never silently replace accepted pixels.
+
+### F16 — P1: accessibility is a checklist without a declared test environment
+
+**Pre-integration finding:** CF-05 says “WCAG-minded”; CF-11 lists visual and interaction checks. The [historical discovery probes](content-factory-v1-blindspots.md#discovery-probes-for-unknown-unknowns) explicitly included an Arabic screen reader.
+
+**Required work — CF-05/07/11:** declare supported browser/device/assistive-technology combinations and concrete acceptance criteria. Include Arabic reading order, mixed-direction equations, accessible math/diagram alternatives, zoom/reflow, keyboard quizzes, feedback announcement, missing-font fallback, slow assets and long lessons. Test one difficult real lesson early, then the final bundle. Adopt a dated accessibility reference during implementation; do not claim conformance from “WCAG-minded.”
+
+**Proof:** retain reproducible failures and reviewer checks from actual assistive-technology use, not just screenshots or automated contrast output.
+
+### F17 — P1: content execution controls lost their required failure probes
+
+**Pre-integration finding:** CF-07 tests injected markup, but the [resolution execution contract](content-factory-v1-resolution.md#durable-spending-and-execution-contract) also requires path/URL allowlists, instruction isolation, and restricted executable examples. §18 claims safe-execution evidence without an explicit implementation path for all of it.
+
+**Required work — CF-05/07:** enforce these boundaries in the parser, asset resolver, judge membership validator and any execution worker. Include diagram/SVG exports and generated derivatives. If the pilot executes no code, record that and reject executable content; do not build an unnecessary general sandbox. If challenge cases execute code, the disposable resource-limited worker is required there.
+
+**Proof:** source instructions cannot select verdict IDs or invoke tools; traversal, forbidden URL schemes, active SVG content and oversized inputs fail safely. Where execution exists, time/memory/process and filesystem/network limits are exercised.
+
+### F18 — P1: rights and learner records need artifact-level handling
+
+**Pre-integration finding:** rights are OPEN until promotion; CF-10 records learner failures; CF-11 ships public working/release notes. There is no artifact-level permission record or public/private data rule.
+
+**Required work — CF-01/10/11/13:** link permission evidence and unresolved status to source/asset revisions and affected releases; inventory selected dependencies/fonts and required notices. Record learner participation/recording choices, restrict identifiable observations to a private store, choose retention/deletion handling, and publish aggregate findings. Do not infer permission from file availability or put review packets into public working notes.
+
+**Proof:** expired/revoked/missing approval blocks or withdraws the affected bundle; a synthetic learner identifier and private review attachment cannot enter public output. This is an operational records requirement, not a legal determination of permission.
+
+### F19 — P1: provider and schema drift have no maintenance policy
+
+**Pre-integration finding:** cache keys include versions, but the [resolution](content-factory-v1-resolution.md#format-identity-and-dependency-boundaries) also requires mutable-model resolution/fingerprint where available and drift audits. The plan provides no update cadence, canary, or schema migration procedure.
+
+**Required work — CF-04/05/13:** record observable model/settings and tool/schema versions; keep representative development canaries; define what change triggers recalibration and invalidation. Version persistent ledger/artifact schemas and prove migration from a backed-up prior version. Distinguish rebuilding a published bundle from reproducing a historical model response, which may be impossible.
+
+**Proof:** simulate a model alias change, parser upgrade and interrupted schema migration. Stale acceptance is rejected, prior durable artifacts survive, and the cost of required reevaluation is recorded.
+
+### F20 — P2: the capacity model omits the expensive tails and ongoing work
+
+**Pre-integration finding:** plan §17 extrapolates three lectures and uses approximate judging multiples; §15 gives a nine-week schedule. [Skills-map costs](skills-map.md#cost-picture-cost-effective-by-design) include extraction, local resources and human work; the context report adds material per-session overhead. CF-12 reports maintenance separately but no maintenance cycle generates that evidence.
+
+**Required work — CF-04/07/08/12/13:** measure full assembled prompts, context limits, batch overhead, tool/agent usage, reasoning/output where observable, repair tails, images, wiki/graph, discarded candidates, human minutes, storage and backup growth. Sample difficult sources beyond the strongest trial lesson without exposing protected families. Include maintenance, evaluation and emergency-repair headroom. Treat `min(remaining quota, estimated need)` as a spending ceiling, not proof the scope is affordable; report the funding/quota shortfall explicitly. Allocate runs by expected work rather than equal division alone.
+
+**Proof:** low/base/high forecasts use measured volumes and queue throughput; one maintenance repair has a recorded cost; a long lesson exceeding usable context fails before dispatch or is split through a tested coverage-preserving path.
+
+### F21 — P2: “full production” needs an explicit boundary with platform v1
+
+**Pre-integration finding:** the [goal's delivery sequence](content-factory-v1-goal.md#delivery-sequence) defers the broader platform and framework comparison. The [platform brief](platform-map-brief.md) includes persistent progress, reader navigation, richer graph interaction and a stack-comparison blog; CF-11 supplies a minimal renderer and selected public surfaces. [Fanout's mapping](fanout-feature-analysis.md#5-mapping-to-the-iug-platform) also mixes immediate and later patterns.
+
+**Required work — CF-03/05/11:** publish a small delivery matrix: required for this factory pilot, explicitly deferred platform capability, or unresolved product decision. The [platform wireframes](wireframes/index.html) do not confer implementation or acceptance. For features actually shipped, specify behavior and tests: resume/progress reset and revision migration if progress exists; stable lesson/node routes and moved-link handling; glossary/graph navigation and empty states. Do not introduce accounts, payments, live tutoring or the whole-corpus graph merely to call the pilot production-ready.
+
+**Proof:** the delivered course supports its promised learner journey end to end, and the completion report states which broader platform capabilities remain deferred.
+
+## 20. Discovery drills and operational qualification
+
+Unknown unknowns cannot be enumerated in advance. These are bounded experiments designed to expose interactions that the individual checklists miss. Use synthetic faults and fake-provider calls first; budget any real model work through CF-04. Keep invalid teaching out of public releases.
+
+| Drill | Boundary crossed / unexpected failure sought | Pass evidence |
+|---|---|---|
+| Empty-workspace handover | Local ignored files → another operator; missing evidence, fonts, configs, quota state. | Restore accepted bundle and audit trail without original workstation or model calls; unavailable credentials are recoverable through a documented route. |
+| One changed sign convention | Raw evidence → correction → multiple lessons, quizzes, diagrams, wiki, graph → released pages. | Exact expected invalidation closure; invalid releases excluded from rollback; only affected work reprocessed. |
+| Crash, late response, second worker | Provider execution → ledger → artifact store → reviewer approval. | No released unknown reservation, duplicate accepted revision, lost durable success, or stale worker overwrite. |
+| Quota reset plus outside usage | Subscription accounting → session overhead → shared allowance. | Unknown or insufficient allowance stops new work; prior reservations/periods remain auditable. |
+| Edited video and identical ID | Live media → cached frame → source-derived diagram. | Timing/identity mismatch becomes a reviewed new revision, not an unnoticed cache hit. |
+| Holdout family through a shared glossary | Cross-lesson dependencies → split boundary → prompt development. | Exposure detected transitively; contaminated result is not reported as unseen. |
+| Learner finds a convincing wrong solution | User report → independent correction → incident → republish. | Time to containment/recovery measured; feedback retained; fresh verification of the repaired outcome. |
+| Withdrawal during promotion | Rights/correctness invalidation → release lock → old preview URLs/cache. | Promotion aborts or is contained; affected accessible versions handled with recorded limitations. |
+| Weak device and assistive technology | Large Arabic lesson + equations + failed font/asset + quiz. | Core teaching remains accessible; no hidden-answer announcement, unusable focus, or unreported asset failure. |
+| Long/damaged source with strong-looking verdicts | Context truncation → omitted IDs/spans → coverage → apparent acceptance. | Independent deterministic membership/coverage checks reject missing work despite high model scores. |
+| Private file in build staging | Review/learner/evaluation store → public bundle. | Build rejects it before upload, including indirect assets, generated indexes and source maps if present. |
+| Silent model/parser update | Version identity → cached acceptance → rendered meaning. | Canary or version checks trigger the correct reevaluation; clean prior artifacts survive rollback/migration. |
+
+## 21. Open decisions and execution handoff
+
+The plan already identifies reviewer/learner availability, source and font permissions, lecture order, skipped-source disposition, actual zIDE capabilities and remaining quota, numeric allocations and calibrated thresholds. They remain dependencies, not findings to relabel as surprises.
+
+Additional decisions to record during the existing tickets: final versus interim release contract; holdout access/exposure policy; full model-accounting boundary; production owner/backup and response targets; independent backup capacity and retention; learner-record handling; static assessment semantics; supported accessibility environments; and the exact factory/platform boundary. None should be filled with invented approvals or measurements.
+
+CF-01 remains the immediate offline implementation task. Apply this plan's accounting rule to any model-assisted preparation. Resolve F01–F03 decisions before their dependent work; implement F04–F09 before dependent production/promotion. CF-13's complete operational rehearsal precedes CF-12 production-readiness acceptance. Record completion evidence beside each finding ID in the pilot report; a checklist entry is not proof.
+
 ## Appendix A — commands verified on this machine (2026-09-06)
 
 ```bash
@@ -351,12 +575,14 @@ Read-only DB pattern (used for every fact in §1): copy `youtube-iug.db` to a te
 
 ## Appendix B — session briefs for the remaining tickets
 
-Each block is copied into a fresh zIDE session, one ticket per session, after its dependencies pass. CF-01's brief is in [NEXT_STEPS.md](NEXT_STEPS.md).
+Each block is copied into a fresh zIDE session, one ticket per session, after its dependencies pass. Every brief includes its assigned §19 controls and §20 proofs. CF-01's brief is in [NEXT_STEPS.md](NEXT_STEPS.md); also apply this plan's §4 and preparation-accounting rule. “No model calls” means no provider dispatch from the implementation script; it never excludes agent-session usage from the allowance.
 
 **CF-02 — lecture order and selection**
 
 ```text
 Implement CF-02 for OPTO 2311 (playlist PL9fwy3NUQKway0xLRTe7OlRxcQic7R2s-).
+
+Mandatory integrated controls: Before semantic discovery, reserve candidate evaluation families and record prior exposure, including capture inspections. Follow F03/F05; metadata access does not authorize teaching evidence. Account for agent preparation under CF-04 preflight.
 Read docs/README.md, docs/NEXT_STEPS.md, docs/content-factory-v1-goal.md,
 docs/content-factory-v1-pilot.md, docs/pilot-opto-2311-plan.md §5, and the
 CF-01 manifest/report if present.
@@ -376,15 +602,37 @@ supported/needs_youtube_diagram/unsupported classification. Write the
 three-lecture skill sheet to docs/opto-2311-first-review.md for the subject
 reviewer, including one worked example and one unseen task per lecture.
 
-No model calls. No lecture downloads. Transcripts are the only teaching
+No provider calls from the script. No lecture downloads. Transcripts are the only teaching
 source; metadata is for order/hints only. Report ordering evidence quality
 and what the reviewer must decide.
+```
+
+**CF-02A — normalization and evidence preparation**
+
+```text
+Implement CF-02A. Read this plan §5 (CF-02A), §19 F03-F05/F15,
+the CF-01/02 outputs, and the resolution source/correction contract.
+
+Choose raw-only authoring or implement versioned normalization with
+immutable segment identities, traceable transformations, uncertain spans,
+and append-only correction records. Enforce eligible input roles at every
+authoring/helper boundary; reject legacy/external teaching evidence.
+Prepare all available source sets under the protected-family access policy.
+Bind permitted diagrams to captured bytes, matching identity, time alignment
+and review; changed media creates a new revision.
+
+Test same-length semantic corruption, unsupported corrections, excluded
+outcome coverage, wrong media identity and changed captures. Record outputs
+separately and preserve raw evidence. Required reviewers supply approvals;
+agent preparation uses its accounted allowance. No production authoring.
 ```
 
 **CF-03 — scope freeze**
 
 ```text
 Implement CF-03 for OPTO 2311. Read docs/pilot-opto-2311-plan.md §6, the
+
+Mandatory integrated controls: Require CF-02A evidence and full-source discovery across all 105 available sets; three lectures cannot freeze the full curriculum. Resolve F01/F03/F05/F13/F21: release membership, protected-family access, skipped-source limitations, reviewer capacity, and the factory/platform delivery matrix. Do not relabel exposed families as unseen.
 CF-02 outputs, and docs/content-factory-v1-resolution.md (source and
 curriculum contract).
 
@@ -393,22 +641,23 @@ outcome (outcome_id, tangible task, prerequisites, intended learner,
 evidence refs, required explanation/example/practice/transfer-task IDs,
 sufficiency status supported|needs_youtube_diagram|unsupported). Group
 outcomes into prereq-closed lessons in verified lecture order. Record the
-SAq013FtOLQ disposition decision path. Reserve the three challenge
+SAq013FtOLQ disposition decision path. Keep the three challenge
 excerpts (فيزياء عامة أ video `1noCDAkxHwg`; اللغة الإنجليزية video `0mkSe0xrqKk`; digital-logic `Kzxd5D8ZgnQ` at 13:37) as
-development-only data and list candidate holdout families from pilot
-videos not exposed so far, grouped by source-video family (include the
+development-only data and confirm the pre-discovery candidate holdout families and exposure log, grouped by source-video family (include the
 sibling optics playlists from the CF-01 appendix in the family watchlist).
 
 Write docs/opto-2311-scope-freeze.md summarizing the matrix, lesson plan,
 reserved families, and every remaining OPEN input (reviewer names, token
 allocations). Mark the freeze as DRAFT until operator + reviewer sign-off.
-No model calls, no authoring.
+No provider calls from the script; no lesson authoring. Agent preparation usage remains accounted.
 ```
 
 **CF-04 — quota ledger**
 
 ```text
 Implement CF-04. Read docs/pilot-opto-2311-plan.md §7 and
+
+Mandatory integrated controls: Apply F02/F07/F08/F19/F20. Account for preparation sessions and nested model/context usage; allocate live CF-06 calibration before dispatch. Test quota rollover, outside usage and reservation overruns; establish durable private backups before live work. Observe and reconcile a bounded real workflow only after the fake probes and allocation gate pass. Missing observability remains a blocker.
 docs/content-factory-v1-resolution.md (durable spending contract).
 
 Build a SQLite spend ledger in this repo: pilot allowance, run
@@ -425,17 +674,20 @@ exhaustion; provider unavailable; artifact persistence failure. All must
 block or quarantine without losing accepted work or silently releasing
 reservations.
 
-Do not call any real model. The operator's zIDE observations (remaining
-quota, usage export behavior) are operator inputs; leave an
-allocations.toml-style config with OPEN placeholders and document the
-mediated-reconciliation workflow. Report what the fake-adapter suite
-proves and what it cannot.
+Keep implementation and failure probes fake-only. The operator's zIDE
+observations (remaining quota, usage export behavior) are operator inputs;
+leave an allocations.toml-style config with OPEN placeholders until measured.
+After fake probes pass and a bounded allowance is recorded, qualify the
+real boundary through observed workflow reconciliation. Document the mediated
+workflow and distinguish fake proof from the real capabilities still OPEN.
 ```
 
 **CF-05 — format and validators**
 
 ```text
 Implement CF-05. Read docs/pilot-opto-2311-plan.md §8 (CF-05) and
+
+Mandatory integrated controls: Implement F06/F07/F08/F14/F16/F17/F19/F21: artifact states, revision-bound approvals, dependency invalidation, output ownership, durable schemas/backups, static practice semantics, accessibility environments, and trust boundaries for paths/URLs/SVG/execution. Preserve private evaluation answers outside public bundles. A content hash alone is not approval.
 docs/content-factory-v1-resolution.md (format/identity/dependency
 sections).
 
@@ -454,7 +706,8 @@ Cache keys must include content hash, evidence refs, lesson context,
 rubric/prompt/model/schema versions; quiz placement and graph deps in the
 relevant keys.
 
-No model calls. Report conformance results and any dialect decision the
+No provider dispatch from the implementation script. Report conformance
+results and any dialect decision the
 reviewer/operator must ratify.
 ```
 
@@ -462,6 +715,8 @@ reviewer/operator must ratify.
 
 ```text
 Implement CF-06. Read docs/pilot-opto-2311-plan.md §8 (CF-06),
+
+Mandatory integrated controls: Apply F02/F03/F13/F19: allocated real calibration, protected-family exposure log and transitive grouping, competent independent reference reviewers, frozen prompt/rubric/model/settings, and drift canaries. Full-course production must respect the protected access protocol. Report a blocked evaluation design if no eligible families remain.
 docs/content-factory-v1-resolution.md (evaluation protocol), and
 docs/skills-map.md §7.
 
@@ -492,6 +747,8 @@ run in fake/dry mode only. Report calibration plan and OPEN thresholds.
 
 ```text
 Implement CF-07. Read docs/pilot-opto-2311-plan.md §9, the frozen scope
+
+Mandatory integrated controls: Apply F04/F06/F07/F14/F15/F16/F17/F20 and relevant §20 drills: prove shared-convention/paragraph/concept/diagram invalidation closure, stale-worker rejection, media revision identity, Arabic assistive-technology behavior and input/execution isolation. Measure full prompts, overhead and context limits; keep deliberately invalid candidates private.
 (sign-off required before dispatch), COURSE_RUBRIC.md, and the CF-05/06
 implementations.
 
@@ -519,6 +776,8 @@ needed BEFORE any holdout opens.
 
 ```text
 Implement CF-08. Read docs/pilot-opto-2311-plan.md §10 and the frozen
+
+Mandatory integrated controls: Apply F07/F08/F11/F13/F20. Parallelize only after artifact ownership as well as ledger concurrency passes; capture directories remain single-writer. Enforce review backpressure, stuck-job/time/disk limits and backups. Public teaching must satisfy §3; no lesson-count shortcut. Protect CF-06 families during production.
 scope. Use the proven CF-07 loop per lesson in prereq-closed course order.
 
 Enforce per lesson: reservations + lineage limits (<=2 retries, 1 repair,
@@ -532,14 +791,16 @@ Any scope change = new scope revision + re-review + invalidation of
 affected artifacts (per the resolution invalidation table). Never skip
 whole-lesson review; never relax the rubric to improve yield. If the run
 cap is exhausted, STOP, report, and wait for an operator allocation
-decision. Coordinate with CF-11 for interim build-in-public releases of
-the complete accepted set so far.
+decision. Coordinate CF-11 previews; public teaching follows §3 eligibility
+and requires explicit resolution of the interim-module contract.
 ```
 
 **CF-09 — course-level evaluation**
 
 ```text
 Implement CF-09. Read docs/pilot-opto-2311-plan.md §11 and
+
+Mandatory integrated controls: Apply F03/F06/F12/F13. Bind results to the exact candidate; include the exposure log and independently competent labels. Reopen affected checks after learner or maintenance changes. Any tuning retires the exposed holdout; unresolved replacement design blocks the claim.
 docs/content-factory-v1-resolution.md (evaluation + release thresholds).
 
 Run the challenge set (three bounded cases) with the frozen thresholds;
@@ -559,6 +820,8 @@ denominators everywhere. Block release on any unresolved critical defect.
 
 ```text
 Prepare CF-10. Read docs/pilot-opto-2311-plan.md §12 and
+
+Mandatory integrated controls: Apply F12/F14/F18. Bind trial and outcome coverage to the tested revision, keep answer keys and identifiable observations private, record participant choices/retention handling, and report untested outcomes. Critical findings return through invalidation, repair, independent review and fresh-task reassessment before final promotion.
 docs/content-factory-v1-resolution.md (learner protocol).
 
 Draft before the trial: recruitment screen (Arabic-speaking
@@ -579,6 +842,8 @@ failure, the revisions made, and the report's explicit limitations
 
 ```text
 Implement CF-11. Read docs/pilot-opto-2311-plan.md §13,
+
+Mandatory integrated controls: Complete CF-11A qualification in §13 before promotion. Apply F01/F08/F09/F10/F11/F16/F17/F18/F19 and §20: restore into an empty workspace, rebuild with cached evidence and preserved reservations, allowlist public files, and verify historic-URL withdrawal behavior. Serialize promotion of the exact preview-approved hash and recheck current CF-09/10, rights and reviews. Prepare CF-13 ownership/runbook before launch; verify the live release afterward.
 docs/content-factory-v1-goal.md (deployment rules), and
 docs/fanout-feature-analysis.md §3.12/§4.
 
@@ -601,10 +866,36 @@ taste test, and an illustrated release-notes page. Presentation never
 lowers the acceptance bar: only accepted lessons are public.
 ```
 
+**CF-13 — operate, repair and republish (before CF-12 final acceptance)**
+
+```text
+Implement CF-13. Read §14, §19 F10-F13/F18-F20 and §20, plus the
+CF-11 qualification/release record. Prepare the runbook before promotion.
+
+Create docs/opto-2311-operations.md, private incident/change records,
+release-linked problem reporting and lightweight public health/backup
+checks. Name operator/backup/reviewer coverage and record actual response
+targets and cadence; leave missing human decisions OPEN.
+
+Rehearse a seeded defect in a private production-equivalent environment:
+report -> affected evidence/dependencies/releases -> containment and
+invalid rollback exclusion -> source-supported append-only correction ->
+budgeted repair -> independent reviews and required evaluation/learner
+rechecks -> exact-bundle promotion -> verified fix and correction note.
+Never intentionally publish known-invalid teaching to learners.
+
+Record regression evidence, response/recovery times, actual maintenance
+spend, backup/restore and model/parser/schema drift/migration probes.
+Unknown usage, absent approval or failed qualification blocks the repair
+release. Hand the evidence to CF-12; ongoing operations continue afterward.
+```
+
 **CF-12 — pilot report**
 
 ```text
 Implement CF-12. Read docs/pilot-opto-2311-plan.md §14 and §18 and the
+
+Mandatory integrated controls: Complete CF-13 operational rehearsal first. Include every F01-F21 closure/limitation and relevant §20 drill evidence, measured maintenance cost and response times, clean restore/migration proofs, owner/backup coverage, and the explicit deferred-platform matrix. Record an evidence-based expansion or retirement decision; never mark missing empirical proofs complete.
 goal's v1 definition of done.
 
 Write docs/opto-2311-pilot-report.md: first-accepted lesson IDs and
