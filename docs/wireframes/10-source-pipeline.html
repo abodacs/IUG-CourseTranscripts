@@ -22,7 +22,7 @@
   </div>
 
   <h1>Source pipeline — corpus layout, v1 inputs, and the cleaned content store</h1>
-  <p>One box per file family on disk. <span class="ann">[Key: solid box = v1 teaching input or output · dashed box = cleaned model output, audit-only for v1 authoring — lessons are reprocessed from the raw transcripts, never regenerated from these files]</span></p>
+  <p>One box per file family on disk. <span class="ann">[Key: solid box = canonical raw source or authored output · dashed box = cleaned counterpart source — approved teaching input 2026-09-07, bound per video; derived SRT variants stay non-evidence]</span></p>
 
   <div class="stages">
 
@@ -30,7 +30,7 @@
       <h2 style="font-size:16px">Stage 1 — Capture &amp; raw transcripts</h2>
       <div class="node"><span>lecture capture → Whisper</span><span class="dur">R2 + DB</span></div>
       <div class="node node--partial"><span class="mono">data/&lt;playlist_id&gt;/&lt;video_id&gt;_raw.json</span><span class="dur">canonical</span></div>
-      <p class="ann">[the only teaching source for v1 — evidence and lessons are built from this file alone]</p>
+      <p class="ann">[canonical teaching source — segmentation, timestamps, and evidence spans bind here]</p>
       <div class="deliverable">Deliverable: immutable raw transcript per video</div>
     </section>
 
@@ -38,7 +38,7 @@
 
     <section class="stage" aria-label="Stage 2 — v1 factory">
       <h2 style="font-size:16px">Stage 2 — v1 factory (per lesson)</h2>
-      <div class="node"><span>CF-02 evidence index</span><span class="dur">raw-only policy</span></div>
+      <div class="node"><span>CF-02 evidence index</span><span class="dur">raw + cleaned sources</span></div>
       <div class="node"><span>skill → aha → worked example → quiz → transfer</span><span class="dur">authored</span></div>
       <div class="node"><span>diagrams via keyframe capture</span><span class="dur">YouTube, when missing</span></div>
       <div class="deliverable">Deliverable: reviewed lesson bundle
@@ -54,6 +54,7 @@
 
     <section class="stage" aria-label="Cleaned content store" style="flex:3 1 640px">
       <h2 style="font-size:16px">Cleaned &amp; organized content store — <span class="mono">GeminiLongContext/&lt;playlist_id&gt;/</span></h2>
+      <p class="ann">[per-video pairing: each file's &lt;video_id&gt; matches the raw <span class="mono">data/&lt;playlist_id&gt;/&lt;video_id&gt;_raw.json</span> — optics pilot: 105 raw ↔ 105 chapters ↔ 105 lecture_context; 83 of 105 also have v2_content]</p>
       <div class="cards" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr))">
         <div class="card node--locked">
           <span class="mono">&lt;video_id&gt;_chapters.json</span>
@@ -68,7 +69,7 @@
           <p class="ann">[lecture context metadata: study language, faculty, course, audience, title, duration · often Python-literal, not strict JSON]</p>
         </div>
       </div>
-      <p class="ann">[produced from the raw transcripts by the historical long-context processing · for v1 this store is audit-only: the arrow into stage 2 carries diagram recovery only (chapter/keyframe hints → keyframe capture → reviewed images); cleaned text never becomes lesson content]</p>
+      <p class="ann">[produced from the raw transcripts by the historical long-context processing · approved teaching sources since the 2026-09-07 reversal: the arrow into stage 2 now carries cleaned content per video alongside the raw evidence; raw whisper JSON stays canonical for segmentation and timestamps]</p>
     </section>
 
     <div class="arrow" aria-hidden="true">⇢</div>
@@ -77,7 +78,7 @@
       <h2 style="font-size:16px">Known quirks</h2>
       <ul style="font-size:13.5px">
         <li>Playlist IDs end in <span class="mono">-</span>, so nested paths read as if concatenated: <span class="mono">…R2s-/-AsaJEAav4s_chapters.json</span>.</li>
-        <li>Typo alias folder <span class="mono">data/L9fwy3NUQKw…</span> (playlist ID missing its leading <span class="mono">P</span>).</li>
+        <li>Typo alias folder <span class="mono">L9fwy3NUQKw…</span> in both <span class="mono">data/</span> and <span class="mono">GeminiLongContext/</span> (playlist ID missing its leading <span class="mono">P</span>).</li>
         <li>Legacy flat <span class="mono">PL*</span> folders at the repo root; stray files at the <span class="mono">GeminiLongContext/</span> root.</li>
       </ul>
       <p class="ann">[measured counts: content-factory-v1-inventory.md · scanned by inventory + build_pilot_manifest scripts]</p>
@@ -85,7 +86,7 @@
 
   </div>
 
-  <p class="ann">[flow: capture → data/&lt;pid&gt;/&lt;vid&gt;_raw.json → v1 factory evidence → lesson bundle; the cleaned GeminiLongContext/&lt;pid&gt;/ store stays audit-only for authoring and feeds only audits and diagram recovery]</p>
+  <p class="ann">[flow: capture → data/&lt;pid&gt;/&lt;vid&gt;_raw.json → v1 factory evidence → lesson bundle; for that same &lt;vid&gt; the cleaned counterparts &lt;vid&gt;_chapters / _v2_content / _lecture_context.json live in GeminiLongContext/&lt;pid&gt;/ as approved teaching sources bound per video (2026-09-07); derived SRT variants stay non-evidence]</p>
   <p class="ann">[this frame documents the repo's own data layout — unlike frames 01–09 it is not a product screen and carries no UI decisions]</p>
 
 </div>
