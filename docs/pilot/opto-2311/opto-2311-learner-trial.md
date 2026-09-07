@@ -1,10 +1,10 @@
 # OPTO 2311 — learner trial instruments (CF-10 drafts)
 
-**STATUS: DRAFT templates — the agent prepares instruments and the report template only; the operator recruits and schedules. Fields marked OPEN require human input (reviewer-confirmed prerequisites, written performance criterion, retention/deletion choices). Administer nothing until CF-07's lesson is the accepted tested revision and the freeze is signed.**
+**STATUS: DRAFT templates — the agent prepares instruments and the report template only; the operator recruits and schedules. Fields marked OPEN require human input (reviewer-confirmed prerequisites, written performance criterion, retention/deletion choices). Administer nothing until scope is frozen, CF-08 has produced a stable release-candidate revision, and the preceding production/review gates pass.**
 
 ## 0. Binding
 
-- Tested revision: **OPEN** (the accepted CF-07 trial lesson revision ID goes here; instruments bind to it).
+- Tested revision: **OPEN** (the stable CF-08 release-candidate revision ID goes here; instruments bind to that exact revision).
 - Outcomes covered by the trial: **OPEN** (selected from the frozen scope; record which outcomes get direct learner evidence vs review-only evidence).
 - Prerequisite list for screening: **OPEN** — the reviewer-confirmed list from the first review ([opto-2311-first-review.md](opto-2311-first-review.md)).
 

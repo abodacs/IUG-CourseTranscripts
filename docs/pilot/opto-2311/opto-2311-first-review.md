@@ -10,7 +10,7 @@ Fetched with the pinned toolchain (`yt-dlp[default]==2026.8.19`, flat-playlist, 
 - **Transcript mentions are review hints.** An absolute «المحاضرة N» mention can refer to another lecture. Matching or differing numbers do not verify or contradict the current video's identity. The reconciler records mentions without an automatic identity verdict; available entries retain `playlist_title_only`. Older local artifacts with automated verification/conflict labels must be rebuilt before review.
 - **`SAq013FtOLQ` sits at position 8 and was unavailable at fetch (title/duration NA)** — first real disposition evidence: it contributes no teaching content *now*; curriculum impact still needs the reviewer's judgment (CF-03).
 - **One re-upload pair:** «التمرين الثالث بصريات هندسية» (114 s) exists twice — `3LETQng8kTU` and `E4SfMpVuLYk`. Recorded as one content family for CF-06.
-- **Positions 105–106 are exam-logistics notices** («التنبيه… تعليمات بخصوص الامتحان النهائي»), not lectures; excluded from the teaching sequence with this recorded reason.
+- **Positions 105–106 appear to be exam-logistics notices** («التنبيه… تعليمات بخصوص الامتحان النهائي»). Their queue skip is provisional metadata classification, not an approved source disposition; CF-03 must account for their segments and the reviewer/operator must approve exclusion or retain them as unresolved.
 - Titles carry explicit sequence numbers (المحاضرة 1…28, التمرين 2…41) — ordering metadata only, never teaching facts.
 - The order table with all 106 positions is in the artifact; every earlier "position unknown" from CF-01 is now resolvable from this evidence.
 
@@ -55,7 +55,7 @@ Evidence refs are `segment[i] @seconds` in the raw whisper JSON plus legacy chap
 
 ## Evaluation-family reservation (F03) — recorded before deeper discovery
 
-`artifacts/opto-2311/evaluation-families.json` (local): **5 development families** already exposed (the three lectures above; `0Ca8cjsIysc` — CF-01 probe excerpts; `-AsaJEAav4s` — historical capture inspection), **100 candidate families** covering the remaining 101 videos (the re-upload pair counts as one family), sibling optics playlists on the watchlist. Access rule: semantic exposure before threshold freeze makes a family development data; structural/manifest access does not. Holdout selection is deferred to CF-03/CF-06 with frozen prompts/rubric/thresholds; if eligible families run short, the evaluation design must be resolved — never relabel exposed families as unseen.
+`artifacts/opto-2311/evaluation-families.json` (local) initially recorded **5 development families** already exposed (the three lectures above; `0Ca8cjsIysc` — CF-01 probe excerpts; `-AsaJEAav4s` — historical capture inspection), **100 candidate families** covering the remaining 101 videos (the re-upload pair counts as one family), and sibling optics playlists on the watchlist. The later ratified issues #11/#14 policy reserves 10 holdout families; broader outcome discovery may access those families for mining only, and every semantic access is logged. They cannot supply calibration labels or threshold tuning. Structural/manifest access does not itself create semantic exposure; no exposed family may be relabeled as unseen.
 
 ## What the reviewer must decide (first review)
 

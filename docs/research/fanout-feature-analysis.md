@@ -1,6 +1,6 @@
 # Fanout feature analysis — the reference product in `inspiring/fanout-company/`
 
-**Quick read:** A feature-by-feature disassembly of [Fanout](https://fanout.sh) (beta) from the 15 screenshots stored in [inspiring/fanout-company/](inspiring/fanout-company/), plus a mapping of every feature onto this platform's fixed constraints. Use it when a platform feature needs a benchmark, a pattern, or a reason to skip. Fanout is the closest public analogue to what [platform-map-brief.md](platform-map-brief.md) describes: sequenced MD-style lessons, a per-course roadmap graph, a cross-course knowledge graph, labs, and a blog — executed to a very high polish bar.
+**Quick read:** A feature-by-feature disassembly of [Fanout](https://fanout.sh) (beta) from the 15 screenshots stored in [inspiring/fanout-company/](../inspiring/fanout-company), plus a mapping of every feature onto this platform's fixed constraints. Use it when a platform feature needs a benchmark, a pattern, or a reason to skip. Fanout is the closest public analogue to what [platform-map-brief.md](../platform/platform-map-brief.md) describes: sequenced MD-style lessons, a per-course roadmap graph, a cross-course knowledge graph, labs, and a blog — executed to a very high polish bar.
 
 Research date: 2026-09-05. Verdicts (same scale as [skills-map.md](skills-map.md)): ✅ adopt · 🔧 adapt · 📐 pattern only, don't depend · ❌ skip for v1.
 
@@ -208,9 +208,9 @@ Captured fully (S4):
 
 ## 4. Patterns worth stealing
 
-*Adopted patterns are propagated into the [platform brief](platform-map-brief.md) (constraints 4 and 6 and the benchmarks paragraph), the [skills map](skills-map.md) (graphify UX bar, client-side search, taste-skill brief), and the pilot release work in [NEXT_STEPS.md](NEXT_STEPS.md) (milestone 4).*
+*Adopted patterns are propagated into the [platform brief](../platform/platform-map-brief.md) (constraints 4 and 6 and the benchmarks paragraph), the [skills map](skills-map.md) (graphify UX bar, client-side search, taste-skill brief), and the pilot release work in [NEXT_STEPS.md](../NEXT_STEPS.md) (milestone 4).*
 
-1. **Ship the map before the course.** The roadmap graph and the unfinished course's working notes are public; the map sells the sequenced product (S3, S15).
+1. **Ship one non-teaching status page before the course.** It may describe high-level progress, but roadmap detail, working notes, release notes, and all teaching stay private until the complete prerequisite-closed course is accepted (S3, S15).
 2. **Progress is a graph property.** Progress filters into the knowledge graph (S6) and carries across papers (S2) — completion is visible on every structural view, not just a course checklist.
 3. **Alias search in the concept graph.** "Search concepts, aliases, and lessons" (S6) is the exact hook Arabic/English terminology needs.
 4. **One asset, three funnels.** A paper explanation surfaces as daily digest, track library entry, and blog post (S8, S9, web).
@@ -218,14 +218,14 @@ Captured fully (S4):
 6. **Deliverable-ended stages.** Inference Engineering stages end in artifacts you produce, not chapters you read (S15).
 7. **Privacy as product voice.** On-device computation stated in the UI, in the product's own words (S10).
 8. **Small-batch shipping, publicly logged.** ~14 changelog entries in 3 weeks, each with an illustration and deep link, feeding a public suggestion board (S2).
-9. **Free coherent module as the taste test.** ML Math's "focused 14-lesson preview … one coherent path" (S2) — a free module that stands alone, not a crippled sample.
+9. **Free coherent module — defer.** ML Math's "focused 14-lesson preview … one coherent path" (S2) is a possible post-pilot product pattern, not an authorized pre-acceptance release.
 10. **Regional pricing as strategy.** EGP purchasing-power pricing for the exact region this platform serves (S4).
 11. **Identical card grammar everywhere.** One rhythm for labs, tools, papers, plans, and changelog entries (all screenshots) — the cheapest possible way to look Apple-grade.
 12. **Liveness as proof.** A persistent online counter and a public learner wall (S1, S13).
 
 ## 5. Mapping to the IUG platform
 
-Against [platform-map-brief.md](platform-map-brief.md) constraints. v1 = Content Factory v1 (optics pilot, static-first, zero cash); "platform" = the broader destination in the brief.
+Against [platform-map-brief.md](../platform/platform-map-brief.md) constraints. v1 = Content Factory v1 (optics pilot, static-first, no paid model API, hosting/operations capped at $5/month); "platform" = the broader destination in the brief.
 
 | Fanout feature | Brief constraint it touches | Verdict | Notes |
 |---|---|---|---|
@@ -234,22 +234,22 @@ Against [platform-map-brief.md](platform-map-brief.md) constraints. v1 = Content
 | Custom diagram per concept/paper | 3 (aha diagrams via Excalidraw) | ✅ pattern | Fanout's "one idea, one diagram" discipline is exactly constraint 3; the brief's deterministic SVG/HTML preference (constraint 9) matches Fanout's diagram style. Excalidraw source + render stays the plan. |
 | Lesson = sidebar tree + per-lesson checkmarks + durations | 4 (reading experience) | ✅ pattern | Cheap, high-value reader chrome for MD lessons; progress state is client-side/static-friendly. |
 | Lesson anatomy (notes, exercises, learning paths) | 5 (inline assessment) | 📐 | Fanout shows exercises in marketing copy but **no quiz UI anywhere in the captured surface** — assessment remains this platform's differentiator (mdbook-quiz line), not a copy job. |
-| Build-in-public working notes for an unfinished course | 10 (staged release), pilot | ✅ pattern | Matches the factory's reality: publish accepted lessons as gates pass, with a STATUS banner, instead of waiting for the full course. Zero extra cost. |
+| Build-in-public working notes for an unfinished course | 10 (release communication), pilot | 📐 | Before acceptance, publish only a non-teaching status page. Keep working notes, roadmap detail, release notes, and all teaching private until the complete prerequisite-closed course is accepted. |
 | Release notes / changelog page | platform (blog) | ✅ | A blog category plus one illustrated page. Cheap, on-brand for an audit-trail culture. |
-| Free focused module (14-lesson preview) | pilot | ✅ pattern | When OPTO 2311 ships, cut one coherent free module as the public taste — a standalone path, not a sample. |
+| Free focused module (14-lesson preview) | pilot | 📐 | Deferred until after full-course acceptance; it is not an approved pre-acceptance release. |
 | Blog: category-mapped SEO posts, some gated "(Pro)" | 7 (platform includes blog) | ✅ pattern | The stack-comparison post is already mandated as blog post #1; Fanout shows the long game (81 posts mapped to tracks). Gating is a future monetization decision, out of v1 scope. |
 | Cmd+K global search with scopes | 4, 7 | 🔧 | Static-site analogue exists (client-side search indexes, e.g. Pagefind-style) — fits static-first. "Course-aware scopes" = filter by course context. |
-| Interactive labs (13 of 15 on-device) | 9 (static-first, zero cash) | 📐 | V2+ surface, not v1. The transferable rule: interactivity must be a client-side artifact with a privacy statement, never a paid service in the critical path. Math Decoder's notation-first idea is directly relevant to math-heavy courses like optics. |
+| Interactive labs (13 of 15 on-device) | 9 (static-first, bounded operations) | 📐 | V2+ surface, not v1. The transferable rule: interactivity must be a client-side artifact with a privacy statement, never a metered paid service in the critical path. Math Decoder's notation-first idea is directly relevant to math-heavy courses like optics. |
 | Daily Planner (dual views, conflict detection, PNG export) | 9 | 📐 | A masterclass in small-feature polish; not education-core. Mine it when building any v2 tool. |
 | Daily papers / Papers library | — | ❌ for v1 | A daily editorial commitment with no pilot budget. The *format* (original link → simplified abstract → one diagram → full explanation) is a reusable lesson template for later. |
 | Tools directory (curated external) | — | 📐 | Nearly free to build, high trust yield. Post-v1; must respect the teaching-source policy (linking out is fine; importing others' content is not). |
 | Study With Me public wall | — | ❌ for v1 | Needs community + moderation + embeds (dynamic). Revisit after platform v1; the git-backed "learner evidence" idea in the brief is a calmer v1-compatible cousin. |
-| Purchasing-power EGP pricing | — | 📐 | Validates the market and the playbook for a future paid tier; v1 is zero-cash by contract, so this is a note for the platform-era decision, not now. |
+| Purchasing-power EGP pricing | — | 📐 | Validates the market and the playbook for a future paid tier; v1 permits only the narrow $5/month hosting/operations ceiling and no paid model APIs, so this is a platform-era decision, not now. |
 | Discord + suggestion board + online counter | — | ❌/📐 | Dynamic services; the suggestion board could later be a static issues-based board (GitHub-backed). Online counter conflicts with static-first — skip. |
 | Tweet/logo trust walls | — | 📐 | For launch, not build. Note their logo wall includes IITs — the demographic proof for regional technical education. |
 | Design language (hand-drawn system, course accent colors, card grammar, pixel+serif type) | 1 (Apple-grade), 2 (RTL) | ✅ pattern | Adopt the *system* (one accent per course, one card grammar, illustrated changelog), not the fonts — Thmanyah stays the house typeface. All of it must be rebuilt RTL-first; Fanout has zero Arabic surface, which is this platform's opening. |
 
-**Where Fanout cannot lead.** Everything Fanout ships is LTR English, inside a JS app, monetized from day one. The brief's three sharpest constraints — RTL-first excellence, transcript-provenance grounding with LLM-judged gates, and zero-cash static delivery — have no counterpart in Fanout's captured surface. Fanout is the benchmark for **finish and product thinking**; the differentiators stay exactly where the brief puts them.
+**Where Fanout cannot lead.** Everything Fanout ships is LTR English, inside a JS app, monetized from day one. The brief's three sharpest constraints — RTL-first excellence, transcript-provenance grounding with LLM-judged gates, and tightly bounded static delivery (no paid model APIs; hosting/operations at most $5/month) — have no counterpart in Fanout's captured surface. Fanout is the benchmark for **finish and product thinking**; the differentiators stay exactly where the brief puts them.
 
 ## 6. What the screenshots do not cover
 
@@ -257,7 +257,7 @@ Marked so nobody treats this report as complete: the lesson-reading interior bey
 
 ## 7. Sources
 
-Screenshots (all in [inspiring/fanout-company/](inspiring/fanout-company/), captured 2026-09-05):
+Screenshots (all in [inspiring/fanout-company/](../inspiring/fanout-company), captured 2026-09-05):
 
 - **S1** `Fanout-AI-Research-System-Design-ML-Math…07_05_PM.png` — homepage
 - **S2** `What's-new-in-Fanout…07_02_PM.png` — release notes
@@ -276,4 +276,4 @@ Screenshots (all in [inspiring/fanout-company/](inspiring/fanout-company/), capt
 
 Web (checked 2026-09-05): [fanout.sh](https://fanout.sh) (routes/sitemap), [fanout.sh/blog](https://fanout.sh/blog) (81-post index), [fanout.sh/pricing](https://fanout.sh/pricing) (JS-rendered; body not retrievable — pricing evidence is S4), [/ai related-lesson links](https://fanout.sh/ai), plus the LinkedIn launch post identifying the founders.
 
-Companion docs: [platform-map-brief.md](platform-map-brief.md) (constraints referenced above), [skills-map.md](skills-map.md) (tool candidates the mapping leans on, esp. graphify).
+Companion docs: [platform-map-brief.md](../platform/platform-map-brief.md) (constraints referenced above), [skills-map.md](skills-map.md) (tool candidates the mapping leans on, esp. graphify).
