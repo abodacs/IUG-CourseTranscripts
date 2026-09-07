@@ -1,10 +1,27 @@
 # main.py
 
 from src.etl import extract, transform, load
+from src.etl.cleaned_store import source_coverage
 from src.ai import gemini
 from src.database import get_db_connection, conn_sync
 from src.utils import open_file
 import os
+
+
+def report_cleaned_sources():
+    """Report which cleaned counterparts exist under GeminiLongContext/<playlist_id>/
+    for every raw transcript. Since the 2026-09-07 policy reversal these cleaned
+    counterparts are approved teaching sources, bound per video; the raw whisper
+    JSON stays canonical for segmentation and timestamps."""
+    coverage = source_coverage()
+    total = len(coverage["videos"])
+    print(f"Cleaned sources in GeminiLongContext/ for {total} raw transcripts:")
+    for role, count in coverage["counts"].items():
+        print(f"  {role}: {count}")
+    missing = coverage["videos_without_cleaned"]
+    if missing:
+        print(f"  videos with no cleaned counterpart: {len(missing)}")
+    return coverage
 
 def main():
     """Main function to run the entire pipeline."""
@@ -32,13 +49,17 @@ def main():
             if extract.download_file_from_r2(video_id, "youtube-iug-asdj", local_filename):
                 load.update_downloaded_r2(video_id, playlist_id, 1)
 
-    # 5. Process raw transcripts into SRT format and fix typos
+    # 5. Locate each video's cleaned sources in GeminiLongContext/<playlist_id>/
+    print("Locating cleaned sources...")
+    report_cleaned_sources()
+
+    # 6. Process raw transcripts into SRT format and fix typos
     print("Processing transcripts...")
     for playlist_dir in os.scandir("data"):
         if playlist_dir.is_dir() and playlist_dir.name not in {"raw", "processed", "final"}:
             for raw_transcript_file in os.scandir(playlist_dir.path):
-                if raw_transcript_file.name.endswith(".json"):
-                    video_id = raw_transcript_file.name.replace("_raw.json", "")
+                if raw_transcript_file.name.endswith("_raw.json"):
+                    video_id = raw_transcript_file.name[: -len("_raw.json")]
                     processed_srt_path = f"data/processed/{playlist_dir.name}/{video_id}.srt"
                     final_srt_path = f"data/final/{playlist_dir.name}/{video_id}_clarified.srt"
                     

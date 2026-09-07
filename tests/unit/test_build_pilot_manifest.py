@@ -280,11 +280,11 @@ def test_postprocess_fidelity_status_separates_identical_from_unchecked(pilot_tr
     )
 
 
-def test_legacy_and_processed_variants_are_never_teaching_eligible(pilot_tree):
+def test_cleaned_variants_are_teaching_eligible_srt_variants_are_not(pilot_tree):
     semantic = build(pilot_tree)
     full = video(semantic, VID_FULL)
     assert set(full["eligibility"]["teaching_eligible"]) == {"raw_transcript_json", "raw_transcript_srt"}
-    assert set(full["eligibility"]["audit_only"]) == {
+    assert set(full["eligibility"]["teaching_eligible_cleaned"]) == {
         "chapter_hints",
         "legacy_v2_lesson",
     }
@@ -310,7 +310,7 @@ def test_lecture_order_is_unknown_with_batch_import_evidence(pilot_tree):
         assert record["lecture_order"]["position"] == "unknown"
 
 
-def test_keyframe_hints_are_counted_as_audit_only(pilot_tree):
+def test_keyframe_hints_are_counted_from_chapters(pilot_tree):
     semantic = build(pilot_tree)
     hints = video(semantic, VID_FULL)["keyframe_hints"]
     assert hints == {"chapters": 1, "chosen_keyframes": 1, "candidate_timestamps": 2, "range_warnings": 0}

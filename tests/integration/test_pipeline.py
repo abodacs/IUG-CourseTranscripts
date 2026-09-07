@@ -323,6 +323,50 @@ class TestMainPipelineIntegration:
         scanned = [call.args[0] for call in mock_scandir.call_args_list]
         assert scanned == ['data', 'data/PL9fwy3NUQKway0xLRTe7OlRxcQic7R2s-']
         mock_fix_typos.assert_not_called()
+
+    @patch('main.get_db_connection')
+    @patch('main.conn_sync')
+    @patch('main.extract.process_playlists')
+    @patch('main.load.insert_videos_to_db')
+    @patch('main.transform.fix_typos')
+    @patch('main.os.path.exists')
+    @patch('main.os.makedirs')
+    @patch('main.os.scandir')
+    def test_main_pipeline_ignores_non_raw_json(
+        self,
+        mock_scandir,
+        mock_makedirs,
+        mock_exists,
+        mock_fix_typos,
+        mock_insert_videos,
+        mock_process_playlists,
+        mock_conn_sync,
+        mock_get_conn
+    ):
+        """Only <video_id>_raw.json names drive processing; other JSON files are not transcripts."""
+        mock_connection = Mock()
+        mock_get_conn.return_value = mock_connection
+        mock_connection.execute.return_value.fetchall.return_value = []
+
+        mock_playlist_dir = Mock()
+        mock_playlist_dir.name = 'playlist456'
+        mock_playlist_dir.is_dir.return_value = True
+        mock_playlist_dir.path = 'data/playlist456'
+
+        mock_stray_json = Mock()
+        mock_stray_json.name = 'video123_v2_content.json'
+
+        mock_scandir.side_effect = [
+            [mock_playlist_dir],   # data/ scan
+            [mock_stray_json],     # files inside the playlist directory
+        ]
+
+        mock_exists.return_value = False
+
+        with patch('builtins.print'):
+            main()
+
+        mock_fix_typos.assert_not_called()
     
     @patch('main.get_db_connection')
     @patch('main.conn_sync')
@@ -462,6 +506,7 @@ class TestMainPipelineErrorHandling:
                 "Fetching playlist data...",
                 "Inserting video data into the database...",
                 "Downloading raw transcripts...",
+                "Locating cleaned sources...",
                 "Processing transcripts...",
                 "Pipeline finished."
             ]

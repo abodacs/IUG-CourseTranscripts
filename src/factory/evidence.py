@@ -1,12 +1,19 @@
-"""CF-02A: the raw-only evidence boundary for v1 authoring.
+"""CF-02A: the evidence boundary for v1 authoring.
 
-Decision recorded 2026-09-06: v1 authors from raw whisper JSON only. CF-01
-measured that derived SRT variants carry real damage (zero-duration cues,
-malformed blocks, truncation) and that raw JSON is the canonical segmentation,
-so no normalization pipeline is trusted in v1. Corrections to ASR errors are
-append-only ledger records backed by allowed evidence, and they quarantine
-affected outcomes until a named reviewer approves them. Diagrams bind to
-captured bytes as immutable revisions.
+Decision recorded 2026-09-06: v1 authors from raw whisper JSON only, because
+CF-01 measured real damage in derived SRT variants (zero-duration cues,
+malformed blocks, truncation) and the legacy outputs were unvalidated.
+Decision reversed 2026-09-07 (operator): the cleaned per-video counterparts
+in the mirrored ``GeminiLongContext/<playlist_id>/`` tree —
+``_chapters.json``, ``_v2_content.json`` (earlier variant ``_content.json``),
+and ``_lecture_context.json`` — are allowed teaching sources alongside the
+raw JSON. Raw whisper JSON remains the canonical segmentation: segment IDs,
+timestamps, and segment hashes bind to it, while cleaned sources attach per
+video. Derived SRT variants stay ineligible; the damage measurements stand.
+
+``eligibility_of`` therefore distinguishes ``teaching_eligible`` (raw JSON,
+the only segment source) from ``teaching_eligible_cleaned`` (cleaned
+counterparts, video-level sources that are never segment loads).
 
 This module never imports the model/network pipeline and performs no I/O
 beyond the files it is given.
@@ -21,6 +28,12 @@ import re
 PLAYLIST_ID = "PL9fwy3NUQKway0xLRTe7OlRxcQic7R2s-"
 VIDEO_ID = "0Ca8cjsIysc"
 RAW_SUFFIX = "_raw.json"
+CLEANED_SUFFIXES = (
+    "_chapters.json",
+    "_v2_content.json",
+    "_lecture_context.json",
+    "_content.json",
+)
 VIDEO_ID_RE = re.compile(r"[A-Za-z0-9_-]{11}")
 
 
@@ -35,10 +48,15 @@ class EvidenceIntegrityError(RuntimeError):
 
 
 def eligibility_of(path_text):
-    """Teaching evidence may come only from a raw whisper JSON."""
-    path = Path(path_text)
-    if path.name.endswith(RAW_SUFFIX) and VIDEO_ID_RE.fullmatch(path.name[: -len(RAW_SUFFIX)]):
+    """Raw whisper JSON is the segment source; cleaned GeminiLongContext
+    counterparts are video-level teaching sources; derived SRT variants are
+    not evidence at all."""
+    name = Path(path_text).name
+    if name.endswith(RAW_SUFFIX) and VIDEO_ID_RE.fullmatch(name[: -len(RAW_SUFFIX)]):
         return "teaching_eligible"
+    for suffix in CLEANED_SUFFIXES:
+        if name.endswith(suffix) and VIDEO_ID_RE.fullmatch(name[: -len(suffix)]):
+            return "teaching_eligible_cleaned"
     return "not_eligible"
 
 
@@ -68,9 +86,15 @@ class RawSegment:
 
 def load_segments_from(path):
     """Load segments from an explicit file, enforcing the eligibility gate."""
-    if eligibility_of(path) != "teaching_eligible":
+    kind = eligibility_of(path)
+    if kind == "teaching_eligible_cleaned":
         raise EvidencePolicyError(
-            f"{path} is not eligible teaching evidence; author from {RAW_SUFFIX} only"
+            f"{path} is a cleaned source: it binds per video and is never a raw segment load"
+        )
+    if kind != "teaching_eligible":
+        raise EvidencePolicyError(
+            f"{path} is not eligible teaching evidence; author from {RAW_SUFFIX} and the "
+            "cleaned GeminiLongContext counterparts only"
         )
     path = Path(path)
     video_id = path.name[: -len(RAW_SUFFIX)]
@@ -368,7 +392,7 @@ def build_evidence_index(root, playlist_id=PLAYLIST_ID):
             non_raw_skipped.append(path.name)
     return {
         "playlist_id": playlist_id,
-        "policy": "raw-only authoring; derived SRT variants are never authoring inputs",
+        "policy": "raw whisper JSON is the segment source; cleaned GeminiLongContext counterparts are video-level teaching sources; derived SRT variants are never authoring inputs",
         "videos": videos,
         "non_raw_skipped": sorted(non_raw_skipped),
     }
