@@ -1,6 +1,6 @@
 # CF-04 token allocations — operator-measured inputs.
 # Measured 2026-09-07 by the operator from the Z.ai plan dashboard; derived
-# caps follow docs/pilot-opto-2311-plan.md §17 (pilot_cap = min(remaining −
+# caps follow docs/pilot/opto-2311/pilot-opto-2311-plan.md §17 (pilot_cap = min(remaining −
 # margin, estimated need); run caps allocated by expected bounded work and
 # summing exactly to the pilot cap).
 #
@@ -21,6 +21,47 @@ pilot_cap_tokens = 1_800_000     # min(2_000_000 − 200_000, est. need ≈ 3.2M
 allowance_tokens = 1_200_000      # model-assisted agent sessions — sized for the full
                                   # 105-video matrix pass (~10K/video incl. overhead)
 prior_usage_tokens = 0            # no local usage counter; pre-2026-09-07 spend unverifiable
+
+# OPERATOR DECISION 2026-09-07 (supersedes numeric free-tier stops):
+# model work may continue across the configured, operator-authorized free-quota
+# pool (Gemini first, then explicitly approved OpenAI-compatible providers).
+# A confirmed quota-exhaustion response disables that provider/key until its
+# recorded reset. Stop when every configured free quota is exhausted or any
+# remaining quota state is uncertain. Never rotate keys to evade provider limits.
+# Paid model usage still requires a separate explicit cash cap. The numeric
+# allocations below remain historical planning/measurement records.
+# Measured window-1 actuals (agent-run, 2026-09-07, positions 1–6):
+window1_usage_tokens = 2_222_482  # runtime-measured, includes main thread + 5 drafting agents
+window1_positions = 6
+window1_avg_per_position = 370_414  # window1_usage / positions; window-2 batching targets ≤ 50K/video
+# Everything else (runs/maintenance caps, CF-06..08 planning numbers) stays as
+# recorded above until the operator re-measures.
+
+# WINDOW-2 SESSION RECORD 2026-09-07 (appended at stop per the pass protocol):
+# Run OUTSIDE zIDE — ZCode desktop session, model identity: GLM
+# (builtin:zai-coding-plan/GLM-5.3-Flash). Quota source: Z.ai plan quota
+# consumed by the harness session; the runtime exposes no local token counter,
+# so usage tokens are UNMEASURED for this session (treated as real, not zero).
+window2_session_date = 2026-09-07
+window2_session_positions = 50        # positions 1-51 less unavailable 8; each draft
+                                      # verified OK then persisted; crash-safe per position
+window2_session_outcomes = 290        # all draft_pending_review; sufficiency "supported"
+window2_session_usage_tokens = "unmeasured (no local counter); batching target <=50K/video honored by design: single-session reads, no drafting subagents, dumps of 3-97 segments/video"
+window2_session_stop_position = 51    # resume with: outcome_matrix.py next --window 2
+                                      # (next batch starts p052)
+window2_session_holdout_mining_only = [2, 13, 25, 36, 47]  # ratified #11 policy honored
+
+# WINDOW-2 CONTINUATION 2026-09-07 (same session resumed; appended at stop):
+window2_cont_positions = 10           # p052-p061: lens combinations, virtual images/objects,
+                                      # thin-lens and U+P=V exercises, midterm review (both versions)
+window2_cont_outcomes = 50            # cumulative window-2 totals now:
+window2_cum_positions = 60            # positions 1-61 less unavailable 8, of 103 teaching
+window2_cum_outcomes = 340            # all draft_pending_review; sufficiency "supported"
+window2_cum_exposure_events = 60      # exp-matrix-w2-p001..p061 (skip p008), append-only
+window2_cont_stop_position = 61       # resume with: outcome_matrix.py next --window 2
+                                      # (next batch starts p062)
+window2_cum_holdout_mining_only = [2, 13, 25, 36, 47, 59]  # ratified #11 policy honored
+window2_reviewer_flags = "position 21 (exam key): R-arithmetic sign-tension recorded in-row (asr_note) for reviewer adjudication"
 
 [runs]
 # One entry per bounded run; allocate by expected work, not equal division.
