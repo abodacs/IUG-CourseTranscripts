@@ -46,6 +46,7 @@
 | [Course app plan](platform/course-app-plan.md) | Provisional hosting and presentation slice. |
 | [Artifact storage review](platform/artifact-storage-review.md) | Private review, exact-bundle approval, storage, and budget. |
 | [Search discovery plan](platform/search-discovery-2026-q3.md) | Dated SEO and AI-citation requirements. |
+| [Talks Archive adoption review](platform/talks-archive-spec-adoption-review.md) | Section-by-section external-spec crosswalk and compatible platform contract additions; recommendation, not authority or implementation proof. |
 
 ## Research and evaluations — `research/`
 
