@@ -85,11 +85,11 @@ The IES practice guide supports spacing, alternating worked examples with indepe
 
 **Already covered:** the partial-success bug in `transform.py`, explicit v1 entrypoint, resumability, and reuse-first inventory.
 
-**Observed:** [main.py](../main.py#L45) leaves JSON-to-SRT conversion as a placeholder. The separate chapter extractor has behavior the goal's findings table does not discuss:
+**Observed:** [main.py](../../main.py#L45) leaves JSON-to-SRT conversion as a placeholder. The separate chapter extractor has behavior the goal's findings table does not discuss:
 
-- It accepts only subtitles fully contained within a chapter. Evaluating its actual condition with a subtitle at 59–61 seconds and chapters at 0–60 and 60–120 seconds returns `False` for both. [Selector](../src/etl/transcript_chapter_extractor.py#L621).
-- A completed chapter returns raw input instead of loading its cleaned result. Calling that function with a completed-state stub reproduced the return of `RAW INPUT`. An interruption between chapter completion and video-output persistence can therefore substitute raw text on resume. [Resume branch](../src/etl/transcript_chapter_extractor.py#L342).
-- Output-file existence alone returns success, and the request loop has no attempt limit. [Existence check](../src/etl/transcript_chapter_extractor.py#L568), [retry loop](../src/etl/transcript_chapter_extractor.py#L358).
+- It accepts only subtitles fully contained within a chapter. Evaluating its actual condition with a subtitle at 59–61 seconds and chapters at 0–60 and 60–120 seconds returns `False` for both. [Selector](../../src/etl/transcript_chapter_extractor.py#L621).
+- A completed chapter returns raw input instead of loading its cleaned result. Calling that function with a completed-state stub reproduced the return of `RAW INPUT`. An interruption between chapter completion and video-output persistence can therefore substitute raw text on resume. [Resume branch](../../src/etl/transcript_chapter_extractor.py#L342).
+- Output-file existence alone returns success, and the request loop has no attempt limit. [Existence check](../../src/etl/transcript_chapter_extractor.py#L568), [retry loop](../../src/etl/transcript_chapter_extractor.py#L358).
 
 **Close it:** inventory every entrypoint, artifact family, and state location. Map video identity separately from playlist membership. Import old artifacts as candidates with reconstructible lineage; markers and file existence cannot confer approval. Demonstrate interruption recovery and cross-boundary segment migration before estimating trustworthy reuse. Unknown provenance can force revalidation or reconstruction even when prose looks good.
 

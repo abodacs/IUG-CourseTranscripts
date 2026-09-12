@@ -2,7 +2,7 @@
 
 **Quick read:** What files actually exist, where records disagree, and which source-integrity assumptions still need proof. The final section covers the selected optics pilot.
 
-**Current source policy:** these counts are historical evidence. Legacy chapter/v2 outputs are audit-only; reprocess the selected transcripts into new v1 content. A missing legacy output does not define the new processing scope. Only matching YouTube visuals needed for diagrams may supplement transcript evidence. See [the goal](content-factory-v1-goal.md#allowed-teaching-sources--user-confirmed).
+**Current source policy:** these counts are historical evidence. Legacy chapter/v2 outputs were audit-only at measurement time and are approved cleaned teaching sources since the 2026-09-07 reversal; the raw transcripts stay canonical. A missing legacy output does not define the new processing scope. Only matching YouTube visuals needed for diagrams may supplement transcript evidence. See [the goal](content-factory-v1-goal.md#allowed-teaching-sources--user-confirmed).
 
 
 Inspected 2026-09-05. This is a local filesystem/database reconciliation, not evidence of current upstream availability, reuse rights, transcript fidelity, or accepted teaching quality. No pipeline imports, model calls, downloads, remote synchronization, or corpus/state/database edits were performed.
@@ -15,7 +15,7 @@ Run from the repository root:
 python3 scripts/inventory_content_factory.py --output /tmp/content-factory-inventory.json
 ```
 
-The [scanner](../scripts/inventory_content_factory.py) also accepts `--root /absolute/repository/path`; without `--output`, it prints JSON. It copies `youtube-iug.db` into a temporary directory and queries the copy using SQLite `mode=ro&immutable=1`. It refuses a nonempty WAL and checks database size/mtime and WAL size before/after copying. The inspected WAL was empty or absent across scans. A live database with pending WAL transactions requires a separately obtained consistent snapshot; this scanner does not checkpoint or synchronize it. Snapshots remain under `/tmp` for inspection.
+The [scanner](../../scripts/inventory_content_factory.py) also accepts `--root /absolute/repository/path`; without `--output`, it prints JSON. It copies `youtube-iug.db` into a temporary directory and queries the copy using SQLite `mode=ro&immutable=1`. It refuses a nonempty WAL and checks database size/mtime and WAL size before/after copying. The inspected WAL was empty or absent across scans. A live database with pending WAL transactions requires a separately obtained consistent snapshot; this scanner does not checkpoint or synchronize it. Snapshots remain under `/tmp` for inspection.
 
 Only explicit playlist metadata and synchronization columns are selected; credentials and `private_meta` are not inspected. `entries` is parsed as JSON or, when applicable, with `ast.literal_eval`; malformed values remain untrusted. Artifact discovery traverses both `data/` and `GeminiLongContext/`, excluding hidden/cache/log directories; it recognizes complete 11-character video IDs by known filename suffixes. It also inventories the separate root-level sample playlist. Folder names are preserved, including a discovered typo; nothing is silently renamed.
 
@@ -99,4 +99,4 @@ The current goal selects **OPTO 2311 — البصريات الهندسية**, pl
 | Source and output gaps | `SAq013FtOLQ` has `skip=1` and no raw file. The 83 v2 IDs are a subset of the 105 available raw IDs, leaving 22 without v2 output. |
 | Course order evidence | `entries` does not parse as JSON or a Python literal; length is 32,767 characters. Lecture order is unverified. |
 
-No extra raw IDs or v2 IDs outside the expected source set were found in these course directories. This pass checked IDs and file presence, not content hashes, segment integrity, actual visual evidence, or accepted lesson quality. The existing general scanner does not classify `_postprocess.srt` yet; the direct suffix/ID inspection supplied that count. [Next task](NEXT_STEPS.md#ticket-cf-01-build-the-optics-source-manifest): build a reproducible per-video manifest covering these variants and unresolved ordering.
+No extra raw IDs or v2 IDs outside the expected source set were found in these course directories. This pass checked IDs and file presence, not content hashes, segment integrity, actual visual evidence, or accepted lesson quality. The existing general scanner does not classify `_postprocess.srt` yet; the direct suffix/ID inspection supplied that count. [Next task](../NEXT_STEPS.md#ticket-cf-01-build-the-optics-source-manifest): build a reproducible per-video manifest covering these variants and unresolved ordering.

@@ -1,10 +1,10 @@
 # Content Factory v1 — optics pilot packet
 
-**Quick read:** The selected course, actual local coverage, challenge cases, and reviewer inputs. Open [the current task](NEXT_STEPS.md#next-task-prepare-the-scope-review-evidence) to prepare the sources.
+**Quick read:** The selected course, actual local coverage, challenge cases, and reviewer inputs. Open [the current task](../../NEXT_STEPS.md#next-task-prepare-the-scope-review-evidence) to prepare the sources.
 
-**Source rule:** reprocess the optics course from transcripts. Use its matching YouTube lectures only to recover needed diagrams. Legacy generated chapters/lessons remain inventory artifacts; their presence does not skip v1 work. See the [binding policy](content-factory-v1-goal.md#allowed-teaching-sources--user-confirmed).
+**Source rule:** reprocess the optics course from raw whisper JSON plus the matching cleaned `GeminiLongContext/` counterparts. Raw JSON remains canonical for segmentation and timestamps. Use matching YouTube lectures only to recover needed diagrams. Other legacy generated artifacts remain inventory-only; no legacy artifact skips v1 work. See the [binding policy](../../factory/content-factory-v1-goal.md#allowed-teaching-sources--user-confirmed).
 
-Status: optics is selected in [the goal](content-factory-v1-goal.md). Source completeness/order, subject approval, learner evidence, and per-run/pilot token allocations remain unverified. The earlier Educational Technology recommendation is historical.
+Status: optics is selected in [the goal](../../factory/content-factory-v1-goal.md). Membership and playlist order are recorded; source sufficiency, the reviewed teaching sequence, subject approval, learner evidence, and live quota-accounting proof remain unverified. The earlier Educational Technology recommendation is historical.
 
 ## Fixed scope
 
@@ -12,8 +12,8 @@ Status: optics is selected in [the goal](content-factory-v1-goal.md). Source com
 |---|---|
 | Course | **OPTO 2311 — البصريات الهندسية**, كلية العلوم الصحية. |
 | Playlist | `PL9fwy3NUQKway0xLRTe7OlRxcQic7R2s-`. |
-| Execution | This repository; zIDE-only model work; zero incremental cash. |
-| Budget / hosting | Operator-stated 300M-token subscription quota; Cloudflare Pages. Numeric run/pilot allocations and actual remaining quota still need recording. |
+| Execution | This repository; zIDE or ZCode; provider-agnostic OpenAI-compatible adapter; authorized Gemini free-tier first, then other explicitly approved compatible providers. |
+| Budget / hosting | Continue across configured, authorized free quotas until all are confirmed exhausted; stop on uncertainty. Paid model APIs require a separate cash cap. The recorded 300M-token Z.ai allowance is one possible quota source. Artifact hosting/operations is capped at $5/month; Cloudflare Pages remains the target. |
 
 Working learner assumption: Arabic-speaking undergraduates with the actual optics-course prerequisites. Confirm those prerequisites from transcript evidence before defining the baseline skill task. An optics subject reviewer must establish whether the explanations, equations, sign conventions, diagrams, and answers are correct.
 
@@ -29,7 +29,7 @@ The goal's runner-up is **جبر حديث 1**, playlist `PL9fwy3NUQKwZKOpj354PRg
 | Source gap | `SAq013FtOLQ` has `skip=1` and no raw file; the reason and effect on promised outcomes remain unresolved. |
 | Legacy output / order gaps | 22 available-source videos have no v2 output. The 32,767-character playlist `entries` field is truncated; it cannot establish lecture order. |
 
-Paths are relative to the repository root: `data/PL9fwy3NUQKway0xLRTe7OlRxcQic7R2s-/` and `GeminiLongContext/PL9fwy3NUQKway0xLRTe7OlRxcQic7R2s-/`. [The inventory](content-factory-v1-inventory.md#selected-optics-pilot--follow-up-inspection) records the method and limits. Legacy file counts describe historical work, not how many v1 lessons can be skipped. Every selected transcript still needs the new processing path.
+Paths are relative to the repository root: `data/PL9fwy3NUQKway0xLRTe7OlRxcQic7R2s-/` and `GeminiLongContext/PL9fwy3NUQKway0xLRTe7OlRxcQic7R2s-/`. [The inventory](../../factory/content-factory-v1-inventory.md#selected-optics-pilot--follow-up-inspection) records the method and limits. Legacy file counts describe historical work, not how many v1 lessons can be skipped. Every selected transcript still needs the new processing path.
 
 ## First source review
 
@@ -57,8 +57,8 @@ These are small validation excerpts, not additional whole-course launches. Readi
 | Learners and prerequisites | Pending. Proposed 5–8 learners for formative discovery; define the final-task criterion before testing. |
 | Source/font/asset permission | Pending for transcripts, needed YouTube diagram captures, fonts/assets, and the skipped video's disposition. |
 | zIDE observability | Verify work submission, model identity, usage reporting, quota period/reset, and interruption recovery. Capabilities are not assumed. |
-| Run / pilot token allocations | Pending after measuring input volumes and remaining quota. The 300M figure is the total stated allowance, not permission to consume it all in one run. |
+| Model quota control | `allocations.toml` retains historical measurements. The current rule is provider/key-pool exhaustion, not a numeric pilot cap. Authorization, quota/reset discovery, per-route exhaustion state, reconciliation, and enforcement remain incomplete. |
 
-Per-outcome records must capture the learner/task/prerequisites; original evidence IDs/timecodes/revisions; sufficiency and correction decisions; worked example/practice/unaided transfer task with independent answers; required lesson/quiz/diagram/wiki/graph IDs. The detailed rules live in [the resolution](content-factory-v1-resolution.md).
+Per-outcome records must capture the learner/task/prerequisites; original evidence IDs/timecodes/revisions; sufficiency and correction decisions; worked example/practice/unaided transfer task with independent answers; required lesson/quiz/diagram/wiki/graph IDs. The detailed rules live in [the resolution](../../factory/content-factory-v1-resolution.md).
 
-**Next action — under 2 minutes:** open [the scope-review preparation task](NEXT_STEPS.md#next-task-prepare-the-scope-review-evidence). Offline preparation can proceed while reviewer availability is being arranged.
+**Next action — under 2 minutes:** open [the scope-review preparation task](../../NEXT_STEPS.md#next-task-prepare-the-scope-review-evidence). Offline preparation can proceed while reviewer availability is being arranged.

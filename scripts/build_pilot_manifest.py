@@ -45,15 +45,19 @@ VARIANT_SUFFIXES = [
     ("_content.json", "legacy_generated_context"),
     (".srt", "normalized_srt"),
 ]
+# Eligibility per the source policy. Reversal recorded 2026-09-07 (operator):
+# the cleaned GeminiLongContext counterparts (chapter hints, v2 lessons,
+# lecture context) are teaching sources bound per video; raw whisper JSON
+# stays the canonical segmentation, and derived SRT variants stay excluded.
 ROLE_ELIGIBILITY = {
     "raw_transcript_json": "teaching_eligible",
     "raw_transcript_srt": "teaching_eligible",
     "postprocess_srt": "conditional_fidelity_check",
     "normalized_srt": "classify_only_not_trusted",
-    "chapter_hints": "audit_only",
-    "legacy_v2_lesson": "audit_only",
-    "legacy_lecture_context": "audit_only",
-    "legacy_generated_context": "audit_only",
+    "chapter_hints": "teaching_eligible_cleaned",
+    "legacy_v2_lesson": "teaching_eligible_cleaned",
+    "legacy_lecture_context": "teaching_eligible_cleaned",
+    "legacy_generated_context": "teaching_eligible_cleaned",
 }
 UNCLASSIFIED_RE = re.compile(rf"^(?P<vid>{VIDEO_ID_RE})_(?P<rest>.+)$")
 

@@ -4,7 +4,7 @@ Nodes are stable-ID concepts/lessons/skills; edges are typed (prerequisite,
 relates_to, mentions) and every edge and node carries provenance references
 that must resolve against the CF-02A evidence index. Prerequisite edges must
 stay acyclic. This is the machine-checkable source of truth; any OKF export
-is a rendering of it (see docs/okf-v02-evaluation.md).
+is a rendering of it (see docs/research/okf-v02-evaluation.md).
 """
 import re
 

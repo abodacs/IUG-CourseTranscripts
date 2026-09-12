@@ -9,7 +9,7 @@
 <body>
 
 <div class="meta">
-  <b>SCREEN 03 / 09 — INLINE QUIZ COMPONENT + STATES · مكوّن الاختبار الداخلي وحالاته</b> — OPTO 2311 pilot wireframes
+  <b>COMPONENT BOARD 03 — EMBEDDED PRACTICE + STATES · مكوّن التدريب المضمّن وحالاته</b> — OPTO 2311 pilot wireframes · not a standalone route
   <span class="dirmark">dir="rtl" · Arabic first · reads right→left</span>
 </div>
 
@@ -29,11 +29,12 @@
 
   <div class="banner" role="status">
     <span class="ann">[STATUS]</span>
-    <strong>هذا المساق قيد الإنشاء — الدروس المقبولة تُنشر تدريجيًا</strong>
+    <strong>تصوّر اصطناعي فقط — لا توجد دروس مقبولة أو منشورة حاليًا</strong>
     <a href="08-release-notes.html">ما الجديد؟ ←</a>
   </div>
 
   <h1>اختبر نفسك — المكوّن وحالاته</h1>
+  <p class="ann">[لوحة مرجعية للحالات فقط — يظهر هذا المكوّن داخل صفحة الدرس، ولا توجد صفحة اختبار مستقلة في المنصة]</p>
   <p>مكوّن واحد يُزرع داخل الدرس. <span class="ann">[حقول الاختبار: <span class="ltr">id</span> ثابت · مرجع المهارة <span class="ltr">skill_ref</span> · السؤال <span class="ltr">prompt</span> · <span class="ltr">4</span> اختيارات <span class="ltr">choices</span> · الإجابة <span class="ltr">answer</span> · التعليل <span class="ltr">rationale</span> · التغذية الراجعة <span class="ltr">feedback</span>]</span></p>
   <p class="ann">[الاختبار مُضمَّن في Markdown الدرس (كتلة <span class="ltr">quiz</span> مُسيَّجة تُتحقَّق من مخطط) — مرجع التجربة: <span class="ltr">mdbook-quiz</span> · العرض لا يكشف الإجابة قبل المحاولة]</p>
   <p class="ann">[قاعدة ثابتة: الإجابة والتعليل لا يظهران قبل أول محاولة — زر «تحقق من الإجابة» معطّل قبل اختيار خيار]</p>

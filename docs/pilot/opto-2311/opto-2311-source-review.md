@@ -1,6 +1,6 @@
 # OPTO 2311 — source review (CF-01)
 
-**Status:** implemented 2026-09-06 by [`scripts/build_pilot_manifest.py`](../scripts/build_pilot_manifest.py); offline, read-only, zero network/model calls. The machine-readable manifest is `artifacts/opto-2311/source-manifest.json` (local; `*.json` is git-ignored by policy). This report and the script/tests are the committed deliverables.
+**Status:** implemented 2026-09-06 by [`scripts/build_pilot_manifest.py`](../../../scripts/build_pilot_manifest.py); offline, read-only, zero network/model calls. The machine-readable manifest is `artifacts/opto-2311/source-manifest.json` (local; `*.json` is git-ignored by policy). This report and the script/tests are the committed deliverables.
 
 - Manifest sha256 `fe35da7e7acd31044cd191cb54a063c0a65f86f1988ee836a6bbd0489e5525ba` — **identical on unchanged rerun** (inspection timestamps live outside the hashed payload).
 - Evidence database `youtube-iug.db` sha256 `c01ad8cfcb52fd59…` (full value recorded in the manifest's `inspection` block); read from a verified immutable snapshot after refusing a nonempty WAL.
@@ -20,11 +20,11 @@
 | Skipped records (`skip=1`) | 1 — `SAq013FtOLQ` |
 | Shared video IDs (also member of another playlist) | 0 |
 
-This matches the historical snapshot in [NEXT_STEPS](NEXT_STEPS.md#ticket-cf-01-build-the-optics-source-manifest) (106 / 105 / 105 / 83 / 1 skipped; 22 videos historically without v2 output = 105 − 83). No drift in membership.
+This matches the historical snapshot in [NEXT_STEPS](../../NEXT_STEPS.md#ticket-cf-01-build-the-optics-source-manifest) (106 / 105 / 105 / 83 / 1 skipped; 22 videos historically without v2 output = 105 − 83). No drift in membership.
 
 ## Eligible teaching candidates
 
-**105 videos with raw JSON + raw SRT are the only teaching-eligible sources.** All 105 need fresh v1 processing; no legacy output or completion flag skips any of them.
+**There are 105 available per-video teaching-source sets:** canonical raw JSON plus the matching cleaned `GeminiLongContext/` counterparts. Derived SRT variants remain non-evidence. All 105 sets need fresh v1 processing; no legacy output or completion flag skips any of them.
 
 Measured facts that constrain later tickets:
 
@@ -35,19 +35,19 @@ Measured facts that constrain later tickets:
 
 Integrity findings total 626 warnings and **0 criticals**. Every video with data carries at least one warning, dominated by the systematic JSON↔SRT granularity difference (315 of the findings = 105 videos × 3 cross-checks). Findings carry a `variant` tag so each can be traced to the file that produced it.
 
-## Audit-only legacy artifacts (never teaching inputs)
+## Legacy cleaned artifacts (audit-only at measurement time; teaching sources since 2026-09-07)
 
 - **105 chapter-hint JSONs**: 421 chapters, 421 `chosen_keyframe` hints, 744 candidate timestamps, 0 chapter-range warnings (every chapter range parses and is monotonic). A hint is a capture pointer, not proof of what the frame shows. *Drift note:* the historical figures "420 chosen / 897 candidates" do not reproduce under the manifest's explicit definitions (occurrences of `chosen_keyframe`; summed lengths of `candidates_keyframes`; no `key_moments` fields exist anywhere). The recomputed numbers with their definitions are authoritative here.
-- **83 legacy v2 lessons** plus generated `_content.json` / `_lecture_context.json` files: audit-only. The historical 22-video output gap is unchanged coverage information, not permission to skip first-pass v1 work.
+- **83 legacy v2 lessons** plus generated `_content.json` / `_lecture_context.json` files: audit-only when measured; approved cleaned teaching sources since the 2026-09-07 policy reversal (raw JSON stays canonical for segmentation and timestamps). The historical 22-video output gap is unchanged coverage information, not permission to skip first-pass v1 work.
 
 ## Source gaps
 
 - **`SAq013FtOLQ`** — `skip=1`, `downloaded_r2=0`, no raw file, disposition **unresolved**. Its curriculum impact may only be established by the reviewer + operator from allowed evidence (CF-03); until then it remains an explicit completeness blocker. Its topic must not be invented.
 - **Playlist `entries` metadata is truncated** at the 32,767-character storage limit, so membership completeness rests entirely on the 106 `sync_github` rows. The live YouTube playlist count (CF-02) is the cross-check.
 
-## Order evidence
+## Order evidence at CF-01 measurement
 
-**Lecture order is unknown for all 106 records.** Every membership was created in one 34-second batch import (2024-08-31 15:21:57 → 15:22:31) — download order, not lecture order. All manifest records store `lecture_order: unknown`. Resolution paths, in order of trust: (1) CF-02 playlist metadata via pinned yt-dlp 2026.8.19 (identity/order use only), (2) verbal sequence references inside transcripts, (3) chapter hints (weakest). Positions that stay unresolved keep explicit unknown slots.
+**Lecture order was unknown for all 106 records in the CF-01 manifest.** Every membership was created in one 34-second batch import (2024-08-31 15:21:57 → 15:22:31) — download order, not lecture order. CF-02 later reconciled all 106 positions against playlist metadata; see the [first review](opto-2311-first-review.md). That recorded playlist order is metadata evidence, while the teaching sequence still requires review.
 
 ## Near-duplicate family watchlist (for CF-06)
 
@@ -55,19 +55,19 @@ Two sibling playlists share the course name and are recorded as candidate near-d
 
 ## Pending diagram recovery
 
-No video was fetched. The 421 chosen keyframe hints are recorded as **pending recovery pointers only**; CF-02/CF-07 will name the diagrams actually needed (video ID + timestamp + later captured-byte evidence), using the [capture CLI](KEYFRAME_CAPTURE.md) under its exit-code discipline.
+No video was fetched. The 421 chosen keyframe hints are recorded as **pending recovery pointers only**; CF-02/CF-07 will name the diagrams actually needed (video ID + timestamp + later captured-byte evidence), using the [capture CLI](../../factory/KEYFRAME_CAPTURE.md) under its exit-code discipline.
 
 ## Blockers that still prevent scope freeze
 
-1. Lecture order unknown — needs CF-02 playlist metadata or explicit unknown slots.
-2. 60 postprocessed SRT files await fidelity checks (or an explicit raw-only authoring decision, CF-02A).
-3. Keyframe hints are hints only — needed diagrams require capture + reviewer verification.
-4. All 83 legacy v2 lessons are audit-only — every transcript needs fresh v1 processing regardless.
+1. CF-01's unknown order is resolved as playlist metadata; the teaching sequence still needs reviewer approval in CF-03.
+2. 60 postprocessed SRT files await fidelity checks; the authoring-evidence decision is recorded (CF-02A, 2026-09-07: raw JSON + cleaned counterparts, derived SRT variants excluded).
+3. Keyframe hints are hints only — the full needed-diagram set still requires outcome-level identification, capture, and reviewer verification.
+4. All 83 legacy v2 lessons are approved cleaned sources only since 2026-09-07 (audit-only at CF-01 time) — every transcript still needs fresh v1 processing regardless.
 5. Sibling optics playlists must be grouped in the CF-06 split manifest before any holdout claim.
 6. `SAq013FtOLQ` disposition unresolved.
 7. Truncated `entries` metadata — membership completeness rests on sync_github until the live playlist is compared.
 
-Not source blockers, but still required before freeze per [the plan](pilot-opto-2311-plan.md): subject-reviewer recruitment, CF-04 quota observations/allocations, and the protected-family access decision.
+Not source blockers, but still required before freeze per [the plan](pilot-opto-2311-plan.md): subject-reviewer recruitment, contract-compliant CF-04 quota reconciliation/enforcement, and proof that the recorded protected-family policy is enforced.
 
 ## Reproduce
 

@@ -1,4 +1,4 @@
-"""Regression checks for the CF-02A evidence boundary (raw-only authoring)."""
+"""Regression checks for the CF-02A evidence boundary (raw + cleaned sources)."""
 import json
 from pathlib import Path
 
@@ -33,22 +33,28 @@ def write_legacy(root, suffix, payload="\"درس قديم مولّد\""):
     return path
 
 
-def test_only_raw_json_is_an_eligible_teaching_source():
+def test_raw_json_and_cleaned_counterparts_are_eligible_teaching_sources():
     assert evidence.eligibility_of("data/p/0Ca8cjsIysc_raw.json") == "teaching_eligible"
     for suffix, role in [
-        ("_postprocess.srt", "postprocess_srt"),
-        (".srt", "normalized_srt"),
         ("_chapters.json", "chapter_hints"),
         ("_v2_content.json", "legacy_v2_lesson"),
         ("_content.json", "legacy_generated_context"),
+        ("_lecture_context.json", "legacy_lecture_context"),
     ]:
-        assert evidence.eligibility_of(f"GeminiLongContext/p/x{suffix}") == "not_eligible", role
+        assert evidence.eligibility_of(
+            f"GeminiLongContext/p/0Ca8cjsIysc{suffix}"
+        ) == "teaching_eligible_cleaned", role
 
 
-def test_legacy_prose_is_rejected_as_evidence(tmp_path):
-    legacy = write_legacy(tmp_path, "_v2_content.json")
-    with pytest.raises(evidence.EvidencePolicyError, match="not eligible"):
-        evidence.load_segments_from(legacy)
+def test_derived_srt_variants_are_never_eligible():
+    for suffix in ("_raw.srt", "_postprocess.srt", ".srt"):
+        assert evidence.eligibility_of(f"data/p/0Ca8cjsIysc{suffix}") == "not_eligible"
+
+
+def test_cleaned_source_is_never_a_segment_load(tmp_path):
+    cleaned = write_legacy(tmp_path, "_v2_content.json")
+    with pytest.raises(evidence.EvidencePolicyError, match="cleaned source"):
+        evidence.load_segments_from(cleaned)
 
 
 def test_raw_loader_assigns_stable_ids_and_hashes(raw_video):
@@ -200,4 +206,7 @@ def test_evidence_index_covers_all_available_raw_sets(tmp_path):
     assert set(index["videos"]) == {"AAAAAAAAAAA", "BBBBBBBBBBB"}
     assert index["videos"]["AAAAAAAAAAA"]["segment_count"] == 1
     assert index["non_raw_skipped"] == [f"{evidence.VIDEO_ID}_raw.srt"]
-    assert index["policy"] == "raw-only authoring; derived SRT variants are never authoring inputs"
+    assert index["policy"] == (
+        "raw whisper JSON is the segment source; cleaned GeminiLongContext counterparts "
+        "are video-level teaching sources; derived SRT variants are never authoring inputs"
+    )
